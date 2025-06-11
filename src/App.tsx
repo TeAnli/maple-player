@@ -1,5 +1,10 @@
+import Sidebar from "./layout/Sidebar";
 function App() {
-  return <></>;
+  return (
+    <div className="w-screen h-screen">
+      <Sidebar />
+    </div>
+  );
 }
 
 export default App;
