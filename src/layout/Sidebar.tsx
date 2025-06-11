@@ -2,32 +2,33 @@ import { useState } from "react";
 
 const Sidebar: React.FC = () => {
   const [activeItem, setActiveItem] = useState("Home");
+
+  const menuItems = [
+    {
+      id: "home",
+      label: "Home",
+    },
+    {
+      id: "settings",
+      label: "Settings",
+    },
+    { id: "download", label: "Download" },
+  ];
+
   return (
     <div className="flex flex-col items-center bg-forgeground h-screen w-28 rounded-tr-2xl rounded-br-2xl">
-      <div
-        onClick={() => {
-          setActiveItem("Home");
-        }}
-        className="mt-12 size-12 bg-slate-500 cursor-pointer"
-      ></div>
-      <div
-        onClick={() => {
-          setActiveItem("Setting");
-        }}
-        className="mt-12 size-12 bg-slate-500 cursor-pointer"
-      ></div>
-      <div
-        onClick={() => {
-          setActiveItem("Downloadd");
-        }}
-        className="mt-12 size-12 bg-slate-500 cursor-pointer"
-      ></div>
-      <div
-        onClick={() => {
-          setActiveItem("Null");
-        }}
-        className="mt-12 size-12 bg-slate-500 cursor-pointer"
-      ></div>
+      {menuItems.map((item) => {
+        return (
+          <div
+            onClick={() => {
+              setActiveItem(item.id);
+            }}
+            className={`mt-12 w-12 h-12 rounded-2xl cursor-pointer transition-opacity duration-300 bg-gradient-to-b from-secondary to-primary  ${
+              activeItem == item.id ? "opacity-100" : "opacity-0"
+            }`}
+          ></div>
+        );
+      })}
     </div>
   );
 };
