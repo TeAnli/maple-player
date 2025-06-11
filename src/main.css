@@ -4,4 +4,8 @@
   --color-primary: rgb(240, 58, 58);
   --color-secondary: rgb(247, 109, 109);
   --color-forgeground: rgb(58, 62, 77);
+
+  --color-component: rgba(241, 237, 237, 50%);
+
+  --color-font-primary: rgba(24, 28, 47, 50%);
 }

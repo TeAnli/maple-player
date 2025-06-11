@@ -13,6 +13,7 @@ const InputField: React.FC<InputFieldProps> = (props: InputFieldProps) => {
   return (
     <div className={`flex ${props.className}`}>
       <input
+        className="bg-component w-full outline-0 rounded-[10px] pl-12 text-neutral-600 font-normal text-[16px] placeholder:text-font-primary"
         type={props.type}
         ref={inputRef}
         placeholder={props.placeholder}
