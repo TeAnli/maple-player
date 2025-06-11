@@ -1,6 +1,6 @@
 const Header: React.FC = () => {
   return (
-    <div className="flex flex-col p-2 bg-forgeground h-screen w-24">
+    <div className="flex w-full h-28 border-b-[1px] border-neutral-500">
       <div></div>
     </div>
   );

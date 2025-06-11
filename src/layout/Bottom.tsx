@@ -1,9 +1,5 @@
 const Bottom: React.FC = () => {
-  return (
-    <div className="flex flex-col p-2 bg-forgeground h-screen w-24">
-      <div></div>
-    </div>
-  );
+  return <div className="flex flex-row w-full h-28 border-t-[0.5px]"></div>;
 };
 
 export default Bottom;
