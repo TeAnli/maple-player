@@ -22,28 +22,30 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center bg-forgeground h-screen w-28 rounded-tr-2xl rounded-br-2xl">
-      {menuItems.map((item) => {
-        return (
-          <div
-            className={`flex justify-center rounded-2xl mt-12 w-12 h-12 cursor-pointer  transition-all ${
-              activeItem == item.id
-                ? "bg-gradient-to-b from-secondary to-primary"
-                : "hover:bg-hover-primary hover:scale-110"
-            }`}
-            onClick={() => {
-              setActiveItem(item.id);
-            }}
-          >
-            <img
-              className={`transition-all duration-500 ${
-                activeItem == item.id ? "opacity-100" : "opacity-30"
+    <div className="static bg-forgeground h-screen w-[120px]">
+      <div className="flex flex-col gap-8 items-center mt-24">
+        {menuItems.map((item) => {
+          return (
+            <div
+              className={`flex justify-center rounded-2xl w-12 h-12 cursor-pointer transition-all duration-300 ${
+                activeItem == item.id
+                  ? "bg-gradient-to-b from-secondary to-primary"
+                  : "hover:bg-hover-primary hover:scale-110"
               }`}
-              src={item.icon}
-            ></img>
-          </div>
-        );
-      })}
+              onClick={() => {
+                setActiveItem(item.id);
+              }}
+            >
+              <img
+                className={`transition-all duration-500 ${
+                  activeItem == item.id ? "opacity-100" : "opacity-30"
+                }`}
+                src={item.icon}
+              ></img>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import Clear from "../assets/Clear.svg";
 export interface InputFieldProps {
   internalIcon?: string;
   type?: "text" | "password";
@@ -19,8 +19,9 @@ const InputField: React.FC<InputFieldProps> = (props: InputFieldProps) => {
         src={props.internalIcon}
         className="absolute ml-4 top-1/2 -translate-y-1/2"
       ></img>
+
       <input
-        className="bg-component w-full outline-0 rounded-[10px] pl-12 font-normal text-[16px] text-font-primary transition-all duration-500 focus:border-[0.5px]"
+        className="bg-component w-full outline-0 rounded-[10px] pl-12 font-normal text-[16px] text-font-primary transition-all duration-500 border-[0.5px]"
         type={props.type}
         ref={inputRef}
         placeholder={props.placeholder}
