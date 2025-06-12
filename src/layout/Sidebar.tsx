@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Home from "../assets/Home.svg";
 import Send from "../assets/Send.svg";
+import Download from "../assets/Download.svg";
+import Options from "../assets/Options.svg";
 const Sidebar: React.FC = () => {
-  const [activeItem, setActiveItem] = useState("Home");
+  const [activeItem, setActiveItem] = useState("home");
 
   const menuItems = [
     {
@@ -15,7 +17,8 @@ const Sidebar: React.FC = () => {
       label: "Settings",
       icon: Send,
     },
-    { id: "download", label: "Download" },
+    { id: "download", label: "Download", icon: Download },
+    { id: "options", label: "Options", icon: Options },
   ];
 
   return (
@@ -23,17 +26,17 @@ const Sidebar: React.FC = () => {
       {menuItems.map((item) => {
         return (
           <div
-            className={`flex rounded-2xl mt-12 w-12 h-12 cursor-pointer  transition-all duration-500 ${
+            className={`flex justify-center rounded-2xl mt-12 w-12 h-12 cursor-pointer  transition-all ${
               activeItem == item.id
                 ? "bg-gradient-to-b from-secondary to-primary"
-                : "hover:bg-hover-primary"
+                : "hover:bg-hover-primary hover:scale-110"
             }`}
             onClick={() => {
               setActiveItem(item.id);
             }}
           >
             <img
-              className={`absolute translate-y-1/2 translate-x-1/2 transition-all duration-500 ${
+              className={`transition-all duration-500 ${
                 activeItem == item.id ? "opacity-100" : "opacity-30"
               }`}
               src={item.icon}

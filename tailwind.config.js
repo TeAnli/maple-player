@@ -9,7 +9,7 @@ module.exports = {
         "forgeground": "rgb(58, 62, 77)",
         "component": "rgba(241, 237, 237, 30%)",
         "font-primary": "rgba(24, 28, 47, 30%)",
-        "hover-primary": "rgba(240, 58, 58, 10%)"
+        "hover-primary": "rgba(255, 255, 255, 20%)"
       }
     },
   },
