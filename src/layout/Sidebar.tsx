@@ -22,7 +22,7 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <div className="static bg-forgeground h-screen w-[120px]">
+    <div className="fixed bg-forgeground h-screen w-[120px]">
       <div className="flex flex-col gap-8 items-center mt-24">
         {menuItems.map((item) => {
           return (

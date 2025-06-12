@@ -7,7 +7,7 @@ function App() {
     <div className="w-screen h-screen">
       <div className="flex flex-row">
         <Sidebar />
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full ml-[120px]">
           <Header />
           <Content />
           <Bottom />
