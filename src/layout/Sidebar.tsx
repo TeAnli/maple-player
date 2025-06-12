@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
             onClick={() => {
               setActiveItem(item.id);
             }}
-            className={`mt-12 w-12 h-12 rounded-2xl cursor-pointer transition-opacity duration-300 bg-gradient-to-b from-secondary to-primary  ${
+            className={`mt-12 w-12 h-12 rounded-2xl cursor-pointer transition-opacity duration-300 bg-gradient-to-b from-secondary to-primary ${
               activeItem == item.id ? "opacity-100" : "opacity-0"
             }`}
           ></div>
