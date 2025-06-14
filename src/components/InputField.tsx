@@ -21,7 +21,7 @@ const InputField: React.FC<InputFieldProps> = (props: InputFieldProps) => {
       ></img>
 
       <input
-        className="bg-component w-full outline-0 rounded-[10px] pl-12 font-normal text-[16px] text-font-primary transition-all duration-500 border-[0.5px]"
+        className="bg-component w-full outline-0 rounded-[10px] pl-12 font-normal text-[16px] text-font-primary transition-all duration-200 border-[0.5px] focus:shadow-super focus:border-[2px]"
         type={props.type}
         ref={inputRef}
         placeholder={props.placeholder}

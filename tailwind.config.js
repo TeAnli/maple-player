@@ -10,6 +10,9 @@ module.exports = {
         "component": "rgba(241, 237, 237, 30%)",
         "font-primary": "rgba(24, 28, 47, 30%)",
         "hover-primary": "rgba(255, 255, 255, 20%)"
+      },
+      boxShadow: {
+        "super": "0 20px 50px rgba(0,0,0, 0.10)"
       }
     },
   },
