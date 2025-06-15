@@ -1,5 +1,4 @@
 import * as React from "react";
-import Clear from "../assets/Clear.svg";
 export interface InputFieldProps {
   internalIcon?: string;
   type?: "text" | "password";

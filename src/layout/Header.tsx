@@ -6,7 +6,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 const Header: React.FC = () => {
   return (
-    <div className="fixed w-full">
+    <div className="fixed w-full bg-white">
       <div data-tauri-drag-region className="flex justify-between items-center h-24 border-b-[0.5px]">
         <InputField
           className="ml-12 mr-12 w-96 h-10"

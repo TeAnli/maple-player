@@ -4,7 +4,7 @@ import Previous from "../assets/Previous.svg";
 
 const Bottom: React.FC = () => {
   return (
-    <div className="fixed flex bottom-0 w-full h-28 border-t-[0.5px]">
+    <div className="fixed flex bottom-0 w-full h-28 border-t-[0.5px] bg-white">
       <div className="m-4 rounded-2xl w-20 h-20 bg-neutral-500"></div>
       <div className="flex ml-20 items-center">
         <img width={42} height={42} src={Previous}></img>
