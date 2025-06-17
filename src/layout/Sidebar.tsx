@@ -27,19 +27,17 @@ const Sidebar: React.FC = () => {
         {menuItems.map((item) => {
           return (
             <div
-              className={`flex justify-center rounded-2xl w-12 h-12 cursor-pointer transition-all duration-300 ${
-                activeItem == item.id
+              className={`flex justify-center rounded-2xl w-12 h-12 cursor-pointer transition-all duration-300 ${activeItem == item.id
                   ? "bg-gradient-to-b from-secondary to-primary"
                   : "hover:bg-hover-primary hover:scale-110"
-              }`}
+                }`}
               onClick={() => {
                 setActiveItem(item.id);
               }}
             >
               <img
-                className={`transition-all duration-500 ${
-                  activeItem == item.id ? "opacity-100" : "opacity-30"
-                }`}
+                className={`transition-all duration-500 ${activeItem == item.id ? "opacity-100" : "opacity-30"
+                  }`}
                 src={item.icon}
               ></img>
             </div>

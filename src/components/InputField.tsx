@@ -10,21 +10,47 @@ export interface InputFieldProps {
 
 const InputField: React.FC<InputFieldProps> = (props: InputFieldProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = React.useState(false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.onChange(event.target.value);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
   return (
     <div className={`flex ${props.className}`}>
-      <img
-        width={18}
-        height={18}
-        src={props.internalIcon}
-        className="absolute ml-4 top-1/2 -translate-y-1/2"
-      ></img>
+      <div className={`relative flex items-center w-full h-12 bg-white/80 backdrop-blur-sm rounded-xl border transition-all duration-300 ${isFocused
+        ? 'shadow-lg'
+        : 'border-gray-200/60 hover:border-gray-300/80 hover:bg-white/90'}`}>
 
-      <input
-        className="bg-component w-full outline-0 rounded-[10px] pl-12 font-normal text-[16px] text-font-primary transition-all duration-200 border-[0.5px] focus:shadow-super focus:border-[2px]"
-        type={props.type}
-        ref={inputRef}
-        placeholder={props.placeholder}
-      ></input>
+        {props.internalIcon && (
+          <div className="flex items-center justify-center w-12 h-12">
+            <img
+              width={18}
+              height={18}
+              src={props.internalIcon}
+              className={`transition-all duration-300 ${isFocused ? 'opacity-80 scale-110' : 'opacity-60'}`}
+            ></img>
+          </div>
+        )}
+        <input
+          className={`w-full outline-none px-4 text-gray-800 placeholder-gray-500 text-sm font-medium transition-all duration-300 ${props.disabled ? 'cursor-not-allowed' : ''}`}
+          type={props.type}
+          ref={inputRef}
+          placeholder={props.placeholder}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          disabled={props.disabled}
+        />
+      </div>
     </div>
   );
 };
