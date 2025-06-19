@@ -1,8 +1,11 @@
 import Home from "../pages/Home";
 
 const Content: React.FC = () => {
-  return <div className="flex flex-col mt-24 w-full h-screen">
-    <Home />
-  </div>;
+  return (
+    <div className="w-full h-full overflow-y-auto">
+      <Home />
+    </div>
+  );
 };
+
 export default Content;
