@@ -1,4 +1,6 @@
 import React from 'react';
+import Playlist from '../../components/Playlist';
+import MusicCard from '../../components/MusicCard';
 
 
 const Home: React.FC = () => {
