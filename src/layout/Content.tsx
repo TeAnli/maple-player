@@ -1,4 +1,4 @@
-import Home from "../pages/Home";
+import Home from "../pages/views/Home";
 
 const Content: React.FC = () => {
   return (
