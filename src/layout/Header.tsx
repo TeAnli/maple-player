@@ -16,7 +16,7 @@ const Header: React.FC = () => {
         />
         <div onClick={async () => {
           invoke("exit");
-        }} className="hover:cursor-pointer mr-40">
+        }} className="hover:cursor-pointer mr-32">
           <img src={Cross} width={20} height={20}></img>
         </div>
       </div>
