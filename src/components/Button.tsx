@@ -1,6 +1,8 @@
 import React from 'react';
 
 interface ButtonProps {
+  width?: number;
+  height?: number;
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
@@ -9,7 +11,8 @@ interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-
+  width,
+  height = 3,
   children,
   onClick,
   disabled = false,
@@ -17,8 +20,8 @@ const Button: React.FC<ButtonProps> = ({
   type = 'button'
 }) => {
   const baseClasses = `
-    inline-flex items-center justify-center px-4 py-2 text-sm font-medium bg-red-500 text-white
-    transition-all duration-150 ease-in-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:bg-red-400 active:bg-red-600
+    inline-flex items-center justify-center px-4 py-3 text-sm font-medium border border-gray-200/60 hover:border-gray-300/80
+    transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed active:shadow-lg
     ${type === "button" ? "rounded-md" : "rounded-full size-8 "}
   `;
 
