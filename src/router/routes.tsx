@@ -11,6 +11,9 @@ import SendIcon from "../assets/Send.svg";
 import DownloadIcon from "../assets/Download.svg";
 import OptionsIcon from "../assets/Options.svg";
 
+
+//the Layout component control the other page component
+//Home, User, Options, User is the child page of Layout
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -35,7 +38,7 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
-
+// the array provide routes' field for sidebar 
 export const routes = [
   {
     id: "home",
