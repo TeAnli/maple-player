@@ -5,6 +5,8 @@ import Cross from "../assets/Cross.svg"
 import { useState } from "react";
 import Button from "../components/Button";
 
+import { getCurrentWebview } from "@tauri-apps/api/webview";
+
 const Header: React.FC = () => {
 
   const [content, setContent] = useState("");
@@ -12,7 +14,10 @@ const Header: React.FC = () => {
   const handleInput = (value: string) => {
     setContent(value);
   }
-
+  const closeWindow = () => {
+    let window = getCurrentWebview();
+    window.close();
+  }
   return (
     <div className="fixed w-full bg-white">
       <div data-tauri-drag-region className="flex justify-between items-center h-24 border-b-[0.5px]">
@@ -27,7 +32,7 @@ const Header: React.FC = () => {
         </div>
 
 
-        <div className="hover:cursor-pointer mr-32">
+        <div onClick={closeWindow} className="hover:cursor-pointer mr-32">
           <img src={Cross} width={20} height={20}></img>
         </div>
       </div>
