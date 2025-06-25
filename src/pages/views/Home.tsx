@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import Playlist from '../../components/Playlist';
-import { invoke } from '@tauri-apps/api/core';
+import React, { useEffect, useState } from "react";
+import Playlist from "../../components/Playlist";
+import { invoke } from "@tauri-apps/api/core";
 
 interface Response {
-  code: number,
-  data: Data
+  code: number;
+  data: Data;
 }
 interface Data {
-  data: Array<Item>
+  data: Array<Item>;
 }
 interface Item {
-  title: string,
-  uname: string,
-  cover: string
+  title: string;
+  uname: string;
+  cover: string;
 }
 
 const Home: React.FC = () => {
-  const [playlists, setPlaylists] = useState<Item[]>([])
+  const [playlists, setPlaylists] = useState<Item[]>([]);
 
   useEffect(() => {
     invoke("get_hot_playlists", {
       page: 1,
-      pageSize: 6
-    }).then((result) => {
-      const response = result as Response;
-      setPlaylists(response.data.data)
-      console.log(response.data.data[0].cover)
-    }).catch((e) => { console.error(e) })
-  }, [])
+      pageSize: 6,
+    })
+      .then((result) => {
+        const response = result as Response;
+        setPlaylists(response.data.data);
+        console.log(response.data.data[0].cover);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
   return (
     <div className="w-full p-8">
       <div className="mb-8">
@@ -44,12 +48,13 @@ const Home: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className='mb-8'>
+      <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">推荐单曲</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+            推荐单曲
+          </h2>
         </div>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-20">
-        </div>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-20"></div>
       </div>
     </div>
   );

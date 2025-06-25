@@ -1,6 +1,6 @@
 import InputField from "../components/InputField";
 import Search from "../assets/Search.svg";
-import Cross from "../assets/Cross.svg"
+import Cross from "../assets/Cross.svg";
 
 import { useState } from "react";
 import Button from "../components/Button";
@@ -8,19 +8,22 @@ import Button from "../components/Button";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
 
 const Header: React.FC = () => {
-
   const [content, setContent] = useState("");
 
   const handleInput = (value: string) => {
     setContent(value);
-  }
+    console.log(content);
+  };
   const closeWindow = () => {
     let window = getCurrentWebview();
     window.close();
-  }
+  };
   return (
     <div className="fixed w-full bg-white">
-      <div data-tauri-drag-region className="flex justify-between items-center h-24 border-b-[0.5px]">
+      <div
+        data-tauri-drag-region
+        className="flex justify-between items-center h-24 border-b-[0.5px]"
+      >
         <div className="flex flex-row items-center">
           <InputField
             className="ml-12 mr-4 w-80"
@@ -30,8 +33,6 @@ const Header: React.FC = () => {
           />
           <Button>搜索</Button>
         </div>
-
-
         <div onClick={closeWindow} className="hover:cursor-pointer mr-32">
           <img src={Cross} width={20} height={20}></img>
         </div>

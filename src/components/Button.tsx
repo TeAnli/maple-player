@@ -1,23 +1,19 @@
-import React from 'react';
+import React from "react";
 
 interface ButtonProps {
-  width?: number;
-  height?: number;
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
-  type?: "button" | "circle"
+  type?: "button" | "circle";
 }
 
 const Button: React.FC<ButtonProps> = ({
-  width,
-  height = 3,
   children,
   onClick,
   disabled = false,
-  className = '',
-  type = 'button'
+  className = "",
+  type = "button",
 }) => {
   const baseClasses = `
     inline-flex items-center justify-center px-4 py-3 text-sm font-medium border border-gray-200/60 hover:border-gray-300/80
@@ -28,7 +24,9 @@ const Button: React.FC<ButtonProps> = ({
   const classes = `
     ${baseClasses}
     ${className}
-  `.trim().replace(/\s+/g, ' ');
+  `
+    .trim()
+    .replace(/\s+/g, " ");
 
   return (
     <button

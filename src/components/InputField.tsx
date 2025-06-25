@@ -26,22 +26,29 @@ const InputField: React.FC<InputFieldProps> = (props: InputFieldProps) => {
 
   return (
     <div className={`flex ${props.className}`}>
-      <div className={`relative flex items-center w-full h-12 bg-white/80 backdrop-blur-sm rounded-xl border transition-all duration-300 ${isFocused
-        ? 'shadow-lg'
-        : 'border-gray-200/60 hover:border-gray-300/80 hover:bg-white/90'}`}>
-
+      <div
+        className={`relative flex items-center w-full h-12 bg-white/80 backdrop-blur-sm rounded-xl border transition-all duration-300 ${
+          isFocused
+            ? "shadow-lg"
+            : "border-gray-200/60 hover:border-gray-300/80 hover:bg-white/90"
+        }`}
+      >
         {props.internalIcon && (
           <div className="flex items-center justify-center w-12 h-12">
             <img
               width={18}
               height={18}
               src={props.internalIcon}
-              className={`transition-all duration-300 ${isFocused ? 'opacity-80 scale-110' : 'opacity-60'}`}
+              className={`transition-all duration-300 ${
+                isFocused ? "opacity-80 scale-110" : "opacity-60"
+              }`}
             ></img>
           </div>
         )}
         <input
-          className={`w-full outline-none px-4 text-gray-800 placeholder-gray-500 text-sm font-medium transition-all duration-300 ${props.disabled ? 'cursor-not-allowed' : ''}`}
+          className={`w-full outline-none px-4 text-gray-800 placeholder-gray-500 text-sm font-medium transition-all duration-300 ${
+            props.disabled ? "cursor-not-allowed" : ""
+          }`}
           type={props.type}
           ref={inputRef}
           placeholder={props.placeholder}

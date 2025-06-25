@@ -17,15 +17,17 @@ const Sidebar: React.FC = () => {
           return (
             <div
               key={item.id}
-              className={`flex justify-center rounded-2xl w-12 h-12 cursor-pointer transition-all duration-300 ${isActive
-                ? "bg-gradient-to-b from-secondary to-primary"
-                : "hover:bg-hover-primary hover:scale-110"
-                }`}
+              className={`flex justify-center rounded-2xl w-12 h-12 cursor-pointer transition-all duration-300 ${
+                isActive
+                  ? "bg-gradient-to-b from-secondary to-primary"
+                  : "hover:bg-hover-primary hover:scale-110"
+              }`}
               onClick={() => handleItemClick(item.path)}
             >
               <img
-                className={`transition-all duration-500 ${isActive ? "opacity-100" : "opacity-30"
-                  }`}
+                className={`transition-all duration-500 ${
+                  isActive ? "opacity-100" : "opacity-30"
+                }`}
                 src={item.icon}
                 alt={item.label}
               />
