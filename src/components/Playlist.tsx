@@ -3,6 +3,7 @@ import React from 'react';
 export interface PlaylistProps {
   name: string,
   author: string,
+  cover: string
 }
 
 const Playlist: React.FC<PlaylistProps> = (props: PlaylistProps) => {
@@ -10,8 +11,7 @@ const Playlist: React.FC<PlaylistProps> = (props: PlaylistProps) => {
     <div className="group relative w-full h-24 rounded-xl hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer">
       <div className="relative flex items-center h-full p-4">
         <div className="relative mr-4 flex-shrink-0">
-          <div className="w-16 h-16 rounded-lg shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-          </div>
+          <img className='w-16 h-16 rounded-lg shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300' src={props.cover}></img>
         </div>
 
         <div className="flex-1 flex-col mr-4">
