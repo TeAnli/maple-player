@@ -1,5 +1,5 @@
 use crate::api::data;
-
+// By the bvid search Bilibili video info
 #[tauri::command]
 pub async fn search_bvid_info(bvid: std::sync::Mutex<String>) -> Result<data::VideoInfo, String> {
     let client = reqwest::Client::builder()
@@ -8,18 +8,18 @@ pub async fn search_bvid_info(bvid: std::sync::Mutex<String>) -> Result<data::Vi
         .build()
         .map_err(|e| e.to_string())?;
 
-    let api: String = format!(
+    let api_url: String = format!(
         "https://api.bilibili.com/x/web-interface/view?bvid={}",
         bvid.lock().map_err(|e| e.to_string())?
     );
 
-    let response = client.get(api).send().await.map_err(|e| e.to_string())?;
+    let response = client.get(api_url).send().await.map_err(|e| e.to_string())?;
     let video_info: data::VideoInfo = response.json().await.map_err(|e| e.to_string())?;
     
     Ok(video_info)
 }
 
-/// 获取bilibili热门歌单
+// Get The Bilibili hot playlists
 #[tauri::command]
 pub async fn get_hot_playlists(
     page: i32,
@@ -33,10 +33,8 @@ pub async fn get_hot_playlists(
         "https://www.bilibili.com/audio/music-service-c/web/menu/hit?ps={}&pn={}",
         page_size, page
     );
-    println!("{}",api_url);
-    // 发送请求
+    // Send the request
     let response = client.get(api_url).send().await.map_err(|e| e.to_string())?;
     let music_info: data::PlaylistResponse = response.json().await.map_err(|e| e.to_string())?;
-    println!("{:?}",music_info);
     Ok(music_info)
 }

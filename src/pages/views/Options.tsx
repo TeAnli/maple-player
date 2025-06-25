@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Options: React.FC = () => {
   return (
@@ -9,3 +9,4 @@ const Options: React.FC = () => {
 };
 
 export default Options;
+
