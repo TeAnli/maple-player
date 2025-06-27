@@ -2,7 +2,7 @@
 mod api;
 
 use api::request;
-use tauri::{utils::config::WindowEffectsConfig, window::{Effect, EffectsBuilder}, Runtime};
+use tauri::{Runtime};
 
 #[tauri::command]
 async fn create_window<R: Runtime>(app: tauri::AppHandle<R>, title: String,url: String) -> Result<(), String> {
@@ -25,7 +25,8 @@ pub fn run() {
             create_window,
             request::login,
             request::search_bvid_info,
-            request::get_hot_playlists
+            request::get_hot_playlists,
+            request::scan_check
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

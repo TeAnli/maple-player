@@ -73,3 +73,17 @@ pub struct LoginData{
     url: String,
     qrcode_key: String
 }
+
+#[derive(Serialize,Deserialize,Debug,Default)]
+pub struct ScanResponse{
+    pub code: i32,
+    pub data: ScanData
+}
+
+#[derive(Serialize,Deserialize,Debug,Default)]
+pub struct ScanData{
+    pub refresh_token: String,
+    pub timestamp: i64,
+    pub code:i32,
+    pub message: String
+}

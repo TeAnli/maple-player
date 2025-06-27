@@ -9,7 +9,6 @@ import Button from "../components/Button";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { invoke } from "@tauri-apps/api/core";
-import { QRCodeCanvas } from "qrcode.react";
 
 
 
@@ -21,6 +20,7 @@ const Header: React.FC = () => {
   const closeWindow = () => {
     let window = getCurrentWindow();
     window.close();
+    console.log(content)
   };
   return (
     <div className="fixed w-full bg-white">

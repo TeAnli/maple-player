@@ -50,3 +50,21 @@ pub async fn login() -> Result<data::LoginResponse, String> {
     let login_info: data::LoginResponse = response.json().await.map_err(|e|{e.to_string()})?;
     Ok(login_info)
 }
+#[tauri::command]
+pub async fn scan_check(qrcode_key: String) -> Result<i32, String> {
+    let client = reqwest::Client::builder()
+        .cookie_store(true)
+        .build()
+        .map_err(|e|{e.to_string()})?;
+    println!("{}",qrcode_key);
+    let api_url = format!("https://passport.bilibili.com/x/passport-login/web/qrcode/poll?qrcode_key={}",qrcode_key);
+    let response = client.get(api_url).send().await.map_err(|e|{e.to_string()})?;
+    let scan_info: data::ScanResponse = response.json().await.map_err(|e|{e.to_string()})?;
+    println!("{:#?}",scan_info);
+    
+    if scan_info.data.code == 0 {
+        Ok(1)
+    }else {
+        Ok(0)
+    }
+}
