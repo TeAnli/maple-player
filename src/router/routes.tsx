@@ -10,6 +10,7 @@ import HomeIcon from "../assets/Home.svg";
 import SendIcon from "../assets/Send.svg";
 import DownloadIcon from "../assets/Download.svg";
 import OptionsIcon from "../assets/Options.svg";
+import { QRCodePage } from "../pages/views/QRCodePage";
 
 
 //the Layout component control the other page component
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/login",
+    element: <QRCodePage />
+  }
 ]);
 // the array provide routes' field for sidebar 
 export const routes = [

@@ -63,3 +63,13 @@ pub struct PlaylistStatistic {
     comment: i64,
     share: i64,
 }
+
+#[derive(Serialize,Deserialize,Debug,Default)]
+pub struct LoginResponse{
+    data: LoginData
+}
+#[derive(Serialize,Deserialize,Debug,Default)]
+pub struct LoginData{
+    url: String,
+    qrcode_key: String
+}

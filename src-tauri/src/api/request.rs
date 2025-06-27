@@ -38,3 +38,15 @@ pub async fn get_hot_playlists(
     let music_info: data::PlaylistResponse = response.json().await.map_err(|e| e.to_string())?;
     Ok(music_info)
 }
+#[tauri::command]
+pub async fn login() -> Result<data::LoginResponse, String> {
+    let client = reqwest::Client::builder()
+        .cookie_store(true)
+        .build()
+        .map_err(|e|{e.to_string()})?;
+
+    let api_url = String::from("https://passport.bilibili.com/x/passport-login/web/qrcode/generate");
+    let response = client.get(api_url).send().await.map_err(|e|{e.to_string()})?;
+    let login_info: data::LoginResponse = response.json().await.map_err(|e|{e.to_string()})?;
+    Ok(login_info)
+}

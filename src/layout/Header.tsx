@@ -5,17 +5,21 @@ import Cross from "../assets/Cross.svg";
 import { useState } from "react";
 import Button from "../components/Button";
 
-import { getCurrentWebview } from "@tauri-apps/api/webview";
+
+import { getCurrentWindow } from "@tauri-apps/api/window";
+
+import { invoke } from "@tauri-apps/api/core";
+import { QRCodeCanvas } from "qrcode.react";
+
+
 
 const Header: React.FC = () => {
   const [content, setContent] = useState("");
-
   const handleInput = (value: string) => {
     setContent(value);
-    console.log(content);
   };
   const closeWindow = () => {
-    let window = getCurrentWebview();
+    let window = getCurrentWindow();
     window.close();
   };
   return (
@@ -32,12 +36,20 @@ const Header: React.FC = () => {
             internalIcon={Search}
           />
           <Button>搜索</Button>
+
+          <Button
+            onClick={async () => {
+              invoke("create_window", { title: "login", url: "/login" });
+            }}
+          >
+            打开登陆窗口
+          </Button>
         </div>
         <div onClick={closeWindow} className="hover:cursor-pointer mr-32">
           <img src={Cross} width={20} height={20}></img>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

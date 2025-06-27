@@ -2,10 +2,18 @@
 mod api;
 
 use api::request;
+use tauri::{utils::config::WindowEffectsConfig, window::{Effect, EffectsBuilder}, Runtime};
 
 #[tauri::command]
-fn exit(window: tauri::Window) {
-    window.close().unwrap();
+async fn create_window<R: Runtime>(app: tauri::AppHandle<R>, title: String,url: String) -> Result<(), String> {
+    let webview_window = tauri::WebviewWindowBuilder::new(&app, 
+        title, 
+        tauri::WebviewUrl::App(url.into())
+    ).resizable(false)
+    .maximizable(false)
+    .inner_size(400.0,400.0)
+    .build().unwrap();
+    Ok(())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -14,7 +22,8 @@ pub fn run() {
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
-            exit,
+            create_window,
+            request::login,
             request::search_bvid_info,
             request::get_hot_playlists
         ])

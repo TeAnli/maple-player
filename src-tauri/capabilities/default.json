@@ -2,15 +2,22 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  
-  "windows": [
-    "main"
-  ],
+
+  "windows": ["main"],
   "permissions": [
     "core:default",
-    "core:window:default",
-    "core:window:allow-start-dragging",
+
     "opener:default",
-    "process:default"
+    "process:default",
+    "core:window:allow-close",
+    "core:window:allow-show",
+    "core:window:allow-create",
+    "core:window:default",
+    "core:window:allow-set-size",
+    "core:window:allow-start-dragging",
+    "core:webview:allow-create-webview",
+    "core:webview:allow-create-webview-window",
+    "core:webview:allow-webview-close",
+    "core:webview:allow-set-webview-size"
   ]
 }
