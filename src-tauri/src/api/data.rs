@@ -31,18 +31,18 @@ pub struct VideoStat {
     favorite: i64,
 }
 
-#[derive(Serialize,Deserialize,Debug,Default)]
-pub struct PlaylistResponse{
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct PlaylistResponse {
     code: i32,
-    data: PlaylistData
+    data: PlaylistData,
 }
 
-#[derive(Serialize,Deserialize,Debug,Default)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistData {
-    data: Vec<PlaylistItem>
+    data: Vec<PlaylistItem>,
 }
 
-#[derive(Serialize,Deserialize,Debug,Default)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistItem {
     uid: i64,
     uname: String,
@@ -52,10 +52,10 @@ pub struct PlaylistItem {
     ctime: i64,
     curtime: i64,
     statistic: PlaylistStatistic,
-    snum: i64
+    snum: i64,
 }
 
-#[derive(Serialize,Deserialize,Debug,Default)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistStatistic {
     sid: i64,
     play: i64,
@@ -64,26 +64,51 @@ pub struct PlaylistStatistic {
     share: i64,
 }
 
-#[derive(Serialize,Deserialize,Debug,Default)]
-pub struct LoginResponse{
-    data: LoginData
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct LoginResponse {
+    data: LoginData,
 }
-#[derive(Serialize,Deserialize,Debug,Default)]
-pub struct LoginData{
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct LoginData {
     url: String,
-    qrcode_key: String
+    qrcode_key: String,
 }
 
-#[derive(Serialize,Deserialize,Debug,Default)]
-pub struct ScanResponse{
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct ScanResponse {
     pub code: i32,
-    pub data: ScanData
+    pub data: ScanData,
 }
 
-#[derive(Serialize,Deserialize,Debug,Default)]
-pub struct ScanData{
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct ScanData {
     pub refresh_token: String,
     pub timestamp: i64,
-    pub code:i32,
-    pub message: String
+    pub code: i32,
+    pub message: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct FolderResponse {
+    pub code: i32,
+    pub message: String,
+    pub data: FolderData,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct FolderData {
+    pub count: i32,
+    pub list: Vec<FolderItem>,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct FolderItem {
+    pub id: i32,
+    pub mid: i32,
+    pub attr: i32,
+    pub title: String,
+    pub media_count: i32,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct CreateFolderResponse {
+    pub code: i32,
+    pub data: FolderItem
 }

@@ -1,70 +1,87 @@
-use crate::api::data;
+use std::sync::Arc;
+use reqwest::{cookie::Jar, Client};
+use tauri::State;
+
+use crate::{api::{data, urls}, AppState};
+
+
+pub struct HttpClient {
+    client: Client,
+}
+impl HttpClient {
+    pub fn new() -> Self {
+        let jar = Arc::new(Jar::default());
+        let client = Client::builder()
+            .cookie_provider(jar.clone())
+            .build()
+            .expect("Failed to create http client");
+        HttpClient { client }
+    }
+}
+
 // By the bvid search Bilibili video info
 #[tauri::command]
-pub async fn search_bvid_info(bvid: std::sync::Mutex<String>) -> Result<data::VideoInfo, String> {
-    let client = reqwest::Client::builder()
-        .cookie_store(true)
-        .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
-        .build()
-        .map_err(|e| e.to_string())?;
-
+pub async fn search_bvid_info(state:State<'_, AppState>, bvid: std::sync::Mutex<String>) -> Result<data::VideoInfo, String> {
     let api_url: String = format!(
         "https://api.bilibili.com/x/web-interface/view?bvid={}",
         bvid.lock().map_err(|e| e.to_string())?
     );
 
-    let response = client.get(api_url).send().await.map_err(|e| e.to_string())?;
+    let response = state.http_client.lock().await.client
+        .get(api_url)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
     let video_info: data::VideoInfo = response.json().await.map_err(|e| e.to_string())?;
-    
+
     Ok(video_info)
 }
 
-// Get The Bilibili hot playlists
 #[tauri::command]
-pub async fn get_hot_playlists(
-    page: i32,
-    page_size: i32,
-) -> Result<data::PlaylistResponse, String> {
-    let client = reqwest::Client::builder()
-        .cookie_store(true)
-        .build()
-        .map_err(|e| e.to_string())?;
-    let api_url = format!(
-        "https://www.bilibili.com/audio/music-service-c/web/menu/hit?ps={}&pn={}",
-        page_size, page
-    );
-    // Send the request
-    let response = client.get(api_url).send().await.map_err(|e| e.to_string())?;
-    let music_info: data::PlaylistResponse = response.json().await.map_err(|e| e.to_string())?;
-    Ok(music_info)
-}
-#[tauri::command]
-pub async fn login() -> Result<data::LoginResponse, String> {
-    let client = reqwest::Client::builder()
-        .cookie_store(true)
-        .build()
-        .map_err(|e|{e.to_string()})?;
+pub async fn login(state:State<'_, AppState>) -> Result<data::LoginResponse, String> {
 
-    let api_url = String::from("https://passport.bilibili.com/x/passport-login/web/qrcode/generate");
-    let response = client.get(api_url).send().await.map_err(|e|{e.to_string()})?;
-    let login_info: data::LoginResponse = response.json().await.map_err(|e|{e.to_string()})?;
+    let api_url = urls::QRCODE_GENERATE_URL;
+    let response = state.http_client.lock().await.client
+        .get(api_url)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let login_info: data::LoginResponse = response.json().await.map_err(|e| e.to_string())?;
     Ok(login_info)
 }
 #[tauri::command]
-pub async fn scan_check(qrcode_key: String) -> Result<i32, String> {
-    let client = reqwest::Client::builder()
-        .cookie_store(true)
-        .build()
-        .map_err(|e|{e.to_string()})?;
-    println!("{}",qrcode_key);
-    let api_url = format!("https://passport.bilibili.com/x/passport-login/web/qrcode/poll?qrcode_key={}",qrcode_key);
-    let response = client.get(api_url).send().await.map_err(|e|{e.to_string()})?;
-    let scan_info: data::ScanResponse = response.json().await.map_err(|e|{e.to_string()})?;
-    println!("{:#?}",scan_info);
-    
-    if scan_info.data.code == 0 {
-        Ok(1)
-    }else {
-        Ok(0)
-    }
+pub async fn scan_check(state:State<'_, AppState>,qrcode_key: String) -> Result<i32, String> {
+    let api_url = format!("{}?qrcode_key={}",urls::QRCODE_POLL_URL, qrcode_key);
+    let response = state.http_client.lock().await.client
+        .get(api_url)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let scan_info: data::ScanResponse = response.json().await.map_err(|e| e.to_string())?;
+    Ok(scan_info.data.code)
+}
+#[tauri::command]
+pub async fn get_all_folder(state:State<'_, AppState>, uid: i64) -> Result<(), String> {
+    let api_url = format!("{}?up_mid={}", urls::GET_ALL_FOLDER_URL, uid);
+    let response = state.http_client.lock().await.client
+        .get(api_url)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let info: data::FolderResponse = response.json().await.map_err(|e|e.to_string())?;
+    println!("{:#?}", info);
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn create_folder(state:State<'_, AppState>, uid: i64) -> Result<(), String> {
+    let api_url = format!("{}?up_mid={}", urls::CREATE_FOLDER_URL, uid);
+    let response = state.http_client.lock().await.client
+        .get(api_url)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let info: data::FolderResponse = response.json().await.map_err(|e|e.to_string())?;
+    println!("{:#?}", info);
+    Ok(())
 }
