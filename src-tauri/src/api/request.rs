@@ -39,7 +39,6 @@ pub async fn search_bvid_info(state:State<'_, AppState>, bvid: String) -> Result
 
 #[tauri::command]
 pub async fn login(state:State<'_, AppState>) -> Result<data::LoginResponse, String> {
-
     let api_url = urls::QRCODE_GENERATE_URL;
     let response = state.http_client.lock().await.client
         .get(api_url)
@@ -84,4 +83,15 @@ pub async fn create_folder(state:State<'_, AppState>, uid: i64) -> Result<(), St
     let info: data::FolderResponse = response.json().await.map_err(|e|e.to_string())?;
     println!("{:#?}", info);
     Ok(())
+}
+#[tauri::command]
+pub async fn get_user_data(state:State<'_, AppState>) -> Result<data::UserData, String> {
+    let api_url: String = format!("{}", urls::GET_USER_DATA_URL);
+    let response = state.http_client.lock().await.client
+        .get(api_url)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let info: data::UserResponse = response.json().await.map_err(|e|e.to_string())?;
+    Ok(info.data)
 }
