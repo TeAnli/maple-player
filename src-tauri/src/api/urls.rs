@@ -15,3 +15,6 @@ pub const CREATE_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/ad
 pub const EDIT_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/edit";
 pub const DELETE_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/del";
 
+//搜索API
+
+pub const SEARCH_BVID_INFO: &str = "https://api.bilibili.com/x/web-interface/view";

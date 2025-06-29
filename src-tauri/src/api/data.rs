@@ -2,8 +2,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct VideoInfo {
-    code: i32,
-    data: VideoData,
+    pub code: i32,
+    pub data: VideoData,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]

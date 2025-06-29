@@ -11,6 +11,7 @@ import SendIcon from "../assets/Send.svg";
 import DownloadIcon from "../assets/Download.svg";
 import OptionsIcon from "../assets/Options.svg";
 import { QRCodePage } from "../pages/views/QRCodePage";
+import Search from "../pages/views/Search";
 
 
 //the Layout component control the other page component
@@ -33,15 +34,21 @@ export const router = createBrowserRouter([
         element: <Options />,
       },
       {
+        path: "/search",
+        element: <Search />
+      },
+      {
         path: "/user",
         element: <User />,
       },
+
     ],
   },
   {
     path: "/login",
     element: <QRCodePage />
-  }
+  },
+
 ]);
 // the array provide routes' field for sidebar 
 export const routes = [

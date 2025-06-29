@@ -1,9 +1,10 @@
 export interface MusicProps {
   name: string;
   author: string;
+  cover: string
 }
 
-const MusicCard: React.FC = () => {
+const MusicCard: React.FC<MusicProps> = (props: MusicProps) => {
   return (
     <div className="group relative hover:scale-110 active:scale-90 transition-all">
       <div className="">

@@ -21,10 +21,11 @@ impl HttpClient {
 
 // By the bvid search Bilibili video info
 #[tauri::command]
-pub async fn search_bvid_info(state:State<'_, AppState>, bvid: std::sync::Mutex<String>) -> Result<data::VideoInfo, String> {
+pub async fn search_bvid_info(state:State<'_, AppState>, bvid: String) -> Result<data::VideoData, String> {
     let api_url: String = format!(
-        "https://api.bilibili.com/x/web-interface/view?bvid={}",
-        bvid.lock().map_err(|e| e.to_string())?
+        "{}?bvid={}",
+        urls::SEARCH_BVID_INFO,
+        bvid
     );
 
     let response = state.http_client.lock().await.client
@@ -33,8 +34,7 @@ pub async fn search_bvid_info(state:State<'_, AppState>, bvid: std::sync::Mutex<
         .await
         .map_err(|e| e.to_string())?;
     let video_info: data::VideoInfo = response.json().await.map_err(|e| e.to_string())?;
-
-    Ok(video_info)
+    Ok(video_info.data)
 }
 
 #[tauri::command]

@@ -8,11 +8,17 @@ import Button from "../components/Button";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { invoke } from "@tauri-apps/api/core";
+import { useNavigate } from "react-router";
+import { useSearchStore } from "../store/search_store";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   const [content, setContent] = useState("");
+  const setSearchContent = useSearchStore((state) => state.setSearchContent)
+
   const handleInput = (value: string) => {
     setContent(value);
+
   };
   const closeWindow = () => {
     let window = getCurrentWindow();
@@ -32,7 +38,11 @@ const Header: React.FC = () => {
             onChange={handleInput}
             internalIcon={Search}
           />
-          <Button>搜索</Button>
+          <Button onClick={() => {
+            setSearchContent(content)
+            navigate("/search")
+
+          }}>搜索</Button>
 
           <Button
             onClick={async () => {
