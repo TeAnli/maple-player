@@ -16,7 +16,6 @@ interface Item {
 }
 
 const Home: React.FC = () => {
-  const [playlists, setPlaylists] = useState<Item[]>([]);
 
   return (
     <div className="w-full p-8">
@@ -25,13 +24,6 @@ const Home: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-800">推荐歌单</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 gap-4">
-          {playlists.map((playlist) => (
-            <Playlist
-              name={playlist.title}
-              author={playlist.uname}
-              cover={playlist.cover}
-            />
-          ))}
         </div>
       </div>
       <div className="mb-8">
