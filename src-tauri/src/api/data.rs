@@ -110,16 +110,16 @@ pub struct FolderItem {
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct CreateFolderResponse {
     pub code: i32,
-    pub data: FolderItem
+    pub data: FolderItem,
 }
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct UserResponse {
     pub code: i32,
-    pub data: UserData
+    pub data: UserData,
 }
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct UserData {
     pub mid: i32,
     pub face: String,
-    pub uname: String
+    pub uname: String,
 }

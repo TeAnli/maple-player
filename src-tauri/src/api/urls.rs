@@ -1,7 +1,8 @@
 //登陆API
 
 //无参数 GET请求
-pub const QRCODE_GENERATE_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
+pub const QRCODE_GENERATE_URL: &str =
+    "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
 //需要qrcode_key参数 GET请求
 pub const QRCODE_POLL_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/poll";
 
