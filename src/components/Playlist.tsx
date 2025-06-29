@@ -17,7 +17,7 @@ const Playlist: React.FC<PlaylistProps> = (
       <div className="relative flex items-center h-full p-4">
         <div className="relative mr-4 flex-shrink-0">
           <img
-            className={`aspect-video w-48 rounded-lg shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}
+            className={`object-cover w-16 h-16 rounded-lg shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}
             src={cover}
           ></img>
         </div>
