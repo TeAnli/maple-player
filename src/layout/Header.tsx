@@ -5,12 +5,9 @@ import Cross from "../assets/Cross.svg";
 import { useState } from "react";
 import Button from "../components/Button";
 
-
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { invoke } from "@tauri-apps/api/core";
-
-
 
 const Header: React.FC = () => {
   const [content, setContent] = useState("");
@@ -20,7 +17,7 @@ const Header: React.FC = () => {
   const closeWindow = () => {
     let window = getCurrentWindow();
     window.close();
-    console.log(content)
+    console.log(content);
   };
   return (
     <div className="fixed w-full bg-white">
@@ -49,7 +46,7 @@ const Header: React.FC = () => {
           <img src={Cross} width={20} height={20}></img>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
