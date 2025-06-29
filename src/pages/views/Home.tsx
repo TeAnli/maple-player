@@ -18,20 +18,6 @@ interface Item {
 const Home: React.FC = () => {
   const [playlists, setPlaylists] = useState<Item[]>([]);
 
-  useEffect(() => {
-    invoke("get_hot_playlists", {
-      page: 1,
-      pageSize: 6,
-    })
-      .then((result) => {
-        const response = result as Response;
-        setPlaylists(response.data.data);
-        console.log(response.data.data[0].cover);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
   return (
     <div className="w-full p-8">
       <div className="mb-8">

@@ -1,11 +1,11 @@
 import { create } from "zustand"
 
-interface QRCodeType {
+interface AccountCookie {
     qrcodeKey: string,
     setQRCodeKey: (newValue: string) => void
 }
 
-export const accountStore = create<QRCodeType>()((set) => ({
+export const accountStore = create<AccountCookie>()((set) => ({
     qrcodeKey: "",
     setQRCodeKey: (newValue: string) => set(() => ({ qrcodeKey: newValue })),
 })) 
