@@ -18,8 +18,8 @@ const Sidebar: React.FC = () => {
             <div
               key={item.id}
               className={`flex justify-center rounded-2xl w-12 h-12 cursor-pointer transition-all duration-300 ${isActive
-                  ? "bg-gradient-to-b from-secondary to-primary"
-                  : "hover:bg-hover-primary hover:scale-110"
+                ? "bg-gradient-to-b from-secondary to-primary"
+                : "hover:bg-hover-primary hover:scale-110"
                 }`}
               onClick={() => handleItemClick(item.path)}
             >

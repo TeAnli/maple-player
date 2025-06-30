@@ -102,10 +102,28 @@ pub struct FolderData {
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct FolderItem {
     pub id: i32,
+    pub fid: i32,
     pub mid: i32,
     pub attr: i32,
     pub title: String,
     pub media_count: i32,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct FolderInfoResponse {
+    pub code: i32,
+    pub message: String,
+    pub data: FolderInfo,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct FolderInfo {
+    pub id: i32,
+    pub fid: i32,
+    pub mid: i32,
+    pub attr: i32,
+    pub title: String,
+    pub media_count: i32,
+    pub cover: String,
+    pub intro: String,
 }
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct CreateFolderResponse {
