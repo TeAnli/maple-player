@@ -12,7 +12,7 @@ pub async fn search_bvid_info(
     bvid: String,
 ) -> Result<data::VideoData, String> {
     let api_url = format!("{}?bvid={}", urls::SEARCH_BVID_INFO, bvid);
-    let video_info: data::VideoInfo = http::send_get_request(state, api_url).await?;
+    let video_info: data::VideoResponse = http::send_get_request(state, api_url).await?;
     Ok(video_info.data)
 }
 

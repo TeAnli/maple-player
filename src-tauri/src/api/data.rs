@@ -1,10 +1,19 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct VideoInfo {
+pub struct GenericResponse<T> {
     pub code: i32,
-    pub data: VideoData,
+    pub message: String,
+    pub data: T,
 }
+pub type VideoResponse = GenericResponse<VideoData>;
+pub type PlaylistResponse = GenericResponse<Vec<PlaylistItem>>;
+pub type ScanResponse = GenericResponse<ScanData>;
+pub type FolderResponse = GenericResponse<FolderData>;
+pub type FolderInfoResponse = GenericResponse<FolderInfo>;
+pub type CreateFolderResponse = GenericResponse<FolderItem>;
+pub type UserResponse = GenericResponse<UserData>;
+pub type LoginResponse = GenericResponse<LoginData>;
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct VideoData {
@@ -32,17 +41,6 @@ pub struct VideoStat {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct PlaylistResponse {
-    code: i32,
-    data: PlaylistData,
-}
-
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct PlaylistData {
-    data: Vec<PlaylistItem>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistItem {
     uid: i64,
     uname: String,
@@ -65,19 +63,9 @@ pub struct PlaylistStatistic {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct LoginResponse {
-    data: LoginData,
-}
-#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct LoginData {
     url: String,
     qrcode_key: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct ScanResponse {
-    pub code: i32,
-    pub data: ScanData,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
@@ -85,21 +73,15 @@ pub struct ScanData {
     pub refresh_token: String,
     pub timestamp: i64,
     pub code: i32,
-    pub message: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct FolderResponse {
-    pub code: i32,
-    pub message: String,
-    pub data: FolderData,
-}
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct FolderData {
     pub count: i32,
     pub list: Vec<FolderItem>,
 }
-#[derive(Serialize, Deserialize, Debug, Default)]
+
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct FolderItem {
     pub id: i32,
     pub fid: i32,
@@ -108,12 +90,7 @@ pub struct FolderItem {
     pub title: String,
     pub media_count: i32,
 }
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct FolderInfoResponse {
-    pub code: i32,
-    pub message: String,
-    pub data: FolderInfo,
-}
+
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct FolderInfo {
     pub id: i32,
@@ -125,16 +102,7 @@ pub struct FolderInfo {
     pub cover: String,
     pub intro: String,
 }
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct CreateFolderResponse {
-    pub code: i32,
-    pub data: FolderItem,
-}
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct UserResponse {
-    pub code: i32,
-    pub data: UserData,
-}
+
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct UserData {
     pub mid: i32,
