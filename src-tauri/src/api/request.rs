@@ -29,11 +29,13 @@ pub async fn scan_check(state: State<'_, AppState>, qrcode_key: String) -> Resul
     Ok(scan_info.data.code)
 }
 #[tauri::command]
-pub async fn get_all_folder(state: State<'_, AppState>, uid: i64) -> Result<(), String> {
+pub async fn get_all_folder(
+    state: State<'_, AppState>,
+    uid: i64,
+) -> Result<data::FolderResponse, String> {
     let api_url = format!("{}?up_mid={}", urls::GET_ALL_FOLDER_URL, uid);
-    let info: data::FolderResponse = http::send_get_request(state, api_url).await?;
-    println!("{:#?}", info);
-    Ok(())
+    let folder_info: data::FolderResponse = http::send_get_request(state, api_url).await?;
+    Ok(folder_info)
 }
 
 #[tauri::command]

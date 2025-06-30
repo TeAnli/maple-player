@@ -1,8 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useRef, useState } from "react";
-import { getCurrentWindow } from "@tauri-apps/api/window";
-
+import { emit } from '@tauri-apps/api/event';
 interface Response {
   data: Data;
 }
@@ -10,10 +9,13 @@ interface Data {
   url: string;
   qrcode_key: string;
 }
-
+interface UserData {
+  mid: number,
+}
 export const QRCodePage: React.FC = () => {
   const [url, setUrl] = useState("");
-  const [isLogin, setLogin] = useState(false);
+
+  const [success, setSuccess] = useState(false)
 
   const isMounted = useRef(true);
 
@@ -29,14 +31,11 @@ export const QRCodePage: React.FC = () => {
         if (status === 0) {
           console.log("成功识别");
           if (isMounted.current) {
-            setLogin(true);
+            const data = await invoke("get_user_data") as UserData;
+            await emit("login", { data: data })
+            setSuccess(true)
             console.log("成功");
-            await invoke("get_all_folder", {
-              uid: 440078311
-            })
-
-            let window = getCurrentWindow();
-            window.close()
+            return;
           }
           return;
         } else {
@@ -45,7 +44,6 @@ export const QRCodePage: React.FC = () => {
       } catch (error) {
         console.warn("检测失败:", error);
       }
-
       // 等待间隔后继续检测
       await new Promise((resolve) => setTimeout(resolve, INTERVAL));
     }
@@ -54,10 +52,7 @@ export const QRCodePage: React.FC = () => {
     const fetchData = async () => {
       let response: Response = await invoke("login");
       setUrl(response.data.url);
-      checkQRCodeState(response.data.qrcode_key);
-      await invoke("get_all_folder", {
-        uid: 440078311
-      })
+      await checkQRCodeState(response.data.qrcode_key);
     };
     fetchData();
     return () => {
@@ -69,8 +64,9 @@ export const QRCodePage: React.FC = () => {
     <main className="space-y-2 h-screen w-full flex flex-col justify-center items-center">
       {url !== "" && <QRCodeSVG size={256} value={url}></QRCodeSVG>}
       <h1 className="truncate font-bold text-2xl">扫描二维码进行登录</h1>
-      {isLogin && (
+      {success && (
         <p className="truncate font-bold text-xl text-green-600">登陆成功</p>
+
       )}
     </main>
   );
