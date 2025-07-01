@@ -4,9 +4,13 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 interface AccountInfo {
   isLogin: boolean;
-  uid: number | null;
+  mid: number | null;
+  uname: string;
+  face: string;
   setLoginState: (isLogin: boolean) => void;
   setUID: (uid: number) => void;
+  setName: (name: string) => void;
+  setHeader: (url: string) => void;
 }
 
 export const useAccountStore = create<AccountInfo>()(
@@ -14,18 +18,27 @@ export const useAccountStore = create<AccountInfo>()(
     (set, get) => {
       const initializeEventListeners = async () => {
         await listen("login", (event) => {
-          const data = event.payload as { mid: number };
+          const data = event.payload as {
+            mid: number;
+            uname: string;
+            face: string;
+          };
           if (data) {
-            set(() => ({ isLogin: true, uid: 440078311 }));
+            console.log(data);
+            set(() => ({ ...data, isLogin: true }));
           }
         });
       };
       initializeEventListeners();
       return {
         isLogin: false,
-        uid: null,
+        mid: null,
+        uname: "",
+        face: "",
         setLoginState: (isLogin: boolean) => set(() => ({ isLogin: isLogin })),
-        setUID: (uid: number) => set(() => ({ uid: uid })),
+        setUID: (uid: number) => set(() => ({ mid: uid })),
+        setName: (name: string) => set(() => ({ uname: name })),
+        setHeader: (url: string) => set(() => ({ face: url })),
       };
     },
     {
