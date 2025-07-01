@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Playlist from "../../components/Playlist";
 import { invoke } from "@tauri-apps/api/core";
-import { useSearchStore } from "../../store/search_store";
+import { useSearchStore } from "../../utils/store/search_store";
 
 interface VideoData {
   bvid: string,

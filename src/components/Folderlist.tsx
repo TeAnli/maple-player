@@ -1,9 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useEffect, useState } from "react";
-import { useAccountStore } from "../store/account_store";
+import { useEffect } from "react";
+import { useAccountStore } from "../utils/store/account_store";
 import Playlist from "./Playlist";
-import { PlaylistItem, useFolderStore } from "../store/folder_store";
-
+import { PlaylistItem, useFolderStore } from "../utils/store/folder_store";
 
 const Folderlist: React.FC = () => {
     const uname = useAccountStore((state) => state.uname)
@@ -21,7 +20,6 @@ const Folderlist: React.FC = () => {
         }
         fetchData()
     }, [])
-
     return (
         <div className="w-80 h-full border border-gray-200/60 overflow-auto rounded-lg bg-white/5 drop-shadow-md">
             <div className="flex flex-col gap-4 p-4">

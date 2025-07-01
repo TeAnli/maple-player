@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { listen } from "@tauri-apps/api/event";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface PlaylistItem {

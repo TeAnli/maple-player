@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router";
-import { routes } from "../router/routes";
+import { routes } from "../utils/router/routes";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();

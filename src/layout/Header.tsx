@@ -9,8 +9,8 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { invoke } from "@tauri-apps/api/core";
 import { useNavigate } from "react-router";
-import { useSearchStore } from "../store/search_store";
-import { useAccountStore } from "../store/account_store";
+import { useSearchStore } from "../utils/store/search_store";
+import { useAccountStore } from "../utils/store/account_store";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();

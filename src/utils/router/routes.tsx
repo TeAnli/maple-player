@@ -1,17 +1,17 @@
 import { createBrowserRouter } from "react-router";
 
-import Home from "../pages/views/Home";
-import Download from "../pages/views/Download";
-import Options from "../pages/views/Options";
-import User from "../pages/views/User";
-import Layout from "../layout/Layout";
+import Home from "../../pages/views/Home";
+import Download from "../../pages/views/Download";
+import Options from "../../pages/views/Options";
+import User from "../../pages/views/User";
+import Layout from "../../layout/Layout";
 
-import HomeIcon from "../assets/Home.svg";
-import SendIcon from "../assets/Send.svg";
-import DownloadIcon from "../assets/Download.svg";
-import OptionsIcon from "../assets/Options.svg";
-import QRCodePage from "../pages/window/QRCodeWindow";
-import Search from "../pages/views/Search";
+import HomeIcon from "../../assets/Home.svg";
+import SendIcon from "../../assets/Send.svg";
+import DownloadIcon from "../../assets/Download.svg";
+import OptionsIcon from "../../assets/Options.svg";
+import QRCodePage from "../../pages/window/QRCodeWindow";
+import Search from "../../pages/views/Search";
 
 
 //the Layout component control the other page component

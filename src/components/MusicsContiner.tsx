@@ -1,4 +1,4 @@
-import { useFolderStore } from "../store/folder_store";
+import { useFolderStore } from "../utils/store/folder_store";
 import MusicCard from "./MusicCard";
 
 const MusicContiner: React.FC = () => {
