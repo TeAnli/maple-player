@@ -22,12 +22,17 @@ export interface PlaylistItem {
 
 interface FolderInfo {
   folderList: Array<PlaylistItem>;
+  currentFolder: PlaylistItem | null;
+  setCurrentFolder: (item: PlaylistItem) => void;
   setFolderList: (list: Array<PlaylistItem>) => void;
 }
 
 export const useFolderStore = create<FolderInfo>()(
   persist(
     (set, get) => ({
+      currentFolder: null,
+      setCurrentFolder: (item: PlaylistItem) =>
+        set(() => ({ currentFolder: item })),
       folderList: [],
       setFolderList: (list: Array<PlaylistItem>) =>
         set(() => ({ folderList: list })),

@@ -5,15 +5,16 @@ export interface PlaylistProps {
   author: string;
   cover: string;
   type?: "search" | "default"
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
 }
 
 const Playlist: React.FC<PlaylistProps> = (
   {
-    name, author, cover, type = "default"
+    name, author, cover, type = "default", onClick
   }
 ) => {
   return (
-    <div className={`group relative ${type === "search" ? "h-36" : "w-full h-24"} rounded-xl hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer`}>
+    <div onClick={onClick} className={`group relative ${type === "search" ? "h-36" : "w-full h-24"} rounded-xl hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer`}>
       <div className="relative flex items-center h-full p-4">
         <div className="relative mr-4 flex-shrink-0">
           <img
