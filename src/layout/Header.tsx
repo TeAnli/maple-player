@@ -46,8 +46,9 @@ const Header: React.FC = () => {
           }}>搜索</Button>
         </div>
         <header className="flex items-center">
-          <img className="rounded-full" src={header} width={36} height={36}></img>
-          {!isLogin && <Button onClick={async () => {
+
+          {isLogin ? <img className="rounded-full" src={header} width={64} height={64}></img> : <Button type="circle" onClick={async () => {
+
             await invoke("create_window", { title: "login", url: "/login" });
           }}>登录</Button>}
         </header>
