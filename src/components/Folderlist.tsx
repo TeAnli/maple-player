@@ -13,10 +13,9 @@ interface FolderItem {
 }
 
 const Folderlist: React.FC = () => {
-    const uid = useAccountStore((state) => state.uid)
+    const uid = useAccountStore((state) => state.mid)
     const [folderList, setFolderList] = useState<Array<FolderItem>>([])
     useEffect(() => {
-        console.log(uid)
         const fetchData = async () => {
             if (uid != null) {
                 const data = await invoke("get_all_folder", { uid: uid }) as Array<FolderItem>

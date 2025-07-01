@@ -15,25 +15,23 @@ const Button: React.FC<ButtonProps> = ({
   className = "",
   type = "button",
 }) => {
-  const baseClasses = `
-    inline-flex items-center justify-center px-4 py-3 text-sm font-medium border border-gray-200/60 hover:border-gray-300/80
-    transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed active:shadow-lg
-    ${type === "button" ? "rounded-md" : "rounded-full size-8 "}
-  `;
+  const baseStyles = "inline-flex items-center justify-center px-4 py-3 text-sm font-medium border border-gray-200/60 hover:border-gray-300/80 transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed active:shadow-lg";
 
-  const classes = `
-    ${baseClasses}
-    ${className}
-  `
-    .trim()
-    .replace(/\s+/g, " ");
+  const typeStyles: Record<NonNullable<ButtonProps["type"]>, string> = {
+    button: "rounded-md",
+    circle: "rounded-full size-8",
+  };
+
+  const combinedClasses = [baseStyles, typeStyles[type], className]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={classes}
+      className={combinedClasses}
     >
       {children}
     </button>
