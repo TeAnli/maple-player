@@ -10,7 +10,7 @@ import HomeIcon from "../assets/Home.svg";
 import SendIcon from "../assets/Send.svg";
 import DownloadIcon from "../assets/Download.svg";
 import OptionsIcon from "../assets/Options.svg";
-import { QRCodePage } from "../pages/views/QRCodePage";
+import QRCodePage from "../pages/window/QRCodeWindow";
 import Search from "../pages/views/Search";
 
 
