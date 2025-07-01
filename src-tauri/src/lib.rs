@@ -27,7 +27,8 @@ pub fn run() {
             request::search_bvid_info,
             request::scan_check,
             request::get_all_folder,
-            request::get_user_data
+            request::get_user_data,
+            request::get_cid_by_bvid
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

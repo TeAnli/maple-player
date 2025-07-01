@@ -12,6 +12,7 @@ pub type ScanResponse = GenericResponse<ScanData>;
 pub type FolderResponse = GenericResponse<FolderData>;
 pub type UserResponse = GenericResponse<UserData>;
 pub type LoginResponse = GenericResponse<LoginData>;
+pub type CidResponse = GenericResponse<CidData>;
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct VideoData {
@@ -107,4 +108,8 @@ pub struct UserData {
     pub mid: i64,
     pub face: String,
     pub uname: String,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct CidData {
+    pub cid: i64,
 }

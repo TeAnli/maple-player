@@ -1,5 +1,4 @@
 //登陆API
-
 //无参数 GET请求
 pub const QRCODE_GENERATE_URL: &str =
     "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
@@ -7,7 +6,6 @@ pub const QRCODE_GENERATE_URL: &str =
 pub const QRCODE_POLL_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/poll";
 
 //用户信息API
-
 //获取用户元数据
 pub const GET_USER_DATA_URL: &str = "https://api.bilibili.com/x/web-interface/nav";
 //需要用户up_mip参数  GET请求
@@ -22,3 +20,5 @@ pub const DELETE_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/de
 //搜索API
 
 pub const SEARCH_BVID_INFO: &str = "https://api.bilibili.com/x/web-interface/view";
+//视频API
+pub const GET_VEDIO_INFO: &str = "https://api.bilibili.com/x/web-interface/view";

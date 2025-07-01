@@ -16,6 +16,14 @@ pub async fn search_bvid_info(
     Ok(video_info.data)
 }
 
+// remember to call `.manage(MyState::default())`
+#[tauri::command]
+pub async fn get_cid_by_bvid(state: State<'_, AppState>, bvid: String) -> Result<i64, String> {
+    let api_url = format!("{}?bvid={}", urls::GET_VEDIO_INFO, bvid);
+    let vedio: data::CidResponse = http::send_get_request(state, api_url).await?;
+    Ok(vedio.data.cid)
+}
+
 #[tauri::command]
 pub async fn login(state: State<'_, AppState>) -> Result<data::LoginResponse, String> {
     let api_url = String::from(urls::QRCODE_GENERATE_URL);

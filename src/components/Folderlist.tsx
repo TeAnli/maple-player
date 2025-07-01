@@ -6,10 +6,12 @@ import { PlaylistItem, useFolderStore } from "../store/folder_store";
 
 
 const Folderlist: React.FC = () => {
+    const uname = useAccountStore((state) => state.uname)
     const uid = useAccountStore((state) => state.mid)
     const folderList = useFolderStore((state) => state.folderList);
     const setFolderList = useFolderStore((state) => state.setFolderList);
     const setCurrentFolder = useFolderStore((state) => state.setCurrentFolder);
+
     useEffect(() => {
         const fetchData = async () => {
             if (uid != null) {
@@ -24,7 +26,9 @@ const Folderlist: React.FC = () => {
         <div className="w-80 h-full border border-gray-200/60 overflow-auto rounded-lg bg-white/5 drop-shadow-md">
             <div className="flex flex-col gap-4 p-4">
                 {folderList.map((item) => (
-                    <Playlist onClick={() => { setCurrentFolder(item) }} key={item.info.id} name={item.info.title} author={item.info.mid.toString()} cover={item.info.cover} />
+                    <Playlist data={item} onClick={() => { setCurrentFolder(item) }} key={item.info.id} name={item.info.title} author={uname} cover={item.info.cover} />
+
+
                 ))}
             </div>
         </div>
