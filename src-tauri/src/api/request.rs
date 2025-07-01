@@ -32,28 +32,28 @@ pub async fn scan_check(state: State<'_, AppState>, qrcode_key: String) -> Resul
 pub async fn get_all_folder(
     state: State<'_, AppState>,
     uid: i64,
-) -> Result<Vec<data::FolderInfo>, String> {
+) -> Result<Vec<data::PlaylistData>, String> {
     let api_url = format!("{}?up_mid={}", urls::GET_ALL_FOLDER_URL, uid);
     let folder_info: data::FolderResponse = http::send_get_request(state.clone(), api_url).await?;
-    let mut folder_list: Vec<data::FolderInfo> = Vec::new();
+    let mut folder_list: Vec<data::PlaylistData> = Vec::new();
     for folder in folder_info.data.list {
-        let folder_info = get_folder_info(state.clone(), folder.id).await?;
-        folder_list.push(folder_info);
+        let playlist = get_folder_info(state.clone(), folder.id).await?;
+        folder_list.push(playlist);
     }
     Ok(folder_list)
 }
 pub async fn get_folder_info(
     state: State<'_, AppState>,
     folder_id: i64,
-) -> Result<data::FolderInfo, String> {
+) -> Result<data::PlaylistData, String> {
     let api_url = format!(
         "{}?media_id={}&ps={}",
         urls::GET_FOLDER_INFO_URL,
         folder_id,
         20
     );
-    let folder_info: data::FolderInfoResponse = http::send_get_request(state, api_url).await?;
-    Ok(folder_info.data)
+    let playlist_info: data::PlaylistResponse = http::send_get_request(state, api_url).await?;
+    Ok(playlist_info.data)
 }
 
 #[tauri::command]

@@ -7,7 +7,7 @@ pub struct GenericResponse<T> {
     pub data: T,
 }
 pub type VideoResponse = GenericResponse<VideoData>;
-pub type PlaylistResponse = GenericResponse<Vec<PlaylistItem>>;
+pub type PlaylistResponse = GenericResponse<PlaylistData>;
 pub type ScanResponse = GenericResponse<ScanData>;
 pub type FolderResponse = GenericResponse<FolderData>;
 pub type FolderInfoResponse = GenericResponse<FolderInfo>;
@@ -40,27 +40,25 @@ pub struct VideoStat {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct PlaylistItem {
-    uid: i64,
-    uname: String,
+pub struct PlaylistData {
+    info: PlaylistInfo,
+    medias: Vec<PlaylistMeida>,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct PlaylistInfo {
+    id: i64,
     title: String,
     cover: String,
     intro: String,
-    ctime: i64,
-    curtime: i64,
-    statistic: PlaylistStatistic,
-    snum: i64,
+    media_count: i64,
 }
-
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct PlaylistStatistic {
-    sid: i64,
-    play: i64,
-    collect: i64,
-    comment: i64,
-    share: i64,
+pub struct PlaylistMeida {
+    id: i64,
+    title: String,
+    cover: String,
+    duration: i64,
 }
-
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct LoginData {
     url: String,
