@@ -27,8 +27,6 @@ const Folderlist: React.FC = () => {
             <div className="flex flex-col gap-4 p-4">
                 {folderList.map((item) => (
                     <Playlist data={item} onClick={() => { setCurrentFolder(item) }} key={item.info.id} name={item.info.title} author={uname} cover={item.info.cover} />
-
-
                 ))}
             </div>
         </div>

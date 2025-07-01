@@ -51,10 +51,12 @@ const Playlist: React.FC<PlaylistProps> = (
         {
           type === "default" &&
           <div className="absolute right-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
-            <button onClick={(event) => {
-              data.medias.forEach(async (item) => {
-                let cid = await invoke("get_cid_by_bvid", { bvid: item.bvid })
-              })
+            <button onClick={async (event) => {
+              console.log(data)
+              let cid = await invoke("get_cid_by_bvid", { bvid: data.medias[0].bvid })
+              console.log(cid);
+              let video = await invoke("download_video", { cid: cid, bvid: data.medias[0].bvid })
+              console.log(video);
             }} className="w-8 h-8 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110">
 
               <span>
