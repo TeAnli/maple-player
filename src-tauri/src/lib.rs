@@ -28,7 +28,8 @@ pub fn run() {
             request::scan_check,
             request::get_all_folder,
             request::get_user_data,
-            request::get_cid_by_bvid
+            request::get_cid_by_bvid,
+            request::download_video,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,8 +1,12 @@
+use std::io::Read;
+
 use crate::util::http;
 use crate::{
     api::{data, urls},
     AppState,
 };
+use reqwest::header;
+use serde_json::Value;
 use tauri::State;
 
 // By the bvid search Bilibili video info
@@ -76,4 +80,28 @@ pub async fn get_user_data(state: State<'_, AppState>) -> Result<data::UserData,
     let api_url = format!("{}", urls::GET_USER_DATA_URL);
     let info: data::UserResponse = http::send_get_request(state, api_url).await?;
     Ok(info.data)
+}
+#[tauri::command]
+pub async fn download_video(
+    state: State<'_, AppState>,
+    cid: i64,
+    bvid: String,
+) -> Result<String, String> {
+    let api_url = format!(
+        "{}?fnval={}&bvid={}&cid={}",
+        urls::GET_VEDIO_DOWNLOAD_URL,
+        4048,
+        bvid,
+        cid
+    );
+    let client = state.http_client.lock().await.client.clone();
+
+    let response = client.get(api_url)
+        .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        .header(header::REFERER, "https://www.bilibili.com/")
+        .send()
+        .await.map_err(|e| e.to_string())?;
+    let json: Value = response.json().await.map_err(|e| e.to_string())?;
+    let audio_url = json["data"]["dash"]["audio"][0]["base_url"].as_str().unwrap();
+    Ok(String::from(audio_url))
 }

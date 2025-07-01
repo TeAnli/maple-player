@@ -22,3 +22,4 @@ pub const DELETE_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/de
 pub const SEARCH_BVID_INFO: &str = "https://api.bilibili.com/x/web-interface/view";
 //视频API
 pub const GET_VEDIO_INFO: &str = "https://api.bilibili.com/x/web-interface/view";
+pub const GET_VEDIO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/wbi/playurl";

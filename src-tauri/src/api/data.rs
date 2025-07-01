@@ -58,6 +58,7 @@ pub struct PlaylistInfo {
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistMeida {
     id: i64,
+    bvid: String,
     title: String,
     cover: String,
     duration: i64,

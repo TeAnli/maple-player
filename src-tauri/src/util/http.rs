@@ -1,11 +1,10 @@
-use std::sync::Arc;
-use reqwest::{cookie::Jar, Client};
-use tauri::State;
 use crate::AppState;
-
+use reqwest::{cookie::Jar, header, Client};
+use std::sync::Arc;
+use tauri::State;
 
 pub struct HttpClient {
-    client: Client,
+    pub client: Client,
 }
 impl HttpClient {
     pub fn new() -> Self {
@@ -22,8 +21,14 @@ pub async fn send_get_request<T>(state: State<'_, AppState>, url: String) -> Res
 where
     T: serde::de::DeserializeOwned,
 {
-    let response = state.http_client.lock().await.client
+    let response = state
+        .http_client
+        .lock()
+        .await
+        .client
         .get(url)
+        .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        .header(header::REFERER, "https://www.bilibili.com/")
         .send()
         .await
         .map_err(|e| e.to_string())?;
