@@ -2,23 +2,17 @@ import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState } from "react";
 import { useAccountStore } from "../store/account_store";
 import Playlist from "./Playlist";
+import { PlaylistItem, useFolderStore } from "../store/folder_store";
 
-interface FolderItem {
-    id: number,
-    mid: number,
-    attr: number,
-    title: string,
-    media_count: number,
-    cover: string
-}
 
 const Folderlist: React.FC = () => {
     const uid = useAccountStore((state) => state.mid)
-    const [folderList, setFolderList] = useState<Array<FolderItem>>([])
+    const folderList = useFolderStore((state) => state.folderList);
+    const setFolderList = useFolderStore((state) => state.setFolderList);
     useEffect(() => {
         const fetchData = async () => {
             if (uid != null) {
-                const data = await invoke("get_all_folder", { uid: uid }) as Array<FolderItem>
+                const data = await invoke("get_all_folder", { uid: uid }) as Array<PlaylistItem>
                 setFolderList(data)
             }
 
@@ -30,7 +24,7 @@ const Folderlist: React.FC = () => {
         <div className="w-80 h-full border border-gray-200/60 overflow-auto rounded-lg bg-white/5 drop-shadow-md">
             <div className="flex flex-col gap-4 p-4">
                 {folderList.map((item) => (
-                    <Playlist key={item.id} name={item.title} author={item.mid.toString()} cover={item.cover} />
+                    <Playlist key={item.info.id} name={item.info.title} author={item.info.mid.toString()} cover={item.info.cover} />
                 ))}
             </div>
         </div>

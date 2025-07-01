@@ -10,7 +10,6 @@ pub type VideoResponse = GenericResponse<VideoData>;
 pub type PlaylistResponse = GenericResponse<PlaylistData>;
 pub type ScanResponse = GenericResponse<ScanData>;
 pub type FolderResponse = GenericResponse<FolderData>;
-pub type FolderInfoResponse = GenericResponse<FolderInfo>;
 pub type UserResponse = GenericResponse<UserData>;
 pub type LoginResponse = GenericResponse<LoginData>;
 
@@ -47,6 +46,9 @@ pub struct PlaylistData {
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistInfo {
     id: i64,
+    fid: i64,
+    mid: i64,
+    attr: i64,
     title: String,
     cover: String,
     intro: String,
