@@ -23,7 +23,7 @@ pub async fn login(state: State<'_, AppState>) -> Result<data::LoginResponse, St
     Ok(login_info)
 }
 #[tauri::command]
-pub async fn scan_check(state: State<'_, AppState>, qrcode_key: String) -> Result<i32, String> {
+pub async fn scan_check(state: State<'_, AppState>, qrcode_key: String) -> Result<i64, String> {
     let api_url = format!("{}?qrcode_key={}", urls::QRCODE_POLL_URL, qrcode_key);
     let scan_info: data::ScanResponse = http::send_get_request(state, api_url).await?;
     Ok(scan_info.data.code)
@@ -44,9 +44,14 @@ pub async fn get_all_folder(
 }
 pub async fn get_folder_info(
     state: State<'_, AppState>,
-    folder_id: i32,
+    folder_id: i64,
 ) -> Result<data::FolderInfo, String> {
-    let api_url = format!("{}?media_id={}", urls::GET_FOLDER_INFO_URL, folder_id);
+    let api_url = format!(
+        "{}?media_id={}&ps={}",
+        urls::GET_FOLDER_INFO_URL,
+        folder_id,
+        20
+    );
     let folder_info: data::FolderInfoResponse = http::send_get_request(state, api_url).await?;
     Ok(folder_info.data)
 }

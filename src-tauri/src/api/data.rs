@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct GenericResponse<T> {
-    pub code: i32,
+    pub code: i64,
     pub message: String,
     pub data: T,
 }
@@ -11,7 +11,6 @@ pub type PlaylistResponse = GenericResponse<Vec<PlaylistItem>>;
 pub type ScanResponse = GenericResponse<ScanData>;
 pub type FolderResponse = GenericResponse<FolderData>;
 pub type FolderInfoResponse = GenericResponse<FolderInfo>;
-pub type CreateFolderResponse = GenericResponse<FolderItem>;
 pub type UserResponse = GenericResponse<UserData>;
 pub type LoginResponse = GenericResponse<LoginData>;
 
@@ -72,40 +71,40 @@ pub struct LoginData {
 pub struct ScanData {
     pub refresh_token: String,
     pub timestamp: i64,
-    pub code: i32,
+    pub code: i64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct FolderData {
-    pub count: i32,
+    pub count: i64,
     pub list: Vec<FolderItem>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct FolderItem {
-    pub id: i32,
-    pub fid: i32,
-    pub mid: i32,
-    pub attr: i32,
+    pub id: i64,
+    pub fid: i64,
+    pub mid: i64,
+    pub attr: i64,
     pub title: String,
-    pub media_count: i32,
+    pub media_count: i64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct FolderInfo {
-    pub id: i32,
-    pub fid: i32,
-    pub mid: i32,
-    pub attr: i32,
+    pub id: i64,
+    pub fid: i64,
+    pub mid: i64,
+    pub attr: i64,
     pub title: String,
-    pub media_count: i32,
+    pub media_count: i64,
     pub cover: String,
     pub intro: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct UserData {
-    pub mid: i32,
+    pub mid: i64,
     pub face: String,
     pub uname: String,
 }
