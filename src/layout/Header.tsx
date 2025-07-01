@@ -27,6 +27,10 @@ const Header: React.FC = () => {
     let window = getCurrentWindow();
     window.close();
   };
+
+  const login = async () => {
+    await invoke("create_window", { title: "login", url: "/login" });
+  }
   return (
     <div className="fixed w-full bg-white">
       <div
@@ -46,11 +50,9 @@ const Header: React.FC = () => {
           }}>搜索</Button>
         </div>
         <header className="flex items-center">
-
-          {isLogin ? <img className="rounded-full" src={header} width={64} height={64}></img> : <Button type="circle" onClick={async () => {
-
-            await invoke("create_window", { title: "login", url: "/login" });
-          }}>登录</Button>}
+          {isLogin ?
+            <img className="rounded-full" src={header} width={64} height={64}></img> :
+            <Button type="circle" onClick={login}>登录</Button>}
         </header>
         <div onClick={closeWindow} className="hover:cursor-pointer mr-32">
           <img src={Cross} width={20} height={20}></img>

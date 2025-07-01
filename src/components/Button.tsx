@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyles = "inline-flex items-center justify-center text-sm font-medium border border-gray-200/60 hover:border-gray-300/80 transition-all duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed active:shadow-lg";
 
   const typeStyles: Record<NonNullable<ButtonProps["type"]>, string> = {
-    button: "rounded-md",
+    button: "rounded-md px-4 py-3",
     circle: "rounded-full size-16",
   };
 
