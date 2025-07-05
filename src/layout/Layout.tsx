@@ -1,20 +1,21 @@
 import { Outlet } from "react-router";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { Box, Flex } from "@radix-ui/themes";
 
 const Layout: React.FC = () => {
   return (
-    <div className="w-full h-screen overflow-hidden">
+    <Box width="100%" height="100vh" overflow="hidden">
       <Sidebar />
-      <div className="flex flex-col h-full ml-[80px]">
+      <Flex height="100%" direction="column" ml="80px">
         <Header />
-        <div className="flex h-full overflow-hidden mt-24">
-          <div className="w-full h-full overflow-y-auto">
+        <Flex height="100%" overflow="hidden" className="mt-24">
+          <Box width="100%" height="100%" overflowY="auto">
             <Outlet />
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Flex>
+      </Flex>
+    </Box >
   );
 };
 

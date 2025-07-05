@@ -15,22 +15,14 @@ import { useAccountStore } from "../utils/store/account_store";
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
-  const header = useAccountStore((state) => state.face);
-  const isLogin = useAccountStore((state) => state.isLogin);
   const setSearchContent = useSearchStore((state) => state.setSearchContent)
-
   const handleInput = (value: string) => {
     setContent(value);
   };
-
   const closeWindow = () => {
     let window = getCurrentWindow();
     window.close();
   };
-
-  const login = async () => {
-    await invoke("create_window", { title: "login", url: "/login" });
-  }
   return (
     <div className="fixed w-full bg-white">
       <div
@@ -49,11 +41,6 @@ const Header: React.FC = () => {
             navigate("/search")
           }}>搜索</Button>
         </div>
-        <header className="flex items-center">
-          {isLogin ?
-            <img className="rounded-full" src={header} width={64} height={64}></img> :
-            <Button type="circle" onClick={login}>登录</Button>}
-        </header>
         <div onClick={closeWindow} className="hover:cursor-pointer mr-32">
           <img src={Cross} width={20} height={20}></img>
         </div>

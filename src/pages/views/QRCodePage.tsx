@@ -1,8 +1,9 @@
 import { invoke } from "@tauri-apps/api/core";
 import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { emit } from '@tauri-apps/api/event';
-import { getCurrentWindow } from '@tauri-apps/api/window';
+import Button from "../../components/Button";
+import { useNavigate } from "react-router";
 
 // 类型定义
 interface QRCodeResponse {
@@ -24,6 +25,7 @@ const QRCODE_CONFIG = {
 };
 
 const QRCodePage: React.FC = () => {
+  const navigate = useNavigate();
   // 状态管理
   const [state, setState] = useState<{
     url: string;
@@ -58,7 +60,7 @@ const QRCodePage: React.FC = () => {
 
         // 关闭窗口
         setTimeout(() => {
-          getCurrentWindow().close();
+          navigate("/");
         }, 1000);
 
         checkInterval.current && window.clearInterval(checkInterval.current);
@@ -108,26 +110,25 @@ const QRCodePage: React.FC = () => {
 
   const render = () => {
     switch (state.status) {
-      case 'loading':
-        return <div className="text-center"><p>加载中...</p></div>;
       case 'error':
         return (
           <div className="text-center space-y-2">
             <p className="text-red-500 font-medium">{state.error}</p>
-            <button
+            <Button
               onClick={fetchQRCode}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
             >
               重试
-            </button>
+            </Button>
           </div>
         );
       case 'success':
         return <p className="truncate font-bold text-xl text-green-600">登录成功，正在跳转...</p>;
       default:
-        return state.url ? (
-          <QRCodeSVG size={256} value={state.url} />
-        ) : null;
+        return (
+          <Suspense fallback={<div className="size-256"></div>}>
+            <QRCodeSVG size={256} value={state.url} />
+          </Suspense>
+        )
     }
   };
 

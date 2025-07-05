@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Playlist from "../../components/Playlist";
 import { invoke } from "@tauri-apps/api/core";
 import { useSearchStore } from "../../utils/store/search_store";
+import { Flex } from "@radix-ui/themes";
 
 interface VideoData {
   bvid: string,
@@ -21,11 +22,11 @@ const Search: React.FC = () => {
     fetchData()
   }, [])
   return (
-    <div className="w-full h-full p-4 flex flex-col justify-center items-center">
+    <Flex justify="center" align="center" width="100%" height="100%" p="4" gap="4">
       <p className="truncate font-bold text-xl">搜索结果</p>
 
-      {data && <Playlist type="search" name={data.title} author={data.owner.name} cover={data.pic}></Playlist>}
-    </div>
+      {data && <Playlist type="search" name={data.title} cover={data.pic}></Playlist>} 
+    </Flex>
   );
 };
 

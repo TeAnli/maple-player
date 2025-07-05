@@ -1,13 +1,14 @@
 import React from "react";
 import Folderlist from "../../components/Folderlist";
 import MusicContiner from "../../components/MusicsContiner";
+import { Flex } from "@radix-ui/themes";
 
 const User: React.FC = () => {
     return (
-        <div className="flex w-full h-full overflow-hidden p-4 gap-4">
+        <Flex width="100%" height="100%" overflow="hidden" p="4" gap="4">
             <Folderlist />
             <MusicContiner />
-        </div>
+        </Flex >
     );
 };
 

@@ -1,7 +1,7 @@
 import { ChangeEvent, useRef, useState } from "react";
 export interface InputFieldProps {
   internalIcon?: string;
-  type?: "text" | "password";
+  type?: "text" | "password" | "file";
   placeholder?: string;
   onChange: (value: string) => void;
   disabled?: boolean;
@@ -27,7 +27,7 @@ const InputField: React.FC<InputFieldProps> = (props: InputFieldProps) => {
   return (
     <div className={`flex ${props.className}`}>
       <div
-        className={`relative flex items-center w-full h-12 bg-white/80 backdrop-blur-sm rounded-xl border transition-all duration-300 ${isFocused
+        className={`relative flex items-center w-full h-12 bg-white/80 backdrop-blur-sm rounded-md border transition-all duration-300 ${isFocused
           ? "shadow-lg"
           : "border-gray-200/60 hover:border-gray-300/80 hover:bg-white/90"
           }`}

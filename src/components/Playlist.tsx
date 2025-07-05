@@ -1,11 +1,11 @@
 import { invoke } from "@tauri-apps/api/core";
 import React from "react";
 import { PlaylistItem } from "../utils/store/folder_store";
+import { Box, Flex } from "@radix-ui/themes";
 
 export interface PlaylistProps {
   data?: PlaylistItem,
   name: string;
-  author: string;
   cover: string;
   type?: "search" | "default",
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
@@ -13,46 +13,37 @@ export interface PlaylistProps {
 
 const Playlist: React.FC<PlaylistProps> = (
   {
-    name, author, cover, type = "default", onClick, data
+    name, cover, type = "default", onClick, data
   }
 ) => {
 
   return (
-    <div onClick={onClick} className={`group relative ${type === "search" ? "h-36" : "w-full h-24"} rounded-xl hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer`}>
-      <div className="relative flex items-center h-full p-2">
+    <div onClick={onClick} className={`group relative ${type === "search" ? "h-36" : "w-full h-16"} rounded-xl hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer`}>
+      <Flex position="relative" align="center" p="2" height="full">
         <div className="relative mr-4 flex-shrink-0">
           <img
-            className={`object-cover w-16 h-16 rounded-lg shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}
+            className={`object-cover w-12 h-12 rounded-lg shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}
             src={cover}
           ></img>
         </div>
 
-        <div className="flex flex-col truncate">
-          <div className="mb-1">
+        <Flex direction="column" className="truncate">
+          <Box mb="1">
             <h3 className="text-lg font-bold text-gray-800 truncate group-hover:text-blue-600 transition-colors duration-300">
               {name}
             </h3>
-          </div>
-          <div className="flex items-center">
-            <div className="flex items-center">
-              <p className="text-sm font-medium text-gray-600 truncate">
-                <span className="inline-block mr-1">
-                  <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                  </svg>
-                </span>
-                {author}
-              </p>
-            </div>
-          </div>
-        </div>
+          </Box>
+        </Flex>
         {
           type === "default" &&
           <div className="absolute right-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
             <button onClick={async (event) => {
+              event.stopPropagation();
               if (!data) return
+
               let cid = await invoke("get_cid_by_bvid", { bvid: data.medias[0].bvid })
               let video = await invoke("download_video", { cid: cid, bvid: data.medias[0].bvid })
+              console.log(video)
             }} className="w-8 h-8 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110">
 
               <span>
@@ -79,8 +70,8 @@ const Playlist: React.FC<PlaylistProps> = (
           </div>
         }
 
-      </div>
-    </div>
+      </Flex>
+    </div >
   );
 };
 

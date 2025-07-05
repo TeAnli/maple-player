@@ -1,3 +1,4 @@
+use std::hash::RandomState;
 use std::io::Read;
 
 use crate::util::http;
@@ -102,6 +103,31 @@ pub async fn download_video(
         .send()
         .await.map_err(|e| e.to_string())?;
     let json: Value = response.json().await.map_err(|e| e.to_string())?;
-    let audio_url = json["data"]["dash"]["audio"][0]["base_url"].as_str().unwrap();
-    Ok(String::from(audio_url))
+    let audio_url = json["data"]["dash"]["audio"][0]["base_url"]
+        .as_str()
+        .unwrap();
+
+    // 创建下载目录
+    let data_dir = "D://";
+    let download_dir = format!("{}audio.m4s", data_dir);
+    std::fs::create_dir_all(&download_dir).unwrap();
+
+    // 生成唯一文件名
+    let timestamp = String::from("asdiajiojv");
+    let filename = format!("audio_{}.m4s", timestamp);
+    let file_path = format!("{}{}", download_dir, filename);
+
+    // 下载音频文件
+    let client = reqwest::Client::new();
+    let response = client.get(audio_url)
+        .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        .header(header::REFERER, "https://www.bilibili.com/")
+        .send()
+        .await.map_err(|e|e.to_string())?;
+
+    // 保存文件
+    let bytes = response.bytes().await.map_err(|e| e.to_string())?;
+    std::fs::write(&file_path, bytes).map_err(|e| e.to_string())?;
+
+    Ok(file_path)
 }

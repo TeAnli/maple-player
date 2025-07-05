@@ -10,7 +10,7 @@ import HomeIcon from "../../assets/Home.svg";
 import SendIcon from "../../assets/Send.svg";
 import DownloadIcon from "../../assets/Download.svg";
 import OptionsIcon from "../../assets/Options.svg";
-import QRCodePage from "../../pages/window/QRCodeWindow";
+import QRCodePage from "../../pages/views/QRCodePage";
 import Search from "../../pages/views/Search";
 
 
@@ -41,13 +41,13 @@ export const router = createBrowserRouter([
         path: "/user",
         element: <User />,
       },
-
+      {
+        path: "/login",
+        element: <QRCodePage />
+      },
     ],
   },
-  {
-    path: "/login",
-    element: <QRCodePage />
-  },
+
 
 ]);
 // the array provide routes' field for sidebar 
