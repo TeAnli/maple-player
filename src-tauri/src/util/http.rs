@@ -1,8 +1,24 @@
 use crate::AppState;
 use reqwest::{cookie::Jar, header, Client};
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use tauri::State;
-
+#[derive(Debug, Default, Serialize, Deserialize, Clone)]
+pub struct Progress {
+    pub total_size: u64,
+    pub current_size: u64,
+}
+impl Progress {
+    pub fn new(total_size: u64, current_size: u64) -> Self {
+        Self {
+            total_size,
+            current_size,
+        }
+    }
+    pub fn progress(&self) -> f64 {
+        self.current_size as f64 / self.total_size as f64
+    }
+}
 pub struct HttpClient {
     pub client: Client,
 }

@@ -1,15 +1,14 @@
-use std::hash::RandomState;
-use std::io::Read;
-
-use crate::util::http;
+use crate::util::http::{self, Progress};
 use crate::{
     api::{data, urls},
     AppState,
 };
+use futures_util::StreamExt;
 use reqwest::header;
 use serde_json::Value;
+use std::io::Write;
+use tauri::Emitter;
 use tauri::State;
-
 // By the bvid search Bilibili video info
 #[tauri::command]
 pub async fn search_bvid_info(
@@ -84,9 +83,10 @@ pub async fn get_user_data(state: State<'_, AppState>) -> Result<data::UserData,
 }
 #[tauri::command]
 pub async fn download_video(
-    state: State<'_, AppState>,
     cid: i64,
     bvid: String,
+    state: State<'_, AppState>,
+    window: tauri::Window,
 ) -> Result<String, String> {
     let api_url = format!(
         "{}?fnval={}&bvid={}&cid={}",
@@ -96,38 +96,55 @@ pub async fn download_video(
         cid
     );
     let client = state.http_client.lock().await.client.clone();
-
+    //获取下载资源
     let response = client.get(api_url)
         .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
         .header(header::REFERER, "https://www.bilibili.com/")
         .send()
         .await.map_err(|e| e.to_string())?;
+
     let json: Value = response.json().await.map_err(|e| e.to_string())?;
+    //获取文件下载路径
     let audio_url = json["data"]["dash"]["audio"][0]["base_url"]
         .as_str()
         .unwrap();
 
     // 创建下载目录
-    let data_dir = "D://";
-    let download_dir = format!("{}audio.m4s", data_dir);
+    let data_dir = "D://music//";
+    let download_dir = format!("{}", data_dir);
     std::fs::create_dir_all(&download_dir).unwrap();
 
     // 生成唯一文件名
-    let timestamp = String::from("asdiajiojv");
-    let filename = format!("audio_{}.m4s", timestamp);
+    let filename = format!("{}.m4s", bvid);
     let file_path = format!("{}{}", download_dir, filename);
 
     // 下载音频文件
-    let client = reqwest::Client::new();
     let response = client.get(audio_url)
         .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
         .header(header::REFERER, "https://www.bilibili.com/")
         .send()
         .await.map_err(|e|e.to_string())?;
+    //如果文件存在即下载
+    if response.status().is_success() {
+        //获取文件大小
+        let total_size = response.content_length().unwrap_or(0);
+        let mut current_size = 0_u64;
 
-    // 保存文件
-    let bytes = response.bytes().await.map_err(|e| e.to_string())?;
-    std::fs::write(&file_path, bytes).map_err(|e| e.to_string())?;
+        //获取文件字节流
+        let mut stream = response.bytes_stream();
+        //创建文件
+        let mut file = std::fs::File::create(&file_path).unwrap();
+        //开始下载操作
+        while let Some(chunk) = stream.next().await {
+            //获取字节大小
+            let chunk = chunk.unwrap();
 
+            file.write_all(&chunk).unwrap();
+            current_size += chunk.len() as u64;
+            window
+                .emit("download_progress", Progress::new(total_size, current_size))
+                .map_err(|e| e.to_string())?;
+        }
+    }
     Ok(file_path)
 }
