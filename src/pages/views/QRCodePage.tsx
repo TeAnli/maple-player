@@ -4,6 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { emit } from '@tauri-apps/api/event';
 import Button from "../../components/Button";
 import { useNavigate } from "react-router";
+import { useAccountStore } from "../../utils/store/account_store";
 
 // 类型定义
 interface QRCodeResponse {
@@ -36,7 +37,7 @@ const QRCodePage: React.FC = () => {
     status: 'loading',
     error: null
   });
-
+  const setData = useAccountStore((state) => state.setData);
   const checkInterval = useRef<number | null>(null);
   const retryCount = useRef(0);
   const qrcodeKey = useRef('');
@@ -55,7 +56,12 @@ const QRCodePage: React.FC = () => {
       if (status === 0) {
         // 登录成功
         const userData = await invoke<UserData>("get_user_data");
-        await emit("login", { ...userData });
+        setData({
+          isLogin: true,
+          mid: userData.mid,
+          uname: userData.uname,
+          face: userData.face,
+        })
         setState(prev => ({ ...prev, status: 'success' }));
 
         // 关闭窗口
