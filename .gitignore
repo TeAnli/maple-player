@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 
 api.txt
+todo.md
 src/api

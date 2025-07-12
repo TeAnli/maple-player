@@ -1,25 +1,40 @@
-//登陆API
-//无参数 GET请求
-pub const QRCODE_GENERATE_URL: &str =
-    "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
-//需要qrcode_key参数 GET请求
+/**
+ * 生成登陆二维码 GET请求
+ */
+pub const QRCODE_GENERATE_URL: &str ="https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
+/**
+ * 实时的获取登陆状态 GET请求
+ * 1. qrcode_key参数 
+ */
 pub const QRCODE_POLL_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/poll";
-
-//用户信息API
-//获取用户元数据
+/**
+ * 获取用户信息 GET请求
+ * 1. up_mid参数
+ */
 pub const GET_USER_DATA_URL: &str = "https://api.bilibili.com/x/web-interface/nav";
-//需要用户up_mip参数  GET请求
+/**
+ * 获取用户所有收藏夹信息 GET请求
+ * 1. up_mid参数
+ */
 pub const GET_ALL_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/created/list-all";
-//需要media_id GET请求 要求Cookie
+/**
+ * 获取用户单个收藏夹信息 GET请求
+ * 1. media_id参数
+ */
 pub const GET_FOLDER_INFO_URL: &str = "https://api.bilibili.com/x/v3/fav/resource/list";
-
-pub const CREATE_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/add";
-pub const EDIT_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/edit";
-pub const DELETE_FOLDER_URL: &str = "https://api.bilibili.com/x/v3/fav/folder/del";
-
-//搜索API
-
+/**
+ * 搜索视频 GET请求
+ * 1. keyword参数
+ */
 pub const SEARCH_BVID_INFO: &str = "https://api.bilibili.com/x/web-interface/view";
-//视频API
+/**
+ * 获取视频信息 GET请求
+ * 1. bvid参数
+ */
 pub const GET_VEDIO_INFO: &str = "https://api.bilibili.com/x/web-interface/view";
+/**
+ * 获取视频下载地址 GET请求
+ * 1. bvid参数
+ * 2. cid参数
+ */
 pub const GET_VEDIO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/wbi/playurl";
