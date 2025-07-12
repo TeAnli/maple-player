@@ -1,10 +1,12 @@
+use std::collections::HashMap;
+
 /**
  * 生成登陆二维码 GET请求
  */
-pub const QRCODE_GENERATE_URL: &str ="https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
+pub const QRCODE_GENERATE_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
 /**
  * 实时的获取登陆状态 GET请求
- * 1. qrcode_key参数 
+ * 1. qrcode_key参数
  */
 pub const QRCODE_POLL_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/poll";
 /**
@@ -38,3 +40,37 @@ pub const GET_VEDIO_INFO: &str = "https://api.bilibili.com/x/web-interface/view"
  * 2. cid参数
  */
 pub const GET_VEDIO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/wbi/playurl";
+
+
+
+pub struct URL {
+    url: String,
+    params: HashMap<String, String>,
+}
+
+impl URL {
+    pub fn new(url: &str) -> Self {
+        Self {
+            url: url.to_string(),
+            params: HashMap::new(),
+        }
+    }
+    pub fn add_param(mut self, key: &str, value: &str) -> Self {
+        self.params.insert(key.to_string(), value.to_string());
+        self
+    }
+    pub fn build(&self) -> String {
+        let mut url = self.url.clone();
+        if !self.params.is_empty() {
+            let separator = if url.contains('?') { '&' } else { '?' };
+            url.push(separator);
+            let params: Vec<String> = self
+                .params
+                .iter()
+                .map(|(name, value)| format!("{}={}", name, value))
+                .collect();
+            url.push_str(&params.join("&"));
+        }
+        url
+    }
+}
