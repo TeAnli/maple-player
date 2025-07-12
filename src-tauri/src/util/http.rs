@@ -1,8 +1,51 @@
-use crate::AppState;
 use reqwest::{cookie::Jar, header, Client};
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
-use tauri::State;
+use std::{collections::VecDeque, sync::Arc};
+
+#[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
+pub enum DownloadStatus {
+    Pending,
+    Paused,
+    Downloading,
+    Finished,
+    Failed,
+}
+
+#[derive(Default)]
+pub struct DownloadQueue {
+    pub queue: VecDeque<Task>,
+}
+impl DownloadQueue {
+    pub fn new() -> Self {
+        Self {
+            queue: VecDeque::new(),
+        }
+    }
+    pub fn enqueue(&mut self, item: Task) {
+        self.queue.push_back(item);
+    }
+    pub fn is_empty(&self) -> bool {
+        self.queue.is_empty()
+    }
+}
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct Task {
+    pub id: String,
+    pub progress: Progress,
+    pub status: DownloadStatus,
+    pub url: String,
+}
+impl Task {
+    pub fn create(id: &String, url: &String) -> Self {
+        Self {
+            url: url.to_string(),
+            id: id.to_string(),
+            progress: Progress::default(),
+            status: DownloadStatus::Pending,
+        }
+    }
+}
+
 #[derive(Debug, Default, Serialize, Deserialize, Clone)]
 pub struct Progress {
     pub total_size: u64,
@@ -33,15 +76,11 @@ impl HttpClient {
     }
 }
 
-pub async fn send_get_request<T>(state: State<'_, AppState>, url: String) -> Result<T, String>
+pub async fn send_get_request<T>(client: &Client, url: String) -> Result<T, String>
 where
     T: serde::de::DeserializeOwned,
 {
-    let response = state
-        .http_client
-        .lock()
-        .await
-        .client
+    let response = client
         .get(url)
         .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
         .header(header::REFERER, "https://www.bilibili.com/")
