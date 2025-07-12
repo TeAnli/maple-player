@@ -1,21 +1,37 @@
 import { Flex, Progress } from "@radix-ui/themes";
 import React, { useContext, useEffect } from "react";
-import { useProgressStore } from "../../utils/store/download_store";
+import { Task, useProgressStore } from "../../utils/store/download_store";
 
-const DownloadCard: React.FC = () => {
-  const progress = useProgressStore((state) => state.getProgress());
+
+interface DownloadCardProps {
+  value: number;
+  name: string;
+  total: number
+}
+const DownloadCard: React.FC<DownloadCardProps> = ({ value, name, total }) => {
   return (
-    <Flex className="w-full h-48">
-      <Progress value={progress}></Progress>
+    <Flex className="w-full h-48 m-4 shadow-lg rounded-lg">
+      <p>任务: {name}</p>
+      <p>总量: {total}</p>
+      <Progress value={value}></Progress>
     </Flex>
   )
 }
 
 const Download: React.FC = () => {
+  const queue = useProgressStore((state) => state.queue);
+
   return (
     <div className="w-full h-full p-6">
-      <Flex width="100%" direction="column" >
-        <DownloadCard />
+      <Flex width="100%" gap="4" direction="column" >
+        {
+          queue.map((item) => (
+            <DownloadCard
+
+              value={item.progress.current_size === 0 ? 0 :
+                (item.progress.current_size / item.progress.total_size) * 100} name={item.id} total={item.progress.total_size} />
+          ))
+        }
       </Flex>
     </div>
   );

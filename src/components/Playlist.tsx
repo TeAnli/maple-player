@@ -39,11 +39,22 @@ const Playlist: React.FC<PlaylistProps> = (
           <div className="absolute right-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
             <button onClick={async (event) => {
               event.stopPropagation();
+
               if (!data) return
 
-              let cid = await invoke("get_cid_by_bvid", { bvid: data.medias[0].bvid })
-              let video = await invoke("download_video", { cid: cid, bvid: data.medias[0].bvid })
-              console.log(video)
+              for (const media of data.medias) {
+                try {
+                  //获取cid
+                  const cid = await invoke("get_cid_by_bvid", { bvid: media.bvid });
+                  //加入至下载队列
+                  let content = await invoke("push_download_queue", { bvid: media.bvid, cid: cid });
+                  console.log(content);
+                } catch (error) {
+                  console.error(`处理媒体 ${media.bvid} 失败:`, error);
+                }
+              }
+              let result = await invoke("download")
+              console.log(result);
             }} className="w-8 h-8 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110">
 
               <span>
