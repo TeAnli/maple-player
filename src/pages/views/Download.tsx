@@ -1,7 +1,7 @@
 import { Flex, Progress } from "@radix-ui/themes";
 import React, { useContext, useEffect } from "react";
 import { Task, useProgressStore } from "../../utils/store/download_store";
-
+import { Text } from "@radix-ui/themes";
 
 interface DownloadCardProps {
   value: number;
@@ -10,10 +10,13 @@ interface DownloadCardProps {
 }
 const DownloadCard: React.FC<DownloadCardProps> = ({ value, name, total }) => {
   return (
-    <Flex className="w-full h-48 m-4 shadow-lg rounded-lg">
-      <p>任务: {name}</p>
-      <p>总量: {total}</p>
-      <Progress value={value}></Progress>
+    <Flex gap="2" p="4" direction="column" className="w-full h-48 m-4 shadow-lg rounded-lg">
+      <Text size="6" weight="bold">任务: {name}</Text>
+      <Text size="4">总量: {total}</Text>
+      <div className="">
+        <Progress size="3" value={value}></Progress>
+      </div>
+
     </Flex>
   )
 }

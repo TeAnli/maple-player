@@ -163,11 +163,8 @@ pub async fn download(
     if state.lock().await.download_queue.is_empty() {
         return Ok(String::from("Download queue is empty"));
     }
-    println!("{:#?}", state.lock().await.download_queue.queue);
-    // 创建下载目录
-    let data_dir = "D://music//";
-    let download_dir = format!("{}", data_dir);
-    std::fs::create_dir_all(&download_dir).unwrap();
+
+    std::fs::create_dir_all(&state.lock().await.config.download_path).unwrap();
     let mut is_empty = false;
     while !is_empty {
         println!("start loop");
@@ -201,7 +198,7 @@ pub async fn download(
         if response.status().is_success() {
             // 生成唯一文件名
             let file_name = format!(
-                "{}.m4s",
+                "{}.mp3",
                 state
                     .lock()
                     .await
@@ -211,7 +208,7 @@ pub async fn download(
                     .unwrap()
                     .id
             );
-            let file_path = format!("{}{}", download_dir, file_name);
+            let file_path = format!("{}/{}", &state.lock().await.config.download_path, file_name);
             //获取文件大小
             let total_size = response.content_length().unwrap_or(0);
             let mut current_size = 0_u64;
@@ -253,8 +250,17 @@ pub async fn download(
             state.lock().await.download_queue.queue.pop_front();
             if state.lock().await.download_queue.is_empty() {
                 is_empty = true;
+                println!("sb");
             }
         }
     }
+
+    let queue = state.lock().await.download_queue.queue.clone();
+
+    let result = Vec::from(queue);
+    println!("is empty: {}", result.is_empty());
+    window
+        .emit("download_progress", result)
+        .map_err(|e: tauri::Error| e.to_string())?;
     Ok(String::from("success"))
 }
