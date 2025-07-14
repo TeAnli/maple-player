@@ -1,4 +1,3 @@
-import { data } from "react-router";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
