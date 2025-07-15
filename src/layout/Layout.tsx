@@ -5,9 +5,9 @@ import { Box, Flex } from "@radix-ui/themes";
 
 const Layout: React.FC = () => {
   return (
-    <Box width="100%" height="100vh" overflow="hidden">
+    <Box className="font-mukta" width="100%" height="100vh" overflow="hidden">
       <Sidebar />
-      <Flex height="100%" direction="column" ml="80px">
+      <Flex height="100%" direction="column" className="ml-sidebar">
         <Header />
         <Flex height="100%" overflow="hidden" className="mt-24">
           <Box width="100%" height="100%" overflowY="auto">
