@@ -1,3 +1,42 @@
+@font-face {
+  font-family: "Mukta";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url(./assets/fonts/MuktaVaani-Regular.ttf) format("ttf");
+}
+@font-face {
+  font-family: "Mukta";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url(./assets/fonts/MuktaVaani-SemiBold.ttf) format("ttf");
+}
+@font-face {
+  font-family: "Mukta";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url(./assets/fonts/MuktaVaani-Bold.ttf) format("ttf");
+}
+
+@font-face {
+  font-family: "MrsSheppards";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url(./assets/fonts/MrsSheppards-Regular.ttf) format("truetype");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .linear-theme {
+    @apply bg-gradient-to-br from-primary to-secondary;
+  }
+  .linear-theme-text {
+    @apply bg-clip-text linear-theme to-secondary text-transparent;
+  }
+}

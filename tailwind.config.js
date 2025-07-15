@@ -4,17 +4,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "primary": "rgb(240, 58, 58)",
-        "secondary": "rgb(247, 109, 109)",
-        "forgeground": "rgb(58, 62, 77)",
-        "component": "rgba(241, 237, 237, 30%)",
+        primary: "#F4BA18",
+        secondary: "#F86E13",
+        background: "#343434",
+        forgeground: "#222222",
         "font-primary": "rgba(24, 28, 47, 30%)",
-        "hover-primary": "rgba(255, 255, 255, 20%)"
+        "hover-primary": "rgba(255, 255, 255, 20%)",
       },
       boxShadow: {
-        "super": "0 20px 50px rgba(0,0,0, 0.10)"
-      }
+        super: "0 20px 50px rgba(0,0,0, 0.10)",
+      },
+      fontFamily: {
+        mukta: ["Mukta", "Helvetica", "Arial", "sans-serif"],
+        title: "MrsSheppards",
+      },
+      width: {
+        sidebar: "120px",
+      },
+      margin: {
+        sidebar: "120px",
+      },
     },
   },
   plugins: [],
-}
+};
