@@ -10,7 +10,7 @@ module.exports = {
         content: "rgb(var(--color-content))",
         foreground: "rgb(var(--color-foreground))",
         card: "rgb(103 103 103)",
-        hovered: "rgb(70 70 70 / 0.7)",
+        hovered: "rgb(80 80 80)",
       },
       textColor: {
         primary: "rgb(var(--color-text-primary))",
