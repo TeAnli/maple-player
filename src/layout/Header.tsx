@@ -1,51 +1,39 @@
-import InputField from "../components/InputField";
-import Search from "../assets/Search.svg";
-import Cross from "../assets/Cross.svg";
-
 import { useState } from "react";
-import Button from "../components/Button";
-
 import { getCurrentWindow } from "@tauri-apps/api/window";
-
-import { invoke } from "@tauri-apps/api/core";
 import { useNavigate } from "react-router";
 import { useSearchStore } from "../utils/store/search_store";
-import { useAccountStore } from "../utils/store/account_store";
+import { Box, Flex } from "@radix-ui/themes";
+import InputField from "../components/Search";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
   const setSearchContent = useSearchStore((state) => state.setSearchContent)
+
   const handleInput = (value: string) => {
     setContent(value);
   };
+
   const closeWindow = () => {
     let window = getCurrentWindow();
     window.close();
   };
+
   return (
-    <div className="fixed w-full bg-white">
-      <div
+    <Box position="fixed" width="100%">
+      <Flex
+        width="100%"
         data-tauri-drag-region
-        className="flex justify-between items-center h-24 border-b-[0.5px]"
+        justify="between"
+        align="center"
+        className="h-header"
+        p="4"
       >
-        <div className="flex flex-row items-center">
-          <InputField
-            className="ml-12 mr-4 w-80"
-            placeholder="请输入关键词"
-            onChange={handleInput}
-            internalIcon={Search}
-          />
-          <Button onClick={() => {
-            setSearchContent(content)
-            navigate("/search")
-          }}>搜索</Button>
+        <div className="w-full flex flex-row items-center mr-sidebar">
         </div>
-        <div onClick={closeWindow} className="hover:cursor-pointer mr-32">
-          <img src={Cross} width={20} height={20}></img>
-        </div>
-      </div>
-    </div>
+
+      </Flex>
+    </Box>
   );
 };
 

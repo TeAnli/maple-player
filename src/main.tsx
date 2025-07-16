@@ -1,11 +1,13 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { Theme } from "@radix-ui/themes";
+import { Task, useProgressStore } from "./utils/store/download_store";
+
+import { listen } from "@tauri-apps/api/event";
 
 import "./main.css";
-import { Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
-import { listen } from "@tauri-apps/api/event";
-import { Task, useProgressStore } from "./utils/store/download_store";
+import "@radix-ui/themes/layout.css";
+
 async function setupEventListeners() {
   const progressStore = useProgressStore.getState();
   console.log('正在装载监听事件..');
@@ -30,7 +32,7 @@ async function setupEventListeners() {
   });
 }
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <Theme accentColor="crimson" grayColor="sand" radius="large" scaling="95%">
+  <Theme>
     <App />
   </Theme>
 );

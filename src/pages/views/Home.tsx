@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Playlist from "../../components/Playlist";
-import { invoke } from "@tauri-apps/api/core";
+import Folderlist from "../../components/Folderlist";
+import { Flex } from "@radix-ui/themes";
 
 interface Response {
   code: number;
@@ -17,7 +16,11 @@ interface Item {
 
 const Home: React.FC = () => {
 
-  return (<></>);
+  return (
+    <Flex overflowY="auto" width="100%" height="100%">
+      <Folderlist />
+    </Flex>
+  );
 };
 
 export default Home;

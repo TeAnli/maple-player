@@ -18,18 +18,18 @@ const Playlist: React.FC<PlaylistProps> = (
 ) => {
 
   return (
-    <div onClick={onClick} className={`group relative ${type === "search" ? "h-36" : "w-full h-16"} rounded-xl hover:shadow-md transition-all duration-300 overflow-hidden cursor-pointer`}>
+    <div onClick={onClick} className={`group relative ${type === "search" ? "h-36" : "w-full h-16"} rounded-xl hover:shadow-md hover:bg-hovered transition-all duration-500 overflow-hidden cursor-pointer`}>
       <Flex position="relative" align="center" p="2" height="full">
         <div className="relative mr-4 flex-shrink-0">
           <img
-            className={`object-cover w-12 h-12 rounded-lg shadow-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}
+            className={`object-cover w-12 h-12 rounded-lg shadow-md flex items-center justify-center`}
             src={cover}
           ></img>
         </div>
 
         <Flex direction="column" className="truncate">
           <Box mb="1">
-            <h3 className="text-lg font-bold text-gray-800 truncate group-hover:text-blue-600 transition-colors duration-300">
+            <h3 className="text-lg font-bold truncate transition-colors duration-300">
               {name}
             </h3>
           </Box>
@@ -55,11 +55,11 @@ const Playlist: React.FC<PlaylistProps> = (
               }
               let result = await invoke("download")
               console.log(result);
-            }} className="w-8 h-8 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110">
+            }} className="w-8 h-8 bg-gray-500/80 hover:bg-gray-500 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110">
 
               <span>
                 <svg
-                  className="w-4 h-4 text-gray-700"
+                  className="w-4 h-4"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -67,10 +67,10 @@ const Playlist: React.FC<PlaylistProps> = (
                 </svg>
               </span>
             </button>
-            <button className="w-8 h-8 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110">
+            <button className="w-8 h-8 bg-gray-500/80 hover:bg-gray-500 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 hover:scale-110">
               <span>
                 <svg
-                  className="w-4 h-4 text-gray-700"
+                  className="w-4 h-4"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
