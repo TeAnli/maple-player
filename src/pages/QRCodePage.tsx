@@ -2,10 +2,11 @@ import { invoke } from "@tauri-apps/api/core";
 import { QRCodeSVG } from "qrcode.react";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { emit } from '@tauri-apps/api/event';
-import Button from "../../components/Button";
+import Button from "../components/Button";
 import { useNavigate } from "react-router";
-import { useAccountStore } from "../../utils/store/account_store";
-
+import { useAccountStore } from "../store/account_store";
+import gsap from "gsap"
+import { useGSAP } from '@gsap/react';
 // 类型定义
 interface QRCodeResponse {
   data: {
@@ -24,7 +25,7 @@ const QRCODE_CONFIG = {
   MAX_RETRIES: 90,
   CHECK_INTERVAL: 2000,
 };
-
+gsap.registerPlugin(useGSAP); // register the hook to avoid React version 
 const QRCodePage: React.FC = () => {
   const navigate = useNavigate();
   // 状态管理
@@ -41,6 +42,14 @@ const QRCodePage: React.FC = () => {
   const checkInterval = useRef<number | null>(null);
   const retryCount = useRef(0);
   const qrcodeKey = useRef('');
+  useGSAP(() => {
+    if (state.status === "success") {
+      gsap.from("#tick", { rotate: -180, opacity: 0, scale: 0.2 }).duration(0.5).delay(0.3)
+      gsap.from("#content", { y: 20, opacity: 0 }).duration(1)
+      gsap.from("#success", { y: 40, opacity: 0, scale: 0.2 }).duration(1)
+
+    }
+  }, [state.status])
 
   // 检查二维码状态
   const checkQRCodeState = async () => {
@@ -67,7 +76,7 @@ const QRCodePage: React.FC = () => {
         // 关闭窗口
         setTimeout(() => {
           navigate("/");
-        }, 1000);
+        }, 2000);
 
         checkInterval.current && window.clearInterval(checkInterval.current);
       }
@@ -128,18 +137,25 @@ const QRCodePage: React.FC = () => {
           </div>
         );
       case 'success':
-        return <p className="truncate font-bold text-xl text-green-600">登录成功，正在跳转...</p>;
+        return (
+          <>
+            <p id="tick" className="text-green-400 text-4xl font-bold">✔</p>
+            <p className="text-2xl" id="content" > 登录 < span id="success" className="truncate font-bold text-3xl text-green-400" > 成功</span >，正在跳转...</p >
+          </>
+        )
       default:
         return (
-          <Suspense fallback={<div className="size-256"></div>}>
-            <QRCodeSVG size={256} value={state.url} />
-          </Suspense>
+          <div className="bg-foreground p-4 rounded-2xl m-4 transition-all duration-500">
+            <div className={`bg-white rounded-2xl shadow-2xl shadow-gray-500/40 m-8 p-8 transition-all duration-500`}>
+              <QRCodeSVG className="transition-all duration-500" size={state.url == "" ? 0 : 256} value={state.url} />
+            </div>
+          </div >
         )
     }
   };
 
   return (
-    <main className="space-y-4 h-screen w-full flex flex-col justify-center items-center p-4">
+    <main className="w-full h-full flex flex-col justify-center items-center p-4">
       {render()}
       {state.status === 'scanning' && (
         <h1 className="truncate font-bold text-2xl text-center">扫描二维码进行登录</h1>

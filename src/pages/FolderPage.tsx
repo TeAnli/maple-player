@@ -1,5 +1,5 @@
 import React from "react";
-import MusicContiner from "../../components/MusicsContiner";
+import MusicContiner from "../components/MusicsContiner";
 import { Flex } from "@radix-ui/themes";
 
 const FolderPage: React.FC = () => {

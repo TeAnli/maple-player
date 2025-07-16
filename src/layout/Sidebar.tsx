@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router";
 import { useState, useEffect } from "react";
-import { routes } from "../utils/router/routes";
+import { routes } from "../router/routes";
 import { Box, Flex, Switch } from "@radix-ui/themes";
 
 interface TitleProps {

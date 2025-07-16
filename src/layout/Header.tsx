@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useNavigate } from "react-router";
-import { useSearchStore } from "../utils/store/search_store";
+import { useSearchStore } from "../store/search_store";
 import { Box, Flex } from "@radix-ui/themes";
-import InputField from "../components/Search";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();

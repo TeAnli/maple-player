@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { TextField, Text, Flex, IconButton } from '@radix-ui/themes';
 import { open } from '@tauri-apps/plugin-dialog';
 import { invoke } from '@tauri-apps/api/core';
-import { useConfigStore } from '../../utils/store/config_store';
+import { useConfigStore } from '../store/config_store';
 import { DotsHorizontalIcon, FileIcon } from '@radix-ui/react-icons';
 const Options: React.FC = () => {
   const setConfig = useConfigStore((state) => state.setDownlaodPath);

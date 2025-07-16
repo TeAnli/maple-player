@@ -1,4 +1,4 @@
-import Folderlist from "../../components/Folderlist";
+import Folderlist from "../components/Folderlist";
 import { Flex } from "@radix-ui/themes";
 
 interface Response {
@@ -17,7 +17,8 @@ interface Item {
 const Home: React.FC = () => {
 
   return (
-    <Flex overflowY="auto" width="100%" height="100%">
+    <Flex direction="column" overflowY="auto" width="100%" height="100%">
+      <p className="ml-12 text-4xl font-bold mb-4">收藏夹</p>
       <Folderlist />
     </Flex>
   );
