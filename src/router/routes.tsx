@@ -1,22 +1,20 @@
 import { createBrowserRouter } from "react-router";
 
-import Home from "../../pages/views/Home";
-import Download from "../../pages/views/Download";
-import Options from "../../pages/views/Options";
-import User from "../../pages/views/User";
-import Layout from "../../layout/Layout";
+import Home from "../pages/Home";
+import Download from "../pages/Download";
+import Options from "../pages/Options";
+import User from "../pages/User";
+import Layout from "../layout/Layout";
 
-import HomeIcon from "../../assets/Home.svg";
-import SendIcon from "../../assets/Send.svg";
-import DownloadIcon from "../../assets/Download.svg";
-import OptionsIcon from "../../assets/Options.svg";
-import QRCodePage from "../../pages/views/QRCodePage";
-import Search from "../../pages/views/Search";
-import FolderPage from "../../pages/views/FolderPage";
+import HomeIcon from "../assets/icons/Home.svg";
+import SendIcon from "../assets/icons/Send.svg";
+import DownloadIcon from "../assets/icons/Download.svg";
+import OptionsIcon from "../assets/icons/Options.svg";
 
+import QRCodePage from "../pages/QRCodePage";
+import Search from "../pages/Search";
+import FolderPage from "../pages/FolderPage";
 
-//the Layout component control the other page component
-//Home, User, Options, User is the child page of Layout
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -55,7 +53,6 @@ export const router = createBrowserRouter([
 
 
 ]);
-// the array provide routes' field for sidebar 
 export const routes = [
   {
     id: "home",
