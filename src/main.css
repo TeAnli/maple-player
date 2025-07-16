@@ -32,11 +32,37 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: 244 186 24;
+  --color-secondary: 248 110 19;
+  --color-content: 228 232 236;
+  --color-foreground: 240 243 246;
+  --color-text-primary: 40 40 40;
+}
+.dark {
+  --color-primary: 244 186 24;
+  --color-secondary: 248 110 19;
+  --color-content: 52 52 52;
+  --color-foreground: 34 34 34;
+  --color-text-primary: 255 255 255;
+}
 @layer components {
   .linear-theme {
     @apply bg-gradient-to-br from-primary to-secondary;
   }
   .linear-theme-text {
-    @apply bg-clip-text linear-theme to-secondary text-transparent;
+    @apply bg-clip-text linear-theme text-transparent;
   }
+}
+/*滑块*/
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  padding: 3px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #555;
 }
