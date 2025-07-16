@@ -8,23 +8,16 @@ export interface MusicProps {
 
 const MusicCard: React.FC<MusicProps> = ({ name, cover }) => {
   return (
-    <Suspense fallback={<Skeleton><div>
-      <AspectRatio ratio={1} >
-        <img
-          className="rounded-md object-cover w-full h-full"
-        />
-      </AspectRatio>
-      <h3 className="text-center font-semibold">loading...</h3>
-    </div></Skeleton>}>
+    <Suspense>
       <div className="group relative w-full transition-all duration-300 hover:scale-105 active:scale-95">
-        <div className="flex flex-col gap-4 rounded-xl overflow-hidden bg-white transition-all duration-300 shadow-md p-4">
+        <div className="flex flex-col gap-4 rounded-xl overflow-hidden transition-all duration-300 p-4">
           <AspectRatio ratio={1} >
             <img
-              className="rounded-md object-cover w-full h-full"
+              className="rounded-xl object-cover w-full h-full"
               src={cover}
             />
           </AspectRatio>
-          <h3 className="text-center font-semibold text-gray-800 truncate" title={name}>{name}</h3>
+          <h3 className="text-center font-semibold truncate" title={name}>{name}</h3>
         </div>
       </div>
     </Suspense>

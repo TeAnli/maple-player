@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import React from "react";
-import { PlaylistItem } from "../utils/store/folder_store";
-import { Box, Flex } from "@radix-ui/themes";
+import { PlaylistItem } from "../store/folder_store";
+import { Box, Flex, Text } from "@radix-ui/themes";
 
 export interface PlaylistProps {
   data?: PlaylistItem,
@@ -18,7 +18,7 @@ const Playlist: React.FC<PlaylistProps> = (
 ) => {
 
   return (
-    <div onClick={onClick} className={`group relative ${type === "search" ? "h-36" : "w-full h-16"} rounded-xl hover:shadow-md hover:bg-hovered transition-all duration-500 overflow-hidden cursor-pointer`}>
+    <div onClick={onClick} className={`group relative ${type === "search" ? "h-36" : "w-full h-16"} rounded-xl hover:shadow-md hover:bg-hovered/40 transition-all duration-500 overflow-hidden cursor-pointer`}>
       <Flex position="relative" align="center" p="2" height="full">
         <div className="relative mr-4 flex-shrink-0">
           <img
@@ -34,6 +34,7 @@ const Playlist: React.FC<PlaylistProps> = (
             </h3>
           </Box>
         </Flex>
+
         {
           type === "default" &&
           <div className="absolute right-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
@@ -82,6 +83,9 @@ const Playlist: React.FC<PlaylistProps> = (
         }
 
       </Flex>
+
+
+
     </div >
   );
 };

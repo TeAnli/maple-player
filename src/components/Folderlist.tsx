@@ -1,20 +1,21 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect } from "react";
-import { useAccountStore } from "../utils/store/account_store";
+import { useAccountStore } from "../store/account_store";
 import Playlist from "./Playlist";
-import { PlaylistItem, useFolderStore } from "../utils/store/folder_store";
+import { PlaylistItem, useFolderStore } from "../store/folder_store";
 import { Flex, Skeleton, Text } from "@radix-ui/themes";
 import Button from "./Button";
 import { useNavigate } from "react-router";
 const Folderlist: React.FC = () => {
+
     const uid = useAccountStore((state) => state.mid)
     const isLogin = useAccountStore((state) => state.isLogin)
     const folderList = useFolderStore((state) => state.folderList);
     const setFolderList = useFolderStore((state) => state.setFolderList);
     const setCurrentFolder = useFolderStore((state) => state.setCurrentFolder);
 
-
     const nagetive = useNavigate()
+
     useEffect(() => {
         const fetchData = async () => {
             if (uid != null) {
@@ -24,6 +25,7 @@ const Folderlist: React.FC = () => {
         }
         fetchData()
     }, [])
+
     const handleFolder = () => {
         if (!isLogin) {
             return (
@@ -39,7 +41,7 @@ const Folderlist: React.FC = () => {
             return (
                 <div className="w-full h-full flex flex-col gap-4">
                     {
-                        Array.from({ length: 5 }).map((item, index) => (
+                        Array.from({ length: 5 }).map(() => (
                             <main className="flex flex-row gap-4">
                                 <Skeleton>
                                     <section className="w-16 h-16 rounded-lg"></section>
