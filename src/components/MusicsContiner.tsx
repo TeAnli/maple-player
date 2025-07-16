@@ -5,18 +5,18 @@ import MusicCard from "./MusicCard";
 const MusicContiner: React.FC = () => {
     const currentFolder = useFolderStore((state) => state.currentFolder);
     return (
-        <div className="flex flex-col w-full h-full border border-gray-200/60  rounded-lg bg-white/5 p-4 gap-8">
+        <div className="flex flex-col w-full h-full  rounded-lg p-4 gap-8">
             {currentFolder && <Box>
                 <Flex gap="3">
-                    <img className="rounded-md w-64 object-cover" src={currentFolder?.info.cover}></img>
-                    <Box maxWidth="100%">
-                        <Text as="div" size="8" weight="regular">
+                    <img className="rounded-md w-80" src={currentFolder?.info.cover}></img>
+                    <Flex direction="column" maxWidth="100%" gap="3">
+                        <p className="text-4xl font-bold">
                             {currentFolder?.info.title}
-                        </Text>
-                        <Text as="div" size="4" color="gray">
-                            total: {currentFolder?.info.media_count}
-                        </Text>
-                    </Box>
+                        </p>
+                        <p className="text-lg text-[#999999]">
+                            这是默认收藏夹，没有任何的简介，我爱你，谢谢你同意
+                        </p>
+                    </Flex>
                 </Flex>
             </Box>
             }

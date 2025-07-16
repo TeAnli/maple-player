@@ -12,6 +12,7 @@ import DownloadIcon from "../../assets/Download.svg";
 import OptionsIcon from "../../assets/Options.svg";
 import QRCodePage from "../../pages/views/QRCodePage";
 import Search from "../../pages/views/Search";
+import FolderPage from "../../pages/views/FolderPage";
 
 
 //the Layout component control the other page component
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <QRCodePage />
       },
+      {
+        path: "/folder",
+        element: <FolderPage />
+      }
     ],
   },
 
