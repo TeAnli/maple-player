@@ -61,8 +61,15 @@ const Folderlist: React.FC = () => {
             )
         }
 
-        return folderList.map((item) => (
-            <Playlist data={item} onClick={() => { setCurrentFolder(item); nagetive("folder") }} key={item.info.id} name={item.info.title} cover={item.info.cover} />
+        return folderList.map((item, idx) => (
+            <Flex
+                width="100%"
+                className="fade-in-enter"
+                style={{ animationDelay: `${idx * 0.2}s` }}
+                key={item.info.id}
+            >
+                <Playlist data={item} onClick={() => { setCurrentFolder(item); nagetive("folder") }} name={item.info.title} cover={item.info.cover} />
+            </Flex>
         ))
     }
     return (

@@ -13,11 +13,12 @@ const MusicCard: React.FC<MusicProps> = ({ name, cover }) => {
         <div className="flex flex-col gap-4 rounded-xl overflow-hidden transition-all duration-300 p-4">
           <AspectRatio ratio={1} >
             <img
-              className="rounded-xl object-cover w-full h-full"
+              style={{ animationDelay: "0s" }}
+              className="scale-in rounded-xl object-cover w-full h-full"
               src={cover}
             />
           </AspectRatio>
-          <h3 className="text-center font-semibold truncate" title={name}>{name}</h3>
+          <h3 style={{ animationDelay: "0.3s" }} className="fade-in-up text-center font-semibold truncate" title={name}>{name}</h3>
         </div>
       </div>
     </Suspense>

@@ -53,17 +53,6 @@
   .linear-theme-text {
     @apply bg-clip-text linear-theme text-transparent;
   }
-  .bg-polygon {
-    -webkit-clip-path: polygon(
-      50% 0%,
-      100% 25%,
-      100% 75%,
-      50% 100%,
-      0% 75%,
-      0% 25%
-    );
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  }
 }
 /*滑块*/
 ::-webkit-scrollbar {
@@ -77,3 +66,37 @@
   border-radius: 10px;
   background-color: #555;
 }
+.fade-in-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: fadeInUp 0.8s forwards;
+}
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s forwards;
+}
+.scale-in{
+  opacity: 0;
+  transform: scale(0.5);
+  animation: scaleIn 0.8s forwards;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeInEnter {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes scaleIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
