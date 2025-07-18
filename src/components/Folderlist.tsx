@@ -1,11 +1,14 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAccountStore } from "../store/account_store";
 import Playlist from "./Playlist";
 import { PlaylistItem, useFolderStore } from "../store/folder_store";
 import { Flex, Skeleton, Text } from "@radix-ui/themes";
 import Button from "./Button";
 import { useNavigate } from "react-router";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
 const Folderlist: React.FC = () => {
 
     const uid = useAccountStore((state) => state.mid)
@@ -13,9 +16,18 @@ const Folderlist: React.FC = () => {
     const folderList = useFolderStore((state) => state.folderList);
     const setFolderList = useFolderStore((state) => state.setFolderList);
     const setCurrentFolder = useFolderStore((state) => state.setCurrentFolder);
-
+    const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
     const nagetive = useNavigate()
-
+    useGSAP(() => {
+        gsap.timeline()
+            .from(itemRefs.current, {
+                opacity: 0,
+                x: -100,
+                stagger: 0.15, // 每个子项依次延迟
+                duration: 0.5,
+                ease: "power1.out"
+            });
+    }, [])
     useEffect(() => {
         const fetchData = async () => {
             if (uid != null) {
@@ -63,8 +75,8 @@ const Folderlist: React.FC = () => {
 
         return folderList.map((item, idx) => (
             <Flex
+                ref={(el) => itemRefs.current[idx] = el}
                 width="100%"
-                className="fade-in-enter"
                 style={{ animationDelay: `${idx * 0.2}s` }}
                 key={item.info.id}
             >

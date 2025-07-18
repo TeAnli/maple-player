@@ -22,13 +22,12 @@ const Playlist: React.FC<PlaylistProps> = (
       <Flex position="relative" align="center" p="2" height="full">
         <div className="relative mr-4 flex-shrink-0">
           <img
-            className="object-cover w-12 h-12 rounded-lg shadow-md flex items-center justify-center fade-in-enter"
-            style={{ animationDelay: "0s" }}
+            className="object-cover w-12 h-12 rounded-lg shadow-md flex items-center justify-center"
             src={cover}
           />
         </div>
 
-        <Flex direction="column" className="truncate fade-in-enter" style={{ animationDelay: "0.3s" }}>
+        <Flex direction="column" className="truncate">
           <Box mb="1">
             <h3 className="text-lg font-bold truncate transition-colors duration-300">
               {name}
