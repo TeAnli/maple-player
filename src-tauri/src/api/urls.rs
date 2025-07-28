@@ -3,7 +3,8 @@ use std::collections::HashMap;
 /**
  * 生成登陆二维码 GET请求
  */
-pub const QRCODE_GENERATE_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
+pub const QRCODE_GENERATE_URL: &str =
+    "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
 /**
  * 实时的获取登陆状态 GET请求
  * 1. qrcode_key参数
@@ -40,8 +41,6 @@ pub const GET_VEDIO_INFO: &str = "https://api.bilibili.com/x/web-interface/view"
  * 2. cid参数
  */
 pub const GET_VEDIO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/wbi/playurl";
-
-
 
 pub struct URL {
     url: String,

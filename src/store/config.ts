@@ -9,12 +9,11 @@ export const useConfigStore = create<Config>()(
   persist(
     (set, get) => ({
       downlaodPath: "",
-      setDownlaodPath: (newValue: string) =>
-        set(() => ({ downlaodPath: newValue })),
+      setDownlaodPath: (newValue: string) => set(() => ({ downlaodPath: newValue }))
     }),
     {
       name: "config_storage",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => sessionStorage)
     }
   )
 );

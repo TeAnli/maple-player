@@ -1,4 +1,7 @@
-use reqwest::{cookie::Jar, header, Client};
+use reqwest::{
+    cookie::{CookieStore, Jar},
+    header, Client, Url,
+}; // 添加 Url 导入
 use serde::{Deserialize, Serialize};
 use std::{collections::VecDeque, sync::Arc};
 
@@ -64,15 +67,22 @@ impl Progress {
 }
 pub struct HttpClient {
     pub client: Client,
+    pub cookie_jar: Arc<Jar>, // 添加 cookie_jar 字段
 }
+
 impl HttpClient {
     pub fn new() -> Self {
         let jar = Arc::new(Jar::default());
         let client = Client::builder()
+            .cookie_store(true)
             .cookie_provider(jar.clone())
+            .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
             .build()
             .expect("Failed to create http client");
-        HttpClient { client }
+        HttpClient {
+            client,
+            cookie_jar: jar,
+        } // 存储 cookie_jar
     }
 }
 

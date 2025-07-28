@@ -1,17 +1,10 @@
-import { useState } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useNavigate } from "react-router";
-import { useSearchStore } from "../store/search_store";
-import { Box, Flex } from "@radix-ui/themes";
+import Button from "../components/common/Button";
+import CloseIcon from "../assets/icons/Close.svg";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const [content, setContent] = useState("");
-  const setSearchContent = useSearchStore((state) => state.setSearchContent)
-
-  const handleInput = (value: string) => {
-    setContent(value);
-  };
 
   const closeWindow = () => {
     let window = getCurrentWindow();
@@ -19,20 +12,36 @@ const Header: React.FC = () => {
   };
 
   return (
-    <Box position="fixed" width="100%">
-      <Flex
-        width="100%"
+    <div className="w-full py-4 px-4 fade-in-down">
+      <div
+        className="w-full flex justify-between items-center bg-foreground rounded-lg border border-neutral-700 p-2"
         data-tauri-drag-region
-        justify="between"
-        align="center"
-        className="h-header"
-        p="4"
       >
-        <div className="w-full flex flex-row items-center mr-sidebar">
-        </div>
-
-      </Flex>
-    </Box>
+        <section className="space-x-4">
+          <Button
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            {"<"}
+          </Button>
+          <Button
+            onClick={() => {
+              navigate("login");
+            }}
+          >
+            登录
+          </Button>
+        </section>
+        <section>
+          <img
+            src={CloseIcon}
+            className="opcity-100 size-8 cursor-pointer"
+            onClick={closeWindow}
+          ></img>
+        </section>
+      </div>
+    </div>
   );
 };
 

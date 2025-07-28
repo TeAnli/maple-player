@@ -41,8 +41,8 @@ pub struct VideoStat {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistData {
-    info: PlaylistInfo,
-    medias: Vec<PlaylistMeida>,
+    pub info: PlaylistInfo,
+    pub medias: Vec<PlaylistMeida>,
 }
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistInfo {
@@ -57,11 +57,11 @@ pub struct PlaylistInfo {
 }
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct PlaylistMeida {
-    id: i64,
-    bvid: String,
-    title: String,
-    cover: String,
-    duration: i64,
+    pub id: i64,
+    pub bvid: String,
+    pub title: String,
+    pub cover: String,
+    pub duration: i64,
 }
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct LoginData {

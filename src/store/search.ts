@@ -5,7 +5,7 @@ interface SearchInfo {
   setSearchContent: (newValue: string) => void;
 }
 
-export const useSearchStore = create<SearchInfo>()((set) => ({
+export const useSearchStore = create<SearchInfo>()(set => ({
   content: "",
-  setSearchContent: (newValue: string) => set(() => ({ content: newValue })),
+  setSearchContent: (newValue: string) => set(() => ({ content: newValue }))
 }));

@@ -1,9 +1,9 @@
-import { EventSystem, EventType } from "./event_system";
-import { Task, useProgressStore } from "../store/download_store";
+import { EventSystem, EventType } from "./system";
+import { Task, useProgressStore } from "../store/download";
 
 export function load() {
   const eventSystem = EventSystem.getInstance();
-  eventSystem.subscribe(EventType.DOWNLOAD_PROGRESS, (event) => {
+  eventSystem.subscribe(EventType.DOWNLOAD_PROGRESS, event => {
     const progressStore = useProgressStore.getState();
     const queue = event.payload as Task[];
     if (queue.length === 0) {

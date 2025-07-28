@@ -16,6 +16,7 @@ export interface PlaylistItem {
     cover: string;
     bvid: string;
     duration: number;
+    url: string;
   }>;
 }
 
@@ -30,15 +31,13 @@ export const useFolderStore = create<FolderInfo>()(
   persist(
     (set, get) => ({
       currentFolder: null,
-      setCurrentFolder: (item: PlaylistItem) =>
-        set(() => ({ currentFolder: item })),
+      setCurrentFolder: (item: PlaylistItem) => set(() => ({ currentFolder: item })),
       folderList: [],
-      setFolderList: (list: Array<PlaylistItem>) =>
-        set(() => ({ folderList: list })),
+      setFolderList: (list: Array<PlaylistItem>) => set(() => ({ folderList: list }))
     }),
     {
       name: "folder_storage",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => sessionStorage)
     }
   )
 );

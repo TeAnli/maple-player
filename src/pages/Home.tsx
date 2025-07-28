@@ -1,5 +1,4 @@
-import Folderlist from "../components/Folderlist";
-import { Flex } from "@radix-ui/themes";
+import Folderlist from "../components/music/Folderlist";
 
 interface Response {
   code: number;
@@ -15,12 +14,10 @@ interface Item {
 }
 
 const Home: React.FC = () => {
-
   return (
-    <Flex direction="column" overflowY="auto" width="100%" height="100%">
-      <p className="ml-12 text-4xl font-bold mb-4">收藏夹</p>
+    <div className="flex flex-col overflow-y-auto w-full h-full">
       <Folderlist />
-    </Flex>
+    </div>
   );
 };
 

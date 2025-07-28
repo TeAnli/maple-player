@@ -1,0 +1,56 @@
+/* 动画过渡效果 不同方向*/
+
+/* 从左到右 */
+.fade-in-enter {
+  opacity: 0;
+  transform: translateX(-100px);
+  animation: fadeX 0.8s forwards;
+}
+/* 从下到上 */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(100px);
+  animation: fadeY 0.8s forwards;
+}
+/* 从上到下 */
+.fade-in-down {
+  opacity: 0;
+  transform: translateY(-100px);
+  animation: fadeY 0.8s forwards;
+}
+/* 缩放: 逐渐淡入 */
+.scale-in {
+  opacity: 0;
+  transform: scale(0.5);
+  animation: scaleIn 0.8s forwards;
+}
+/* 缩放: 逐渐淡出 */
+.scale-out {
+  opacity: 1;
+  transform: scale(1);
+  animation: scaleIn 0.8s forwards;
+}
+@keyframes fadeY {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeX {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes scaleIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes scaleOut {
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}

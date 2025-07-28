@@ -7,31 +7,31 @@ module.exports = {
       colors: {
         primary: "rgb(var(--color-primary))",
         secondary: "rgb(var(--color-secondary))",
-        content: "rgb(var(--color-content))",
-        foreground: "rgb(var(--color-foreground))",
-        card: "rgb(103 103 103)",
-        hovered: "rgb(80 80 80)",
+        content: "rgb(var(--color-foreground))",
+        foreground: "rgb(var(--color-content))",
+        card: "rgba(103, 103, 103, 0.6)",
+        hovered: "rgb(80 80 80)"
       },
       textColor: {
-        primary: "rgb(var(--color-text-primary))",
+        primary: "rgb(var(--color-text-primary))"
       },
       boxShadow: {
-        super: "0 20px 50px rgba(0,0,0, 0.10)",
+        super: "0 20px 50px rgba(0,0,0, 0.10)"
       },
       fontFamily: {
         mukta: ["Mukta", "Helvetica", "Arial", "sans-serif"],
-        title: "MrsSheppards",
+        title: "MrsSheppards"
       },
       width: {
-        sidebar: "120px",
+        sidebar: "120px"
       },
       height: {
-        header: "height: 2rem",
+        header: "4rem"
       },
       margin: {
-        sidebar: "120px",
-      },
-    },
+        sidebar: "120px"
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };

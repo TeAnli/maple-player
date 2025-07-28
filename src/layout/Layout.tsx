@@ -1,28 +1,26 @@
 import { Outlet } from "react-router";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import { Box, Flex } from "@radix-ui/themes";
-
-
+import Drawer from "./Drawer";
 
 const Layout: React.FC = () => {
   return (
     <>
-      <Box className="z-50 font-mukta bg-content text-primary" width="100%" height="100vh" overflow="hidden">
-        <Sidebar />
-        <Flex height="100%" direction="column" className="ml-sidebar z-50">
-          <Box width="100%">
-            <Header />
-          </Box>
-          <Flex height="100%" overflow="hidden" className="mt-8">
-            <Box width="100%" overflowY="auto">
-              <Outlet />
-            </Box>
-          </Flex>
-        </Flex>
-      </Box >
+      <div className="font-mukta bg-content text-primary w-full h-[100vh] overflow-hidden grid grid-cols-[auto,1fr] grid-rows-[auto,1fr,auto]">
+        <aside className="row-span-full">
+          <Sidebar />
+        </aside>
+        <header>
+          <Header />
+        </header>
+        <main className="overflow-y-auto">
+          <Outlet />
+        </main>
+        <figure className="w-full fixed bg-transparent bottom-0 p-4">
+          <Drawer />
+        </figure>
+      </div>
     </>
-
   );
 };
 

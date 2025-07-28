@@ -22,15 +22,15 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <Home />
       },
       {
         path: "/download",
-        element: <Download />,
+        element: <Download />
       },
       {
         path: "/options",
-        element: <Options />,
+        element: <Options />
       },
       {
         path: "/search",
@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/user",
-        element: <User />,
+        element: <User />
       },
       {
         path: "/login",
@@ -48,34 +48,32 @@ export const router = createBrowserRouter([
         path: "/folder",
         element: <FolderPage />
       }
-    ],
-  },
-
-
+    ]
+  }
 ]);
 export const routes = [
   {
     id: "home",
     path: "/",
     label: "Home",
-    icon: HomeIcon,
+    icon: HomeIcon
   },
   {
     id: "user",
     path: "/user",
     label: "User",
-    icon: SendIcon,
+    icon: SendIcon
   },
   {
     id: "download",
     path: "/download",
     label: "Download",
-    icon: DownloadIcon,
+    icon: DownloadIcon
   },
   {
     id: "options",
     path: "/options",
     label: "Options",
-    icon: OptionsIcon,
-  },
+    icon: OptionsIcon
+  }
 ];

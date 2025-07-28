@@ -11,12 +11,7 @@ interface AccountInfo {
   setName: (name: string) => void;
   setHeader: (url: string) => void;
 
-  setData: (data: {
-    isLogin: boolean;
-    mid: number | null;
-    uname: string;
-    face: string;
-  }) => void;
+  setData: (data: { isLogin: boolean; mid: number | null; uname: string; face: string }) => void;
 }
 
 export const useAccountStore = create<AccountInfo>()(
@@ -31,22 +26,17 @@ export const useAccountStore = create<AccountInfo>()(
       setName: (name: string) => set(() => ({ uname: name })),
       setHeader: (url: string) => set(() => ({ face: url })),
 
-      setData: (data: {
-        isLogin: boolean;
-        mid: number | null;
-        uname: string;
-        face: string;
-      }) =>
+      setData: (data: { isLogin: boolean; mid: number | null; uname: string; face: string }) =>
         set(() => ({
           isLogin: data.isLogin,
           mid: data.mid,
           uname: data.uname,
-          face: data.face,
-        })),
+          face: data.face
+        }))
     }),
     {
       name: "account_storage",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => sessionStorage)
     }
   )
 );

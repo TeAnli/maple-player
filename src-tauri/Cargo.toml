@@ -2,7 +2,7 @@
 name = "maple-player"
 version = "0.1.0"
 description = "A Tauri App"
-authors = ["you"]
+authors = ["teanli"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -28,3 +28,6 @@ urlencoding = "2.1"
 tokio = { version = "1.0", features = ["full"] }
 futures-util = "0.3.21"
 tauri-plugin-dialog = "2"
+tauri-plugin-http = "2"
+rodio = "0.21.1"
+tauri-plugin-log = "2"

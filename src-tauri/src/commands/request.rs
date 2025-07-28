@@ -90,6 +90,7 @@ pub async fn get_all_folder(
         let playlist = get_folder_info(&state.lock().await.http_client.client, folder.id).await?;
         folder_list.push(playlist);
     }
+
     Ok(folder_list)
 }
 /**
@@ -105,6 +106,7 @@ pub async fn get_folder_info(
         .add_param("ps", "20")
         .build();
     let playlist_info: data::PlaylistResponse = http::send_get_request(client, api_url).await?;
+
     Ok(playlist_info.data)
 }
 /**
@@ -132,6 +134,8 @@ pub async fn push_download_queue(
         .add_param("fnval", "4048")
         .add_param("bvid", &bvid)
         .add_param("cid", &cid.to_string())
+        .add_param("fnver", "0")
+        .add_param("fourk", "1")
         .build();
     //获取下载资源
     let response = state.lock().await.http_client.client.get(api_url)
@@ -141,7 +145,7 @@ pub async fn push_download_queue(
         .await.map_err(|e| e.to_string())?;
     let json: Value = response.json().await.map_err(|e| e.to_string())?;
     //获取文件下载路径
-    let audio_url = json["data"]["dash"]["audio"][0]["base_url"]
+    let audio_url = json["data"]["dash"]["audio"][0]["baseUrl"]
         .as_str()
         .unwrap()
         .to_string();
@@ -150,7 +154,7 @@ pub async fn push_download_queue(
     println!("正在添加至队列中: {:#?}", task);
     //添加到下载队列中
     state.lock().await.download_queue.enqueue(task);
-    Ok(String::from("Success to push task into the queue"))
+    Ok(String::from("成功添加至下载队列"))
 }
 /**
  * 下载视频
@@ -161,7 +165,7 @@ pub async fn download(
     window: tauri::Window,
 ) -> Result<String, String> {
     if state.lock().await.download_queue.is_empty() {
-        return Ok(String::from("Download queue is empty"));
+        return Ok(String::from("下载队列为空"));
     }
 
     std::fs::create_dir_all(&state.lock().await.config.download_path).unwrap();
@@ -176,7 +180,7 @@ pub async fn download(
             .front_mut()
             .unwrap()
             .status = http::DownloadStatus::Downloading;
-        println!("设置成下载中");
+        println!("设置成下载中...");
         //下载文件
         let url = state
             .lock()
@@ -208,7 +212,7 @@ pub async fn download(
                     .unwrap()
                     .id
             );
-            let file_path = format!("{}/{}", &state.lock().await.config.download_path, file_name);
+            let file_path = format!("{}/{file_name}", &state.lock().await.config.download_path);
             //获取文件大小
             let total_size = response.content_length().unwrap_or(0);
             let mut current_size = 0_u64;
@@ -258,9 +262,62 @@ pub async fn download(
     let queue = state.lock().await.download_queue.queue.clone();
 
     let result = Vec::from(queue);
-    println!("is empty: {}", result.is_empty());
+    println!("下载完成, 队列是否为空: {}", result.is_empty());
     window
         .emit("download_progress", result)
         .map_err(|e: tauri::Error| e.to_string())?;
     Ok(String::from("success"))
+}
+#[tauri::command]
+pub async fn get_audio_url(
+    state: State<'_, Mutex<AppState>>,
+    cid: i64,
+    bvid: String,
+) -> Result<String, String> {
+    let api_url = URL::new(urls::GET_VEDIO_DOWNLOAD_URL)
+        .add_param("fnval", "16")
+        .add_param("bvid", &bvid)
+        .add_param("cid", &cid.to_string())
+        .build();
+    //获取下载资源
+    let response = state.lock().await.http_client.client.get(api_url)
+        .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        .header(header::REFERER, "https://www.bilibili.com/")
+        .send()
+        .await.map_err(|e| e.to_string())?;
+    let json: Value = response.json().await.map_err(|e| e.to_string())?;
+    //获取文件下载路径
+    let audio_url = json["data"]["dash"]["audio"][0]["base_url"]
+        .as_str()
+        .unwrap()
+        .to_string();
+    Ok(audio_url)
+}
+
+#[tauri::command]
+pub async fn verify_audio_url(state: State<'_, Mutex<AppState>>, url: &str) -> Result<(), String> {
+    let response = state
+        .lock()
+        .await
+        .http_client
+        .client
+        .get(url)
+        .header(
+            header::USER_AGENT,
+            "Mozilla/5.0 BiliDroid/..* (bbcallen@gmail.com)",
+        )
+        .header(header::ACCEPT, "*/*")
+        .header(header::RANGE, "bytes=0-1024")
+        .header("Referer", "https://www.bilibili.com")
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    Ok(())
+}
+#[tauri::command]
+async fn play_audio(state: State<'_, Mutex<AppState>>, url: String) -> Result<(), String> {
+    let response = http::send_get_request(&state.lock().await.http_client.client, url)
+        .await
+        .map_err(|e| e.to_string())?;
+    Ok(())
 }

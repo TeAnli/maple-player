@@ -27,5 +27,5 @@ export const useProgressStore = create<DownloadProgress>()((set, get) => ({
     return progress;
   },
   queue: [],
-  setQueue: (queue: Array<Task>) => set(() => ({ queue: queue })),
+  setQueue: (queue: Array<Task>) => set(() => ({ queue: queue }))
 }));

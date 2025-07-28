@@ -1,3 +1,6 @@
+/* 引入动画 */
+@import url("./styles/transition.css");
+/* 字体样式 */
 @font-face {
   font-family: "Mukta";
   font-weight: 500;
@@ -32,29 +35,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 亮色主题 */
 :root {
-  --color-primary: 244 186 24;
-  --color-secondary: 248 110 19;
-  --color-content: 228 232 236;
-  --color-foreground: 240 243 246;
-  --color-text-primary: 40 40 40;
+  --color-primary: 244, 186, 24;
+  --color-secondary: 248, 110, 19;
+  --color-content: 228, 232, 236;
+  --color-foreground: 240, 243, 246;
+  --color-text-primary: 40, 40, 40;
+  --color-card-hovered: 103, 103, 103, 0.5;
+  --color-card-active: 103, 103, 103, 0.4;
 }
+/* 暗色主题 */
 .dark {
-  --color-primary: 244 186 24;
-  --color-secondary: 248 110 19;
-  --color-content: 52 52 52;
-  --color-foreground: 34 34 34;
-  --color-text-primary: 255 255 255;
+  --color-primary: 244, 186, 24;
+  --color-secondary: 248, 110, 19;
+  --color-content: 45, 45, 45;
+  --color-foreground: 34, 34, 34;
+  --color-text-primary: 255, 255, 255;
+  --color-card-hovered: 103, 103, 103, 0.5;
+  --color-card-active: 103, 103, 103, 0.4;
 }
+/* TODO: 实现颜色风格样式, 用户通过选择改变 primary 和 secondary 颜色 */
+
 @layer components {
+  /* 渐变主题样式 */
   .linear-theme {
     @apply bg-gradient-to-br from-primary to-secondary;
   }
+  /* 渐变主题文本样式 */
   .linear-theme-text {
     @apply bg-clip-text linear-theme text-transparent;
   }
+  .maple-button {
+    @apply h-12 rounded-xl text-xl font-bold px-4 transition-all duration-200 hover:scale-110 active:scale-95;
+  }
+  /* 带有主题按钮样式 */
+  .theme-button {
+    @apply linear-theme maple-button;
+  }
+  /* 默认按钮样式 */
+  .default-button {
+    @apply bg-foreground maple-button hover:bg-[rgba(var(--color-card-hovered))] active:bg-[rgba(var(--color-card-active))] border border-neutral-600;
+  }
 }
-/*滑块*/
+/* 滑块scrollbar样式 */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -66,37 +90,3 @@
   border-radius: 10px;
   background-color: #555;
 }
-.fade-in-enter {
-  opacity: 0;
-  transform: translateX(-30px);
-  animation: fadeInUp 0.8s forwards;
-}
-.fade-in-up {
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInUp 0.8s forwards;
-}
-.scale-in{
-  opacity: 0;
-  transform: scale(0.5);
-  animation: scaleIn 0.8s forwards;
-}
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes fadeInEnter {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-@keyframes scaleIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
