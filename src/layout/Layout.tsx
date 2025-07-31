@@ -2,8 +2,11 @@ import { Outlet } from "react-router";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Drawer from "./Drawer";
+import { useEffect } from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 const Layout: React.FC = () => {
+
   return (
     <>
       <div className="font-mukta bg-content text-primary w-full h-[100vh] overflow-hidden grid grid-cols-[auto,1fr] grid-rows-[auto,1fr,auto]">

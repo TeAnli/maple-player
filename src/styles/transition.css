@@ -30,6 +30,21 @@
   transform: scale(1);
   animation: scaleIn 0.8s forwards;
 }
+.skeleton {
+  background-color: rgba(100, 100, 100, 0.5);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 @keyframes fadeY {
   to {
     opacity: 1;

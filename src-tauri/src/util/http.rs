@@ -1,19 +1,21 @@
-use reqwest::{
-    cookie::{CookieStore, Jar},
-    header, Client, Url,
-}; // 添加 Url 导入
+use reqwest::{cookie::Jar, header, Client};
 use serde::{Deserialize, Serialize};
 use std::{collections::VecDeque, sync::Arc};
-
+/**
+ * 当前下载状态
+ */
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
 pub enum DownloadStatus {
-    Pending,
-    Paused,
-    Downloading,
-    Finished,
-    Failed,
+    Pending,     /* 等待下载 */
+    Paused,      /* 暂停下载 */
+    Downloading, /* 下载中 */
+    Finished,    /* 下载完成 */
+    Failed,      /* 下载失败 */
 }
 
+/**
+ * 下载队列，使用双向队列存储，提升性能
+ */
 #[derive(Default)]
 pub struct DownloadQueue {
     pub queue: VecDeque<Task>,
@@ -31,12 +33,15 @@ impl DownloadQueue {
         self.queue.is_empty()
     }
 }
+/**
+ * 下载任务
+ */
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct Task {
-    pub id: String,
-    pub progress: Progress,
-    pub status: DownloadStatus,
-    pub url: String,
+    pub id: String,             /* 任务ID， 使用Bilibili视频号存储 */
+    pub progress: Progress,     /* 当前进度 */
+    pub status: DownloadStatus, /* 当前下载状态 */
+    pub url: String,            /* 下载链接 */
 }
 impl Task {
     pub fn create(id: &String, url: &String) -> Self {
@@ -61,13 +66,16 @@ impl Progress {
             current_size,
         }
     }
+    /**
+     * 取得当前进度比率
+     */
     pub fn progress(&self) -> f64 {
         self.current_size as f64 / self.total_size as f64
     }
 }
 pub struct HttpClient {
     pub client: Client,
-    pub cookie_jar: Arc<Jar>, // 添加 cookie_jar 字段
+    pub cookie_jar: Arc<Jar>,
 }
 
 impl HttpClient {
@@ -82,7 +90,10 @@ impl HttpClient {
         HttpClient {
             client,
             cookie_jar: jar,
-        } // 存储 cookie_jar
+        }
+    }
+    pub fn save(&self) {
+        todo!("存储cookie")
     }
 }
 

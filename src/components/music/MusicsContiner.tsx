@@ -24,13 +24,13 @@ const MusicContiner: React.FC = () => {
   return (
     <div className="fade-in-up flex flex-col w-full h-full rounded-lg p-4 gap-8">
       {currentFolder && (
-        <div>
+        <div className="px-8">
           <div className="gap-6 flex flex-row">
             <img className="rounded-md w-80" src={currentFolder?.info.cover}></img>
-            <div className="flex flex-col w-full justify-center">
+            <div className="flex flex-col w-full justify-center gap-5">
               <section className="flex flex-col gap-3 w-full">
-                <p className="text-4xl font-bold">{currentFolder?.info.title}</p>
-                <p className="text-lg text-[#999999]">
+                <p className="text-2xl font-bold">{currentFolder?.info.title}</p>
+                <p className="text-md text-[#999999]">
                   这是默认收藏夹，没有任何的简介，我爱你，谢谢你同意
                 </p>
               </section>
@@ -63,7 +63,7 @@ const MusicContiner: React.FC = () => {
         {currentFolder?.medias.map((item, idx) => {
           return (
             <div ref={el => (itemRefs.current[idx] = el)} key={item.bvid}>
-              <MusicCard name={item.title} cover={item.cover} key={item.id} bvid={item.bvid} />
+              <MusicCard duration={item.duration} name={item.title} cover={item.cover} key={item.id} bvid={item.bvid} />
             </div>
           );
         })}

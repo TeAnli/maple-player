@@ -6,19 +6,19 @@ export interface MusicProps {
   name: string;
   cover: string;
   bvid: string;
+  duration: number;
 }
 
-const MusicCard: React.FC<MusicProps> = ({ name, cover, bvid }) => {
+const MusicCard: React.FC<MusicProps> = ({ name, cover, bvid, duration }) => {
   const setCurrentMusic = useMusicStore(state => state.setCurrentMusic);
 
   const playMusic = async () => {
     let cid = await invoke("get_cid_by_bvid", { bvid });
     let url = await invoke<string>("get_audio_url", { cid, bvid });
-    console.log(url);
     setCurrentMusic({
       name,
       cover,
-      duration: 0,
+      duration,
       current: 0,
       audioUrl: url
     });

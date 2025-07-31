@@ -77,6 +77,10 @@
   .default-button {
     @apply bg-foreground maple-button hover:bg-[rgba(var(--color-card-hovered))] active:bg-[rgba(var(--color-card-active))] border border-neutral-600;
   }
+
+  .slider {
+    @apply w-full accent-gray-300;
+  }
 }
 /* 滑块scrollbar样式 */
 ::-webkit-scrollbar {

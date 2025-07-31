@@ -24,21 +24,12 @@ struct AppState {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        // 状态管理
-        .setup(|app| {
-            app.manage(Mutex::new(AppState {
-                http_client: http::HttpClient::new(),
-                download_queue: http::DownloadQueue::new(),
-                config: config::Config::new(),
-                audio_player: audio_player::AudioPlayer::new(),
-            }));
-            Ok(())
-        })
-        // 注册插件
+        /* 注册插件 */
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_opener::init())
+        /* 日志记录 */
         .plugin(
             tauri_plugin_log::Builder::new()
                 .targets([
@@ -48,7 +39,7 @@ pub fn run() {
                 ])
                 .build(),
         )
-        // 注册tauri API接口
+        /* 注册tauri API接口 */
         .invoke_handler(tauri::generate_handler![
             commands::request::login,
             commands::request::search_bvid_info,
@@ -59,11 +50,21 @@ pub fn run() {
             commands::request::download,
             commands::request::push_download_queue,
             commands::request::get_audio_url,
-            commands::request::verify_audio_url,
             commands::config::set_download_path,
             commands::config::get_config,
-            commands::player::play_audio
+            commands::player::play_audio,
+            commands::player::pause_audio,
+            commands::player::seek_audio,
+            commands::player::recovery_audio,
+            commands::player::get_duration
         ])
+        /* 状态管理 */
+        .manage(Mutex::new(AppState {
+            http_client: http::HttpClient::new(),
+            download_queue: http::DownloadQueue::new(),
+            config: config::Config::new(),
+            audio_player: audio_player::AudioPlayer::new(),
+        }))
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

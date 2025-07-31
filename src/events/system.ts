@@ -2,7 +2,8 @@ import { listen } from "@tauri-apps/api/event";
 import { load } from "./manager";
 
 export enum EventType {
-  DOWNLOAD_PROGRESS = "download_progress"
+  DOWNLOAD_PROGRESS = "download_progress",
+  MUSIC_PROGRESS = "music_progress"
 }
 type EventHandler = (event: any) => void;
 

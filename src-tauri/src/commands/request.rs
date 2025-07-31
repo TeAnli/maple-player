@@ -293,31 +293,3 @@ pub async fn get_audio_url(
         .to_string();
     Ok(audio_url)
 }
-
-#[tauri::command]
-pub async fn verify_audio_url(state: State<'_, Mutex<AppState>>, url: &str) -> Result<(), String> {
-    let response = state
-        .lock()
-        .await
-        .http_client
-        .client
-        .get(url)
-        .header(
-            header::USER_AGENT,
-            "Mozilla/5.0 BiliDroid/..* (bbcallen@gmail.com)",
-        )
-        .header(header::ACCEPT, "*/*")
-        .header(header::RANGE, "bytes=0-1024")
-        .header("Referer", "https://www.bilibili.com")
-        .send()
-        .await
-        .map_err(|e| e.to_string())?;
-    Ok(())
-}
-#[tauri::command]
-async fn play_audio(state: State<'_, Mutex<AppState>>, url: String) -> Result<(), String> {
-    let response = http::send_get_request(&state.lock().await.http_client.client, url)
-        .await
-        .map_err(|e| e.to_string())?;
-    Ok(())
-}

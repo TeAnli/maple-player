@@ -10,10 +10,14 @@ interface Music {
 
 interface MusicInfo {
   currentMusic: Music | null;
+  progress: number;
   setCurrentMusic: (newValue: Music) => void;
+  setProgress: (newValue: number) => void;
 }
 
 export const useMusicStore = create<MusicInfo>()(set => ({
   currentMusic: null,
-  setCurrentMusic: (newValue: Music) => set(() => ({ currentMusic: newValue }))
+  progress: 0,
+  setCurrentMusic: (newValue: Music) => set(() => ({ currentMusic: newValue })),
+  setProgress: (newValue: number) => set(() => ({ progress: newValue }))
 }));

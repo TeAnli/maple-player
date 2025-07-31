@@ -6,6 +6,7 @@ import { PlaylistItem, useFolderStore } from "../../store/folder";
 import { useNavigate } from "react-router";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import Skeleton from '../common/Skeleton';
 
 const Folderlist: React.FC = () => {
   const uid = useAccountStore(state => state.mid);
@@ -44,6 +45,12 @@ const Folderlist: React.FC = () => {
         </div>
       );
     }
+    if (folderList.length <= 0) {
+      return (
+        <Skeleton height="4rem" count={9} className="mb-2" />
+      );
+    }
+
     return folderList.map((item, idx) => (
       <div
         ref={el => (itemRefs.current[idx] = el)}

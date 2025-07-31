@@ -1,28 +1,43 @@
-use std::{io::Cursor, time::Duration};
+use std::{io::Cursor, sync::Arc, time::Duration};
 
 use reqwest::Client;
-use rodio::{Decoder, OutputStreamBuilder, Sink, Source};
-use tokio::sync::mpsc;
+use rodio::{Decoder, OutputStream, OutputStreamBuilder, Sink};
+use tokio::sync::{
+    mpsc::{self, Sender},
+    Mutex,
+};
 
-pub enum Control {
-    Play,
-    Pause,
+/**
+ * 命令参数
+ */
+pub enum Command<T: Audio> {
+    Play(T),
+    Volume(f32),
+    Seek(Duration),
     Stop,
-    NewAudio(Audio),
+    Pause,
+    Recovery,
 }
-pub enum PlaybackMode {
-    Single,
-    Loop,
-    Shuffle,
+
+pub trait Audio {
+    /**
+     * 获取总时长
+     */
+    fn get_total_duration(&self) -> Duration;
 }
-pub struct Audio {
-    pub url: String,
-    pub duration: u64,
-    pub data: Vec<u8>,
+
+pub struct NetworkAudio {
+    url: String,
+    duration: Duration,
+    data: Cursor<Vec<u8>>,
 }
-impl Audio {
-    pub async fn create(url: String, client: &Client) -> Result<Self, String> {
-        // 添加请求头以模拟浏览器行为
+
+impl NetworkAudio {
+    /**
+     * 创建NetworkAudio对象
+     */
+    pub async fn create(url: String, client: &Client, total_duration: u64) -> Result<Self, String> {
+        /* 获取音频信息 */
         let response = client
             .get(&url)
             .header(
@@ -33,135 +48,142 @@ impl Audio {
             .header("Referer", "https://www.bilibili.com")
             .send()
             .await
-            .map_err(|e| format!("请求音频失败: {}", e))?;
-
-        // 检查响应状态
+            .map_err(|e| e.to_string())?;
         if !response.status().is_success() {
             return Err(format!("获取音频失败，状态码: {}", response.status()));
         }
-
-        // 读取音频数据
-        let data = response
-            .bytes()
-            .await
-            .map_err(|e| format!("读取音频数据失败: {}", e))?;
+        /* 获取音频数据 */
+        let data = response.bytes().await.map_err(|e| e.to_string())?;
+        /* 将音频数据转化为 Vec<u8> */
         let data_vec = data.to_vec();
-
-        let cursor = Cursor::new(data_vec.clone());
-
-        // 尝试解码音频以获取时长
-        let duration = match Decoder::new(cursor) {
-            Ok(decoder) => decoder
-                .total_duration()
-                .unwrap_or(Duration::from_secs(0))
-                .as_secs(),
-            Err(_) => 0,
-        };
-
+        /* 获取音频数据Cursor */
+        let cursor = Cursor::new(data_vec);
+        /* 返回创建好的NetworkAudio对象 */
         Ok(Self {
             url,
-            duration,
-            data: data_vec,
+            duration: Duration::from_secs(total_duration),
+            data: cursor,
         })
     }
 }
+
+impl Audio for NetworkAudio {
+    fn get_total_duration(&self) -> Duration {
+        self.duration
+    }
+}
+
 pub struct AudioPlayer {
-    current_audio: Option<Audio>,
-    queue: Vec<Audio>,
-    playback_mode: PlaybackMode,
-    control: Control,
-    tx: Option<mpsc::Sender<Control>>,
-    rx: Option<mpsc::Receiver<Control>>,
-    volume: f32,
-    is_playing: bool,
+    pub is_playing: Arc<Mutex<bool>>,
+    /* rodio的sink播放器 */
+    sink: Arc<Mutex<Sink>>,
+    /* rodio默认流 */
+    stream: OutputStream,
+    /* 线程同步Sender */
+    command_sender: Sender<Command<NetworkAudio>>,
 }
 impl AudioPlayer {
     pub fn new() -> Self {
-        let (tx, rx) = mpsc::channel(100);
+        let stream = OutputStreamBuilder::open_default_stream().expect("open stream error");
+        let sink = Arc::new(Mutex::new(Sink::connect_new(stream.mixer())));
+        let is_playing = Arc::new(Mutex::new(false));
+        let (command_sender, mut command_receiver) = mpsc::channel::<Command<NetworkAudio>>(100);
+
+        let task_sink = Arc::clone(&sink);
+        let task_playing = Arc::clone(&is_playing);
+        tokio::task::spawn(async move {
+            while let Some(command) = command_receiver.recv().await {
+                let sink = task_sink.lock().await;
+                let mut is_playing = task_playing.lock().await;
+                match command {
+                    Command::Pause => {
+                        sink.pause();
+                        *is_playing = false;
+                    }
+                    Command::Play(audio) => {
+                        /* 通过解析，获取源音频数据 */
+                        let source = Decoder::new(audio.data).unwrap();
+                        /* 清理所有sink中存储的source */
+                        sink.clear();
+                        /* 添加源音频数据到sink中 */
+                        sink.append(source);
+                        /* 播放源音频数据 */
+                        sink.play();
+
+                        *is_playing = true;
+                    }
+                    Command::Volume(volume) => {
+                        sink.set_volume(volume);
+                    }
+                    Command::Recovery => {
+                        sink.play();
+                        *is_playing = true;
+                    }
+                    Command::Stop => {
+                        sink.stop();
+                        *is_playing = false;
+                    }
+                    Command::Seek(duration) => {
+                        let _ = sink.try_seek(duration);
+                    }
+                }
+            }
+        });
 
         Self {
-            current_audio: None,
-            queue: Vec::new(),
-            playback_mode: PlaybackMode::Single,
-            control: Control::Stop,
-            tx: Some(tx),
-            rx: Some(rx),
-            volume: 1.0,
-            is_playing: false,
+            is_playing,
+            sink,
+            stream,
+            command_sender,
         }
-    }
-    pub fn init_playback_thread(&mut self) {
-        // 转移接收端所有权到新线程
-        let rx = self.rx.take().expect("接收端已被移动");
-        let initial_volume = self.volume;
-
-        // 创建新线程处理音频播放
-        tokio::task::spawn(async move {
-            // 初始化音频输出设备
-            let stream_handler = OutputStreamBuilder::open_default_stream()
-                .map_err(|e| e.to_string())
-                .expect("创建音频输出流失败");
-            let sink = Sink::connect_new(&stream_handler.mixer());
-
-            // 设置初始音量
-            sink.set_volume(initial_volume);
-
-            // 播放循环
-
-            // 确保音频流在线程结束前不被销毁
-            drop(stream_handler);
-        });
     }
     /**
-     * 播放
+     * 发送播放音频命令
      */
-    // pub async fn play(&mut self) -> Result<bool, String> {
-    // 确保播放线程已初始化
-    // if self.tx.is_some() && self.rx.is_none() {
-    //     // 如果当前没有音频且队列不为空，则从队列中获取
-    //     if self.current_audio.is_none() && !self.queue.is_empty() {
-    //         self.current_audio = Some(self.queue.remove(0));
-    //     }
-
-    //     // 发送播放命令
-    //     if let Some(audio) = &self.current_audio {
-    //         self.tx
-    //             .as_ref()
-    //             .ok_or("发送端已关闭".to_string())?
-    //             .send(Control::NewAudio(audio.clone()))
-    //             .await
-    //             .map_err(|e| e.to_string())?;
-
-    //         self.control = Control::Play;
-    //         self.is_playing = true;
-    //         return Ok(true);
-    //     }
-    // } else if self.rx.is_some() {
-    //     self.init_playback_thread();
-    //     return self.play().await;
-    // }
-
-    // Ok(false)
-    // }
-
-    pub fn add(&mut self, audio: Audio) {
-        self.queue.push(audio);
+    pub async fn play(&self, audio: NetworkAudio) -> Result<String, String> {
+        self.command_sender
+            .send(Command::Play(audio))
+            .await
+            .map_err(|error| error.to_string())?;
+        Ok("Successful to play audio".to_string())
     }
-    pub fn get_control_state(&self) -> &Control {
-        &self.control
+    /**
+     * 发送暂停音频命令
+     */
+    pub async fn pause(&self) -> Result<String, String> {
+        self.command_sender
+            .send(Command::Pause)
+            .await
+            .map_err(|error| error.to_string())?;
+        Ok("Successful to pause".to_string())
     }
-
-    pub fn get_current_audio(&self) -> Option<&Audio> {
-        self.current_audio.as_ref()
+    /**
+     * 发送调整音频进度命令
+     */
+    pub async fn seek(&self, duration: Duration) -> Result<String, String> {
+        self.command_sender
+            .send(Command::Seek(duration))
+            .await
+            .map_err(|error| error.to_string())?;
+        Ok("Successful to set current duration".to_string())
     }
-}
-
-impl Clone for Audio {
-    fn clone(&self) -> Self {
-        Self {
-            url: self.url.clone(),
-            duration: self.duration,
-            data: self.data.clone(),
+    /**
+     * 发送恢复播放音频命令
+     */
+    pub async fn recovery(&self) -> Result<String, String> {
+        self.command_sender
+            .send(Command::Recovery)
+            .await
+            .map_err(|error| error.to_string())?;
+        Ok("Successful to set current duration".to_string())
+    }
+    /**
+     * 获取当前播放音频的进度
+     */
+    pub async fn get_current_duration(&self) -> Duration {
+        if !*self.is_playing.lock().await {
+            return Duration::from_secs(0);
         }
+        self.sink.lock().await.get_pos()
     }
 }

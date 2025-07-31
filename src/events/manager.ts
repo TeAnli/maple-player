@@ -1,5 +1,6 @@
 import { EventSystem, EventType } from "./system";
 import { Task, useProgressStore } from "../store/download";
+import { useMusicStore } from "../store/music";
 
 export function load() {
   const eventSystem = EventSystem.getInstance();
@@ -16,6 +17,14 @@ export function load() {
       progressStore.setCurrent(current);
       progressStore.setTotal(total);
       progressStore.setQueue(queue);
+    }
+  });
+  eventSystem.subscribe(EventType.MUSIC_PROGRESS, event => {
+    const state = useMusicStore.getState();
+    if (event.payload === "max") {
+      state.setProgress(0);
+    } else {
+      state.setProgress(event.payload);
     }
   });
 }
