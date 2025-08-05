@@ -6,6 +6,7 @@
     "main"
   ],
   "permissions": [
+    "core:path:default",
     "core:default",
     "opener:default",
     "process:default",
@@ -17,6 +18,10 @@
     "core:event:allow-emit",
     "core:event:allow-listen",
     "dialog:default",
-    "log:default"
+    "log:default",
+    {
+      "identifier": "http:default",
+      "allow": [{ "url": "https://*.bilibili.com/*" },{"url": "https://*.endcloud.cn/*"}]
+    }
   ]
 }

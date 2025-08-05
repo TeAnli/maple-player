@@ -11,6 +11,7 @@ use std::io::Write;
 use tauri::Emitter;
 use tauri::State;
 use tokio::sync::Mutex;
+use crate::error::AppError;
 
 /**
  * 通过bvid获取视频信息
@@ -20,7 +21,7 @@ use tokio::sync::Mutex;
 pub async fn search_bvid_info(
     state: State<'_, Mutex<AppState>>,
     bvid: String,
-) -> Result<data::VideoData, String> {
+) -> Result<data::VideoData, AppError> {
     let api_url = URL::new(urls::SEARCH_BVID_INFO)
         .add_param("bvid", &bvid)
         .build();
@@ -36,7 +37,7 @@ pub async fn search_bvid_info(
 pub async fn get_cid_by_bvid(
     state: State<'_, Mutex<AppState>>,
     bvid: String,
-) -> Result<i64, String> {
+) -> Result<i64, AppError> {
     let api_url = URL::new(urls::GET_VEDIO_INFO)
         .add_param("bvid", &bvid)
         .build();
@@ -49,7 +50,7 @@ pub async fn get_cid_by_bvid(
  */
 
 #[tauri::command]
-pub async fn login(state: State<'_, Mutex<AppState>>) -> Result<data::LoginResponse, String> {
+pub async fn login(state: State<'_, Mutex<AppState>>) -> Result<data::LoginResponse, AppError> {
     let api_url = String::from(urls::QRCODE_GENERATE_URL);
     let login_info: data::LoginResponse =
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
@@ -63,7 +64,7 @@ pub async fn login(state: State<'_, Mutex<AppState>>) -> Result<data::LoginRespo
 pub async fn scan_check(
     state: State<'_, Mutex<AppState>>,
     qrcode_key: String,
-) -> Result<i64, String> {
+) -> Result<i64, AppError> {
     let api_url = URL::new(urls::QRCODE_POLL_URL)
         .add_param("qrcode_key", &qrcode_key)
         .build();
@@ -79,7 +80,7 @@ pub async fn scan_check(
 pub async fn get_all_folder(
     state: State<'_, Mutex<AppState>>,
     uid: i64,
-) -> Result<Vec<data::PlaylistData>, String> {
+) -> Result<Vec<data::PlaylistData>, AppError> {
     let api_url = URL::new(urls::GET_ALL_FOLDER_URL)
         .add_param("up_mid", &uid.to_string())
         .build();
@@ -100,7 +101,7 @@ pub async fn get_all_folder(
 pub async fn get_folder_info(
     client: &Client,
     folder_id: i64,
-) -> Result<data::PlaylistData, String> {
+) -> Result<data::PlaylistData, AppError> {
     let api_url = URL::new(urls::GET_FOLDER_INFO_URL)
         .add_param("media_id", &folder_id.to_string())
         .add_param("ps", "20")
@@ -113,7 +114,7 @@ pub async fn get_folder_info(
  * 获取用户信息
  */
 #[tauri::command]
-pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::UserData, String> {
+pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::UserData, AppError> {
     let api_url = String::from(urls::GET_USER_DATA_URL);
     let info: data::UserResponse =
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
@@ -168,7 +169,7 @@ pub async fn download(
         return Ok(String::from("下载队列为空"));
     }
 
-    std::fs::create_dir_all(&state.lock().await.config.download_path).unwrap();
+    std::fs::create_dir_all("./").unwrap();
     let mut is_empty = false;
     while !is_empty {
         println!("start loop");
@@ -212,7 +213,7 @@ pub async fn download(
                     .unwrap()
                     .id
             );
-            let file_path = format!("{}/{file_name}", &state.lock().await.config.download_path);
+            let file_path = format!("./{file_name}");
             //获取文件大小
             let total_size = response.content_length().unwrap_or(0);
             let mut current_size = 0_u64;
@@ -273,21 +274,17 @@ pub async fn get_audio_url(
     state: State<'_, Mutex<AppState>>,
     cid: i64,
     bvid: String,
-) -> Result<String, String> {
+) -> Result<String, AppError> {
     let api_url = URL::new(urls::GET_VEDIO_DOWNLOAD_URL)
         .add_param("fnval", "16")
         .add_param("bvid", &bvid)
         .add_param("cid", &cid.to_string())
+        .add_param("fnver", "0")
+        .add_param("fourk", "1")
         .build();
-    //获取下载资源
-    let response = state.lock().await.http_client.client.get(api_url)
-        .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-        .header(header::REFERER, "https://www.bilibili.com/")
-        .send()
-        .await.map_err(|e| e.to_string())?;
-    let json: Value = response.json().await.map_err(|e| e.to_string())?;
+    let response: Value = http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
     //获取文件下载路径
-    let audio_url = json["data"]["dash"]["audio"][0]["base_url"]
+    let audio_url = response["data"]["dash"]["audio"][0]["baseUrl"]
         .as_str()
         .unwrap()
         .to_string();

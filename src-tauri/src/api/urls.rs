@@ -40,8 +40,7 @@ pub const GET_VEDIO_INFO: &str = "https://api.bilibili.com/x/web-interface/view"
  * 1. `bvid` 参数
  * 2. `cid` 参数
  */
-pub const GET_VEDIO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/wbi/playurl";
-
+pub const GET_VEDIO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/playurl";
 
 pub struct URL {
     url: String,

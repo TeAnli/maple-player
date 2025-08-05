@@ -1,6 +1,9 @@
 use reqwest::{cookie::Jar, header, Client};
 use serde::{Deserialize, Serialize};
 use std::{collections::VecDeque, sync::Arc};
+use reqwest::header::HeaderMap;
+use crate::error::{AppError};
+
 /**
  * 当前下载状态
  */
@@ -97,16 +100,20 @@ impl HttpClient {
     }
 }
 
-pub async fn send_get_request<T>(client: &Client, url: String) -> Result<T, String>
+pub async fn send_get_request<T>(client: &Client, url: String) -> Result<T, AppError>
 where
     T: serde::de::DeserializeOwned,
 {
+
+    let mut headers = HeaderMap::new();
+    headers.insert(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36".parse().unwrap());
+    headers.insert(header::REFERER, "https://www.bilibili.com/".parse().unwrap());
     let response = client
         .get(url)
-        .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-        .header(header::REFERER, "https://www.bilibili.com/")
+        .headers(headers)
         .send()
         .await
-        .map_err(|e| e.to_string())?;
-    response.json().await.map_err(|e| e.to_string())
+        .map_err(|error| AppError::HttpRequest(error))?;
+
+    response.json().await.map_err(|error| AppError::HttpRequest(error))
 }

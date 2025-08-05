@@ -71,7 +71,10 @@ const Folderlist: React.FC = () => {
     ));
   };
   return (
-    <div className="w-full h-full flex items-center flex-col gap-2 px-8 py-2">{handleFolder()}</div>
+    <div className="w-full h-full flex flex-col gap-2 px-8 py-2">
+      <h1 className="text-2xl font-bold">你的收藏夹</h1>
+      <div className="px-4">{handleFolder()}</div>
+    </div>
   );
 };
 

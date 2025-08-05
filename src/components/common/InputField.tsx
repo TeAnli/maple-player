@@ -35,10 +35,10 @@ const InputField: React.FC<InputFieldProps> = ({
       onChange={handleChange}
       placeholder={placeholder}
       className={`
-          w-full h-10 px-3 rounded-md bg-card
-          transition-all duration-300 ease-in-out
-          outline-none justify-center
-          focus:scale-105 focus:border-neutral-300
+          w-64 h-8 px-3 rounded-md bg-foreground
+          transition-all duration-300 outline-none justify-center
+          border border-[0.5px] border-neutral-600
+          focus:w-72 focus:drop-shadow-xl
         `}
     />
   );

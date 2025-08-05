@@ -28,6 +28,17 @@ urlencoding = "2.1"
 tokio = { version = "1.47.0", features = ["full"] }
 futures-util = "0.3.21"
 tauri-plugin-dialog = "2"
-tauri-plugin-http = "2"
+tauri-plugin-http = { version = "2", features = ["unsafe-headers"] }
 rodio = "0.21.1"
 tauri-plugin-log = "2"
+hyper = { version = "0.14.20", features = ["full"] }
+hyper-rustls = "0.23.0"
+anyhow = "1.0.68"
+thiserror = "2.0.12"
+[features]
+# by default Tauri runs in production mode
+# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
+default = [ "custom-protocol" ]
+# this feature is used used for production builds where `devPath` points to the filesystem
+# DO NOT remove this
+custom-protocol = [ "tauri/custom-protocol" ]

@@ -1,7 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useRef, useState } from "react";
-import Button from "../components/common/Button";
+
+import { fetch } from "@tauri-apps/plugin-http"
 import { useNavigate } from "react-router";
 import { useAccountStore } from "../store/account";
 import gsap from "gsap";
@@ -13,7 +14,6 @@ interface QRCodeResponse {
     qrcode_key: string;
   };
 }
-
 interface UserData {
   mid: number;
   face: string;
@@ -93,6 +93,16 @@ const QRCodePage: React.FC = () => {
 
   // 获取二维码
   const fetchQRCode = async () => {
+
+    let response = await fetch("https://passport.bilibili.com/x/passport-login/web/qrcode/generate", {
+      method: "GET",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "Referer": "https://www.bilibili.com/",
+      },
+    });
+    let data = await response;
+    console.log(data)
     try {
       const response = await invoke<QRCodeResponse>("login");
       qrcodeKey.current = response.data.qrcode_key;

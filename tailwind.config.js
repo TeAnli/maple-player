@@ -23,13 +23,13 @@ module.exports = {
         title: "MrsSheppards"
       },
       width: {
-        sidebar: "120px"
+        sidebar: "100px"
       },
       height: {
         header: "4rem"
       },
       margin: {
-        sidebar: "120px"
+        sidebar: "100px"
       }
     }
   },

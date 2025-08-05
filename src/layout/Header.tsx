@@ -2,6 +2,8 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useNavigate } from "react-router";
 import Button from "../components/common/Button";
 import CloseIcon from "../assets/icons/Close.svg";
+import Search from "../pages/Search.tsx";
+import InputField from "../components/common/InputField.tsx";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -12,26 +14,32 @@ const Header: React.FC = () => {
   };
 
   return (
-    <div className="w-full py-4 px-4 fade-in-down">
+    <div className="w-full fade-in-down">
       <div
-        className="w-full flex justify-between items-center bg-foreground rounded-lg border border-neutral-700 p-2"
+        className="w-full flex justify-between items-center p-4"
         data-tauri-drag-region
       >
         <section className="space-x-4">
-          <Button
+          <Button color="border"
             onClick={() => {
               navigate(-1);
             }}
           >
             {"<"}
           </Button>
-          <Button
+          <Button color="border"
             onClick={() => {
               navigate("login");
             }}
           >
             登录
           </Button>
+
+        </section>
+        <section>
+          <InputField>
+
+          </InputField>
         </section>
         <section>
           <img
