@@ -1,58 +1,66 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation, useOutlet } from "react-router";
 import Header from "./Header";
 import Drawer from "./Drawer";
 import Sidebar from "./Sidebar";
-import { useState } from "react";
 import { useFolderStore } from "../store/folder";
-import { useMusicStore } from "../store/music";  // 导入音乐存储
-
+import React, { useRef } from "react";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 const Layout: React.FC = () => {
-  const [hidden, setHidden] = useState(false);
-  const currentFolder = useFolderStore((state) => state.currentFolder);
-  const currentMusic = useMusicStore((state) => state.currentMusic);  // 获取当前音乐状态
-
-  // 计算主内容区域的底部边距
-  // 当有音乐播放时(Drawer显示)，添加120px的底部边距
-  const mainBottomMargin = currentMusic ? "pb-[120px]" : "pb-0";
-
+  const currentFolder = useFolderStore(state => state.currentFolder);
+  const location = useLocation();
+  const currentOutlet = useOutlet();
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  useGSAP(() => {
+    gsap.from(imgRef, {
+      opacity: 0,
+      duration: 1
+    });
+  }, []);
   return (
     <div className="font-mukta bg-content text-primary w-full h-[100vh] overflow-hidden flex flex-col">
       <div className="flex flex-1 overflow-hidden">
-        <aside className="w-sidebar border-r border-neutral-700 bg-foreground h-full">
-          <Sidebar />
-        </aside>
-
         <div className="w-full flex-1 flex flex-col overflow-hidden relative">
-          {/* 背景图片 */}
-
-          {currentFolder?.info.cover &&
-            <div className="absolute inset-0 z-0 transition-opacity duration-300 opacity-100 blur-3xl">
+          {currentFolder?.info.cover && location.pathname === "/folder" && (
+            <div className="absolute inset-0 z-0 blur-3xl fade-in">
               <img
+                ref={imgRef}
                 className="h-full w-full object-cover"
                 src={currentFolder?.info.cover}
                 alt="Folder cover"
               />
-              {/* 渐变遮罩层 */}
               <div className="absolute inset-0 bg-gradient-to-t from-content to-neutral-700/80"></div>
             </div>
-          }
-
+          )}
           <header data-tauri-drag-region className="relative z-10">
             <Header />
           </header>
-
-          {/* 主内容区域 - 根据Drawer状态添加底部边距 */}
-          <main className={`flex-1 overflow-y-auto p-4 relative z-10 ${mainBottomMargin} transition-all duration-300`}>
-            <Outlet />
-          </main>
+          <div className="flex flex-1 overflow-hidden">
+            <aside className="h-full">
+              <Sidebar />
+            </aside>
+            <main ref={menuRef} className={`flex-1 relative h-full overflow-hidden`}>
+              <SwitchTransition mode="out-in">
+                <CSSTransition
+                  key={location.pathname}
+                  appear={true}
+                  timeout={300}
+                  classNames="fade"
+                  unmountOnExit
+                >
+                  {currentOutlet}
+                </CSSTransition>
+              </SwitchTransition>
+            </main>
+          </div>
+          <div className="w-full bg-transparent">
+            <Drawer />
+          </div>
         </div>
       </div>
-
-      {/* 底部抽屉 - 使用fixed定位固定在底部 */}
-      <div className="w-full fixed bottom-0 left-0 right-0 z-20">
-        <Drawer />
-      </div>
-    </div >
+    </div>
   );
 };
 

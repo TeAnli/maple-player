@@ -83,16 +83,16 @@ pub struct HttpClient {
 
 impl HttpClient {
     pub fn new() -> Self {
-        let jar = Arc::new(Jar::default());
+        let cookie_jar = Arc::new(Jar::default());
         let client = Client::builder()
             .cookie_store(true)
-            .cookie_provider(jar.clone())
+            .cookie_provider(cookie_jar.clone())
             .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
             .build()
             .expect("Failed to create http client");
         HttpClient {
             client,
-            cookie_jar: jar,
+            cookie_jar,
         }
     }
     pub fn save(&self) {

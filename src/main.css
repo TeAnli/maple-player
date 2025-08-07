@@ -55,10 +55,11 @@
   --color-card-hovered: 103, 103, 103, 0.5;
   --color-card-active: 103, 103, 103, 0.4;
 }
+
 /* TODO: 实现颜色风格样式, 用户通过选择改变 primary 和 secondary 颜色 */
 @layer base {
   * {
-    font-family: font-title;
+    @apply box-border m-0 p-0;
   }
 }
 @layer components {
@@ -71,20 +72,17 @@
     @apply bg-clip-text linear-theme text-transparent;
   }
   .maple-button {
-    @apply rounded-xl text-base px-2 py-1 transition-all duration-150 hover:scale-110 active:scale-95 font-mukta;
+    @apply rounded-full text-sm px-2 py-1 transition-all duration-300;
   }
   /* 带有主题按钮样式 */
   .theme-button {
-    @apply linear-theme maple-button font-bold px-4;
+    @apply linear-theme maple-button font-bold;
   }
   /* 默认按钮样式 */
   .default-button {
-    @apply bg-foreground/90 maple-button hover:bg-[rgba(var(--color-card-hovered))] active:bg-[rgba(var(--color-card-active))] text-neutral-300 font-bold px-4 py-2;
+    @apply bg-neutral-500/20 maple-button hover:bg-[rgba(var(--color-card-hovered))] active:bg-[rgba(var(--color-card-active))] border border-neutral-500/30 text-neutral-300 font-bold px-8 py-2;
   }
-  /* 默认按钮样式 */
-  .default-border-button {
-    @apply bg-foreground/80 maple-button hover:bg-[rgba(var(--color-card-hovered))] active:bg-[rgba(var(--color-card-active))] border border-[0.5px] border-neutral-600  text-neutral-500;
-  }
+  /* 主菜单搜索框样式 */
 }
 /* 滑块scrollbar样式 */
 ::-webkit-scrollbar {
@@ -97,4 +95,22 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #555;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
 }

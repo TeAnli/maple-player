@@ -1,18 +1,16 @@
 import { RouterProvider } from "react-router";
 import { router } from "./router/routes";
-import { invoke } from "@tauri-apps/api/core";
 import { useEffect } from "react";
+import { EventSystem } from "./events/system";
+import { loadTaskLog } from "./utils/logger";
 
 function App() {
-
   useEffect(() => {
-    const init = async () => {
-      /* 启动拦截代理服务器 */
-      await invoke("start_proxy_server");
-    }
-    init();
-  }, [])
-
+    loadTaskLog("事件装载", () => {
+      EventSystem.getInstance().loadEventHandler();
+      EventSystem.getInstance().handle_all();
+    });
+  }, []);
   return <RouterProvider router={router} />;
 }
 export default App;

@@ -1,5 +1,10 @@
 /* 动画过渡效果 不同方向*/
 
+.fade-in {
+  opacity: 0;
+  animation: fade 1s forwards;
+}
+
 /* 从左到右 */
 .fade-in-enter {
   opacity: 0;
@@ -9,7 +14,7 @@
 /* 从下到上 */
 .fade-in-up {
   opacity: 0;
-  transform: translateY(100px);
+  transform: translateY(10px);
   animation: fadeY 0.8s forwards;
 }
 /* 从上到下 */
@@ -67,5 +72,10 @@
   to {
     opacity: 0;
     transform: scale(0);
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 100;
   }
 }

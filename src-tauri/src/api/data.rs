@@ -13,6 +13,7 @@ pub type FolderResponse = GenericResponse<FolderData>;
 pub type UserResponse = GenericResponse<UserData>;
 pub type LoginResponse = GenericResponse<LoginData>;
 pub type CidResponse = GenericResponse<CidData>;
+pub type BannerResponse = GenericResponse<BannerData>;
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct VideoData {
@@ -22,6 +23,17 @@ pub struct VideoData {
     owner: VideoOwner,
     stat: VideoStat,
     pic: String,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct BannerData {
+    pub region_banner_list: Vec<BannerInfo>,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct BannerInfo {
+    pub image: String,
+    pub title: String,
+    pub url: String,
+    pub color: String
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]

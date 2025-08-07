@@ -1,32 +1,38 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-interface AccountInfo {
+type AccountState = {
   isLogin: boolean;
   mid: number | null;
   uname: string;
   face: string;
-  setLoginState: (isLogin: boolean) => void;
-  setUID: (uid: number) => void;
-  setName: (name: string) => void;
-  setHeader: (url: string) => void;
+};
+type AccountAction = {
+  updateLoginState: (isLogin: AccountState["isLogin"]) => void;
+  updateUID: (uid: AccountState["mid"]) => void;
+  updateName: (name: AccountState["uname"]) => void;
+  updateHeader: (url: AccountState["face"]) => void;
+  updateData: (data: {
+    isLogin: AccountState["isLogin"];
+    mid: AccountState["mid"] | null;
+    uname: AccountState["uname"];
+    face: AccountState["face"];
+  }) => void;
+};
 
-  setData: (data: { isLogin: boolean; mid: number | null; uname: string; face: string }) => void;
-}
-
-export const useAccountStore = create<AccountInfo>()(
+export const useAccountStore = create<AccountState & AccountAction>()(
   persist(
-    (set, get) => ({
+    set => ({
       isLogin: false,
       mid: null,
       uname: "",
       face: "",
-      setLoginState: (isLogin: boolean) => set(() => ({ isLogin: isLogin })),
-      setUID: (uid: number) => set(() => ({ mid: uid })),
-      setName: (name: string) => set(() => ({ uname: name })),
-      setHeader: (url: string) => set(() => ({ face: url })),
+      updateLoginState: isLogin => set(() => ({ isLogin: isLogin })),
+      updateUID: uid => set(() => ({ mid: uid })),
+      updateName: name => set(() => ({ uname: name })),
+      updateHeader: url => set(() => ({ face: url })),
 
-      setData: (data: { isLogin: boolean; mid: number | null; uname: string; face: string }) =>
+      updateData: data =>
         set(() => ({
           isLogin: data.isLogin,
           mid: data.mid,

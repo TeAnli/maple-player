@@ -11,7 +11,6 @@ use tokio::sync::Mutex;
 use util::config;
 use util::http;
 
-
 /**
  * 应用状态管理
  * 用于管理应用的全局状态，包括网络请求、下载队列、配置信息。
@@ -27,13 +26,12 @@ struct AppState {
  */
 #[tauri::command]
 async fn start_proxy_server() {
-    thread::spawn(||{
-        proxy_server::main().expect("Failed to start proxy server");
-    });
+
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+
     tauri::Builder::default()
         /* 注册插件 */
         .plugin(tauri_plugin_http::init())
@@ -50,6 +48,13 @@ pub fn run() {
                 ])
                 .build(),
         )
+        .setup(|_|{
+            /* 创建代理服务器线程 */
+            thread::spawn(|| {
+                proxy_server::main().expect("Failed to start proxy server");
+            });
+            Ok(())
+        })
         /* 注册tauri API接口 */
         .invoke_handler(tauri::generate_handler![
             start_proxy_server,
@@ -62,6 +67,7 @@ pub fn run() {
             commands::request::download,
             commands::request::push_download_queue,
             commands::request::get_audio_url,
+            commands::request::get_music_banners
         ])
         /* 状态管理 */
         .manage(Mutex::new(AppState {

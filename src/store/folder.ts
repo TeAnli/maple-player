@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-
-export interface PlaylistItem {
+import { createJSONStorage, persist } from "zustand/middleware";
+export type PlaylistItem = {
   info: {
     id: number;
     mid: number;
@@ -18,22 +17,24 @@ export interface PlaylistItem {
     duration: number;
     url: string;
   }>;
-}
+};
 
-interface FolderInfo {
+type FolderState = {
   folderList: Array<PlaylistItem>;
   currentFolder: PlaylistItem | null;
-  setCurrentFolder: (item: PlaylistItem) => void;
-  setFolderList: (list: Array<PlaylistItem>) => void;
-}
+};
+type FolderAction = {
+  updateCurrentFolder: (item: FolderState["currentFolder"]) => void;
+  updateFolderList: (list: FolderState["folderList"]) => void;
+};
 
-export const useFolderStore = create<FolderInfo>()(
+export const useFolderStore = create<FolderState & FolderAction>()(
   persist(
-    (set, get) => ({
+    set => ({
       currentFolder: null,
-      setCurrentFolder: (item: PlaylistItem) => set(() => ({ currentFolder: item })),
       folderList: [],
-      setFolderList: (list: Array<PlaylistItem>) => set(() => ({ folderList: list }))
+      updateCurrentFolder: newValue => set(() => ({ currentFolder: newValue })),
+      updateFolderList: newValue => set(() => ({ folderList: newValue }))
     }),
     {
       name: "folder_storage",

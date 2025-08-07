@@ -10,9 +10,10 @@ import HomeIcon from "../assets/icons/Home.svg";
 import SendIcon from "../assets/icons/Send.svg";
 import DownloadIcon from "../assets/icons/Download.svg";
 import OptionsIcon from "../assets/icons/Options.svg";
+import LoginIcon from "../assets/icons/Auth.svg";
+import LogoutIcon from "../assets/icons/Logout.svg";
 
 import QRCodePage from "../pages/QRCodePage";
-import Search from "../pages/Search";
 import FolderPage from "../pages/FolderPage";
 
 export const router = createBrowserRouter([
@@ -33,10 +34,6 @@ export const router = createBrowserRouter([
         element: <Options />
       },
       {
-        path: "/search",
-        element: <Search />
-      },
-      {
         path: "/user",
         element: <User />
       },
@@ -51,7 +48,7 @@ export const router = createBrowserRouter([
     ]
   }
 ]);
-export const routes = [
+export const mainRoutes = [
   {
     id: "home",
     path: "/",
@@ -75,5 +72,19 @@ export const routes = [
     path: "/options",
     label: "Options",
     icon: OptionsIcon
+  }
+];
+export const authRoutes = [
+  {
+    id: "login",
+    path: "/login",
+    label: "Login",
+    icon: LoginIcon
+  },
+  {
+    id: "logout",
+    path: "/logout",
+    label: "Logout",
+    icon: LogoutIcon
   }
 ];

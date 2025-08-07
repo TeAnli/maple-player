@@ -34,13 +34,20 @@ pub const SEARCH_BVID_INFO: &str = "https://api.bilibili.com/x/web-interface/vie
  * 获取视频信息 GET请求
  * 1. `bvid` 参数
  */
-pub const GET_VEDIO_INFO: &str = "https://api.bilibili.com/x/web-interface/view";
+pub const GET_VIDEO_INFO: &str = "https://api.bilibili.com/x/web-interface/view";
 /**
  * 获取视频下载地址 GET请求
  * 1. `bvid` 参数
  * 2. `cid` 参数
  */
-pub const GET_VEDIO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/playurl";
+pub const GET_VIDEO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/playurl";
+
+/**
+ * 获取音乐区轮播图信息
+ * 1. `region_id`: 分区参数
+ */
+pub const MUSIC_BANNER_URL: &str = "https://api.bilibili.com/x/web-show/region/banner";
+
 
 pub struct URL {
     url: String,

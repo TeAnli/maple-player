@@ -1,4 +1,6 @@
+use crate::api::data::{BannerData, BannerInfo};
 use crate::api::urls::URL;
+use crate::error::AppError;
 use crate::util::http::{self, Task};
 use crate::{
     api::{data, urls},
@@ -7,11 +9,11 @@ use crate::{
 use futures_util::StreamExt;
 use reqwest::{header, Client};
 use serde_json::Value;
+use std::fmt::format;
 use std::io::Write;
 use tauri::Emitter;
 use tauri::State;
 use tokio::sync::Mutex;
-use crate::error::AppError;
 
 /**
  * 通过bvid获取视频信息
@@ -38,17 +40,17 @@ pub async fn get_cid_by_bvid(
     state: State<'_, Mutex<AppState>>,
     bvid: String,
 ) -> Result<i64, AppError> {
-    let api_url = URL::new(urls::GET_VEDIO_INFO)
+    let api_url = URL::new(urls::GET_VIDEO_INFO)
         .add_param("bvid", &bvid)
         .build();
-    let vedio: data::CidResponse =
+    let video: data::CidResponse =
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
-    Ok(vedio.data.cid)
+    Ok(video.data.cid)
 }
+
 /**
  * 生成登陆二维码
  */
-
 #[tauri::command]
 pub async fn login(state: State<'_, Mutex<AppState>>) -> Result<data::LoginResponse, AppError> {
     let api_url = String::from(urls::QRCODE_GENERATE_URL);
@@ -71,6 +73,42 @@ pub async fn scan_check(
     let scan_info: data::ScanResponse =
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
     Ok(scan_info.data.code)
+}
+/**
+ * 获取轮播图
+ */
+#[tauri::command]
+pub async fn get_music_banners(
+    state: State<'_, Mutex<AppState>>,
+) -> Result<Vec<BannerInfo>, AppError> {
+    let api_url = URL::new(urls::MUSIC_BANNER_URL)
+        .add_param("region_id", "1003")
+        .build();
+
+    let banner_response: Value =
+        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+
+    let mut banner_list = Vec::new();
+    if let Some(banners) = banner_response["data"]["region_banner_list"].as_array() {
+        for banner in banners {
+            let response: Value = http::send_get_request(
+                &state.lock().await.http_client.client,
+                format!(
+                    "{}@.avg_color",
+                    String::from(banner["image"].as_str().unwrap())
+                ),
+            )
+            .await?;
+            let info = BannerInfo {
+                image: String::from(banner["image"].as_str().unwrap()),
+                url: String::from(banner["url"].as_str().unwrap()),
+                title: String::from(banner["title"].as_str().unwrap()),
+                color: String::from(response["RGB"].as_str().unwrap()),
+            };
+            banner_list.push(info);
+        }
+    }
+    Ok(banner_list)
 }
 /**
  * 获取所有文件夹
@@ -120,6 +158,30 @@ pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::Us
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
     Ok(info.data)
 }
+
+#[tauri::command]
+pub async fn get_audio_url(
+    state: State<'_, Mutex<AppState>>,
+    cid: i64,
+    bvid: String,
+) -> Result<String, AppError> {
+    let api_url = URL::new(urls::GET_VIDEO_DOWNLOAD_URL)
+        .add_param("fnval", "16")
+        .add_param("bvid", &bvid)
+        .add_param("cid", &cid.to_string())
+        .add_param("fnver", "0")
+        .add_param("fourk", "1")
+        .build();
+    let response: Value =
+        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+    //获取文件下载路径
+    let audio_url = response["data"]["dash"]["audio"][0]["baseUrl"]
+        .as_str()
+        .unwrap()
+        .to_string();
+    Ok(audio_url)
+}
+
 /**
  * 下载视频
  * * `bvid` 视频bvid
@@ -131,7 +193,7 @@ pub async fn push_download_queue(
     bvid: String,
     cid: i64,
 ) -> Result<String, String> {
-    let api_url = URL::new(urls::GET_VEDIO_DOWNLOAD_URL)
+    let api_url = URL::new(urls::GET_VIDEO_DOWNLOAD_URL)
         .add_param("fnval", "4048")
         .add_param("bvid", &bvid)
         .add_param("cid", &cid.to_string())
@@ -268,25 +330,4 @@ pub async fn download(
         .emit("download_progress", result)
         .map_err(|e: tauri::Error| e.to_string())?;
     Ok(String::from("success"))
-}
-#[tauri::command]
-pub async fn get_audio_url(
-    state: State<'_, Mutex<AppState>>,
-    cid: i64,
-    bvid: String,
-) -> Result<String, AppError> {
-    let api_url = URL::new(urls::GET_VEDIO_DOWNLOAD_URL)
-        .add_param("fnval", "16")
-        .add_param("bvid", &bvid)
-        .add_param("cid", &cid.to_string())
-        .add_param("fnver", "0")
-        .add_param("fourk", "1")
-        .build();
-    let response: Value = http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
-    //获取文件下载路径
-    let audio_url = response["data"]["dash"]["audio"][0]["baseUrl"]
-        .as_str()
-        .unwrap()
-        .to_string();
-    Ok(audio_url)
 }

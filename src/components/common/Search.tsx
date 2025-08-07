@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 export interface InputFieldProps {
   type?: "text" | "password" | "number" | "email" | "search";
@@ -8,7 +8,7 @@ export interface InputFieldProps {
   onChange?: (value: string) => void;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+const Search: React.FC<InputFieldProps> = ({
   type = "text",
   placeholder,
   value,
@@ -35,13 +35,10 @@ const InputField: React.FC<InputFieldProps> = ({
       onChange={handleChange}
       placeholder={placeholder}
       className={`
-          w-64 h-8 px-3 rounded-md bg-foreground
-          transition-all duration-300 outline-none justify-center
-          border border-[0.5px] border-neutral-600
-          focus:w-72 focus:drop-shadow-xl
-        `}
+          w-1/3 h-full rounded-md bg-transparent p-6 text-lg
+          transition-all duration-300 outline-none justify-center`}
     />
   );
 };
 
-export default InputField;
+export default Search;

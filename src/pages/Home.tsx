@@ -1,17 +1,5 @@
 import Folderlist from "../components/music/Folderlist";
-
-interface Response {
-  code: number;
-  data: Data;
-}
-interface Data {
-  data: Array<Item>;
-}
-interface Item {
-  title: string;
-  uname: string;
-  cover: string;
-}
+import React from "react";
 
 const Home: React.FC = () => {
   return (

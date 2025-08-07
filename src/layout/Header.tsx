@@ -1,53 +1,31 @@
-import { getCurrentWindow } from "@tauri-apps/api/window";
-import { useNavigate } from "react-router";
-import Button from "../components/common/Button";
-import CloseIcon from "../assets/icons/Close.svg";
-import Search from "../pages/Search.tsx";
-import InputField from "../components/common/InputField.tsx";
+import Search from "../components/common/Search.tsx";
 
 const Header: React.FC = () => {
-  const navigate = useNavigate();
-
-  const closeWindow = () => {
-    let window = getCurrentWindow();
-    window.close();
-  };
-
   return (
-    <div className="w-full fade-in-down">
-      <div
-        className="w-full flex justify-between items-center p-4"
-        data-tauri-drag-region
-      >
-        <section className="space-x-4">
-          <Button color="border"
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            {"<"}
-          </Button>
-          <Button color="border"
-            onClick={() => {
-              navigate("login");
-            }}
-          >
-            登录
-          </Button>
+    <div className="flex items-center justify-center w-full fade-in-down px-6 py-4 gap-2">
+      <svg width="60" height="60" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M14.5833 30.625C12.9792 30.625 11.6059 30.0538 10.4635 28.9115C9.32118 27.7691 8.75 26.3958 8.75 24.7917C8.75 23.1875 9.32118 21.8142 10.4635 20.6719C11.6059 19.5295 12.9792 18.9583 14.5833 18.9583C15.1424 18.9583 15.6528 19.0313 16.1146 19.1771C16.6007 19.2986 17.0625 19.4931 17.5 19.7604V4.375H26.25V10.2083H20.4167V24.7917C20.4167 26.3958 19.8455 27.7691 18.7031 28.9115C17.5608 30.0538 16.1875 30.625 14.5833 30.625Z"
+          fill="rgb(244, 186, 24)"
+        />
+      </svg>
 
-        </section>
-        <section>
-          <InputField>
+      <div className="w-full flex items-center h-16 py-8 px-4" data-tauri-drag-region>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 17 17"
+          fill="none"
+        >
+          <path
+            d="M14.1317 12.5518L17.6717 16.0818C18.1091 16.521 18.1091 17.2326 17.6717 17.6718C17.2325 18.1092 16.5209 18.1092 16.0817 17.6718L12.5517 14.1318C9.47191 16.434 5.09891 16.2208 2.30171 13.4218C-0.767291 10.3528 -0.767291 5.37257 2.30171 2.30177C5.37071 -0.76723 10.3527 -0.76723 13.4217 2.30177C16.2207 5.09897 16.4339 9.47197 14.1317 12.5518ZM3.89751 11.8376C1.70411 9.64417 1.70411 6.09097 3.89751 3.89757C6.09091 1.70417 9.64411 1.70417 11.8375 3.89757C14.0309 6.09097 14.0309 9.64417 11.8375 11.8376C9.64411 14.031 6.09091 14.031 3.89751 11.8376Z"
+            fillRule="evenodd"
+            fill="gray"
+          ></path>
+        </svg>
 
-          </InputField>
-        </section>
-        <section>
-          <img
-            src={CloseIcon}
-            className="opcity-100 size-8 cursor-pointer"
-            onClick={closeWindow}
-          ></img>
-        </section>
+        <Search placeholder="搜索视频"></Search>
       </div>
     </div>
   );

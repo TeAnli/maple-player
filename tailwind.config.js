@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "class", // 添加深色模式支持
+  darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {

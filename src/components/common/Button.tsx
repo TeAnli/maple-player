@@ -3,19 +3,17 @@ import React from "react";
 interface ButtonProps {
   children?: React.ReactNode;
   onClick?: () => void;
-  color?: "theme" | "default" | "border" | "info";
+  style?: "theme" | "default";
+  color?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, onClick, color = "default" }) => {
-  const colors: Record<NonNullable<ButtonProps["color"]>, string> = {
+const Button: React.FC<ButtonProps> = ({ children, onClick, style = "default" }) => {
+  const styles: Record<NonNullable<ButtonProps["style"]>, string> = {
     theme: "theme-button",
-    default: "default-button",
-    border: "default-border-button",
-    info: "default-button"
+    default: "default-button"
   };
-
   return (
-    <button onClick={onClick} className={colors[color]}>
+    <button onClick={onClick} className={styles[style]}>
       {children}
     </button>
   );

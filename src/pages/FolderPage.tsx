@@ -1,10 +1,10 @@
 import React from "react";
-import MusicContiner from "../components/music/MusicsContiner";
+import MusicContainer from "../components/music/MusicContainer.tsx";
 
 const FolderPage: React.FC = () => {
   return (
-    <div className="w-full h-full px-4 gap-4 flex flex-col overflow-y-auto">
-      <MusicContiner></MusicContiner>
+    <div className="w-full h-full gap-4 flex flex-col overflow-y-auto">
+      <MusicContainer></MusicContainer>
     </div>
   );
 };

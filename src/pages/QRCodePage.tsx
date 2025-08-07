@@ -1,12 +1,13 @@
 import { invoke } from "@tauri-apps/api/core";
 import { QRCodeSVG } from "qrcode.react";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { fetch } from "@tauri-apps/plugin-http"
+import { fetch } from "@tauri-apps/plugin-http";
 import { useNavigate } from "react-router";
 import { useAccountStore } from "../store/account";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import Button from "../components/common/Button";
 // 类型定义
 interface QRCodeResponse {
   data: {
@@ -24,7 +25,6 @@ const QRCODE_CONFIG = {
   MAX_RETRIES: 90,
   CHECK_INTERVAL: 2000
 };
-gsap.registerPlugin(useGSAP); // register the hook to avoid React version
 const QRCodePage: React.FC = () => {
   const navigate = useNavigate();
   // 状态管理
@@ -37,7 +37,9 @@ const QRCodePage: React.FC = () => {
     status: "loading",
     error: null
   });
-  const setData = useAccountStore(state => state.setData);
+
+  const updateData = useAccountStore(state => state.updateData);
+
   const checkInterval = useRef<number | null>(null);
   const retryCount = useRef(0);
   const qrcodeKey = useRef("");
@@ -63,7 +65,7 @@ const QRCodePage: React.FC = () => {
       if (status === 0) {
         // 登录成功
         const userData = await invoke<UserData>("get_user_data");
-        setData({
+        updateData({
           isLogin: true,
           mid: userData.mid,
           uname: userData.uname,
@@ -93,16 +95,19 @@ const QRCodePage: React.FC = () => {
 
   // 获取二维码
   const fetchQRCode = async () => {
-
-    let response = await fetch("https://passport.bilibili.com/x/passport-login/web/qrcode/generate", {
-      method: "GET",
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-        "Referer": "https://www.bilibili.com/",
-      },
-    });
+    let response = await fetch(
+      "https://passport.bilibili.com/x/passport-login/web/qrcode/generate",
+      {
+        method: "GET",
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          Referer: "https://www.bilibili.com/"
+        }
+      }
+    );
     let data = await response;
-    console.log(data)
+    console.log(data);
     try {
       const response = await invoke<QRCodeResponse>("login");
       qrcodeKey.current = response.data.qrcode_key;
@@ -137,11 +142,7 @@ const QRCodePage: React.FC = () => {
         return (
           <div className="text-center space-y-2">
             <p className="text-red-500 font-medium">{state.error}</p>
-            {/* <Button
-              onClick={fetchQRCode}
-            >
-              重试
-            </Button> */}
+            <Button onClick={fetchQRCode}>重试</Button>
           </div>
         );
       case "success":
@@ -179,7 +180,7 @@ const QRCodePage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center p-4">
+    <div className="h-full flex flex-col items-center justify-center p-4">
       {render()}
       {state.status === "scanning" && (
         <h1 className="truncate font-bold text-2xl text-center">扫描二维码进行登录</h1>

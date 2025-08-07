@@ -1,4 +1,5 @@
 import { useProgressStore } from "../store/download";
+import React from "react";
 
 interface DownloadCardProps {
   value: number;
