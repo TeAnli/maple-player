@@ -8,6 +8,9 @@ type AccountState = {
   face: string;
   sex: string;
   sign: string;
+  fans: number;
+  attention: number;
+  archive_count: number;
 };
 type AccountAction = {
   updateLoginState: (isLogin: AccountState["isLogin"]) => void;
@@ -23,6 +26,9 @@ type AccountAction = {
     face: AccountState["face"];
     sex: AccountState["sex"];
     sign: AccountState["sign"];
+    fans: AccountState["fans"];
+    attention: AccountState["attention"];
+    archive_count: AccountState["archive_count"];
   }) => void;
 };
 
@@ -35,6 +41,9 @@ export const useAccountStore = create<AccountState & AccountAction>()(
       face: "",
       sex: "",
       sign: "",
+      fans: 0,
+      attention: 0,
+      archive_count: 0,
       updateLoginState: isLogin => set(() => ({ isLogin: isLogin })),
       updateUID: uid => set(() => ({ mid: uid })),
       updateName: name => set(() => ({ name: name })),
@@ -49,7 +58,10 @@ export const useAccountStore = create<AccountState & AccountAction>()(
           name: data.name,
           face: data.face,
           sex: data.sex,
-          sign: data.sign
+          sign: data.sign,
+          fans: data.fans,
+          attention: data.attention,
+          archive_count: data.archive_count
         }))
     }),
     {

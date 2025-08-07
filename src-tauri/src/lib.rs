@@ -25,13 +25,10 @@ struct AppState {
  * 启动代理服务器,用于获取正确的音视频URL
  */
 #[tauri::command]
-async fn start_proxy_server() {
-
-}
+async fn start_proxy_server() {}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-
     tauri::Builder::default()
         /* 注册插件 */
         .plugin(tauri_plugin_http::init())
@@ -48,7 +45,7 @@ pub fn run() {
                 ])
                 .build(),
         )
-        .setup(|_|{
+        .setup(|_| {
             /* 创建代理服务器线程 */
             thread::spawn(|| {
                 proxy_server::main().expect("Failed to start proxy server");
@@ -63,6 +60,7 @@ pub fn run() {
             commands::request::scan_check,
             commands::request::get_all_folder,
             commands::request::get_user_data,
+            commands::request::get_user_card,
             commands::request::get_cid_by_bvid,
             commands::request::download,
             commands::request::push_download_queue,

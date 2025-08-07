@@ -53,6 +53,11 @@ pub const GET_VIDEO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/play
  */
 pub const MUSIC_BANNER_URL: &str = "https://api.bilibili.com/x/web-show/region/banner";
 
+/**
+ * 获取用户名片信息 
+ * 1. `mid`: 目标用户mid
+ */
+pub const GET_USER_CARD_URL: &str = "https://api.bilibili.com/x/web-interface/card";
 
 pub struct URL {
     url: String,

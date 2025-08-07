@@ -1,4 +1,4 @@
-use crate::api::data::{BannerData, BannerInfo, UserResponse};
+use crate::api::data::{BannerData, BannerInfo, UserInfo, UserResponse};
 use crate::api::urls::URL;
 use crate::error::AppError;
 use crate::util::http::{self, Task};
@@ -12,6 +12,7 @@ use reqwest::{header, Client};
 use serde_json::Value;
 use std::fmt::format;
 use std::io::Write;
+use tauri::http::response;
 use tauri::Emitter;
 use tauri::State;
 use tokio::sync::Mutex;
@@ -183,6 +184,28 @@ pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::Us
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
 
     Ok(info.data)
+}
+/**
+ * 获取用户信息
+ */
+#[tauri::command]
+pub async fn get_user_card(
+    state: State<'_, Mutex<AppState>>,
+    mid: i64,
+) -> Result<UserInfo, AppError> {
+    let api_url = URL::new(urls::GET_USER_CARD_URL)
+        .add_param("mid", &mid.to_string())
+        .build();
+    let response: Value =
+        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+    let archive_count = response["data"]["archive_count"].as_i64().unwrap();
+    let fans = response["data"]["card"]["fans"].as_i64().unwrap();
+    let attention = response["data"]["card"]["attention"].as_i64().unwrap();
+    Ok(UserInfo {
+        fans,
+        attention,
+        archive_count,
+    })
 }
 
 #[tauri::command]

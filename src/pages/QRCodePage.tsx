@@ -22,7 +22,11 @@ interface UserData {
   sex: string;
   sign: string;
 }
-
+type UserCardData = {
+  fans: number,
+  attention: number,
+  archive_count: number,
+}
 const QRCODE_CONFIG = {
   MAX_RETRIES: 90,
   CHECK_INTERVAL: 2000
@@ -67,13 +71,18 @@ const QRCodePage: React.FC = () => {
       if (status === 0) {
         // 登录成功
         const userData = await invoke<UserData>("get_user_data");
+        const userCardData = await invoke<UserCardData>("get_user_card", { mid: userData.mid });
+        console.log(userCardData)
         updateData({
           isLogin: true,
           mid: userData.mid,
           name: userData.name,
           face: userData.face,
           sex: userData.sex,
-          sign: userData.sign
+          sign: userData.sign,
+          fans: userCardData.fans,
+          attention: userCardData.attention,
+          archive_count: userCardData.archive_count
         });
         setState(prev => ({ ...prev, status: "success" }));
 

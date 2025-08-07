@@ -1,11 +1,12 @@
 import React from "react";
 import { useAccountStore } from "../store/account";
 import AuthIcon from "@/assets/icons/Auth.svg"
-type InfomationProps = {
+interface InfomationProps {
   title: string,
-  data: string,
+  data: number,
 }
-const InfoCard: React.FC<InfomationProps> = ({ title, data }) => {
+
+const InfoCard: React.FC<InfomationProps> = ({ title, data = 0 }) => {
   return (
     <div className="bg-neutral-600/20 backdrop-blur-lg rounded-xl p-4 items-center justify-center text-center">
       <p className="text-base text-neutral-600">{title}</p>
@@ -40,17 +41,18 @@ const User: React.FC = () => {
 
             </div>
             <div className="flex flex-col gap-2 py-4">
-              <p className="text-4xl font-bold">{account.name || "未登录用户"}</p>
+              <a target="_blank"
+                rel="noopener noreferrer"
+                href={`https://space.bilibili.com/${account.mid}`}
+                className="text-4xl font-bold hover:underline">{account.name || "未登录用户"}</a>
               <p className="text-neutral-400 ">{account.sign || "未知的签名信息"}</p>
               <p className="text-neutral-400 ">UID: {account.mid || "未知uid"} </p>
             </div>
           </div>
           <div className="w-full flex flex-row gap-4 items-center justify-center">
-            <InfoCard title="关注" data="1211"></InfoCard>
-            <InfoCard title="粉丝" data="121"></InfoCard>
-            <InfoCard title="动态" data="1211"></InfoCard>
-
-            <InfoCard title="播放数" data="1211"></InfoCard>
+            <InfoCard title="关注" data={account.attention}></InfoCard>
+            <InfoCard title="粉丝" data={account.fans}></InfoCard>
+            <InfoCard title="作品" data={account.archive_count}></InfoCard>
           </div>
         </div>
       </div>

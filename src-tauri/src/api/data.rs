@@ -11,6 +11,7 @@ pub type PlaylistResponse = GenericResponse<PlaylistData>;
 pub type ScanResponse = GenericResponse<ScanData>;
 pub type FolderResponse = GenericResponse<FolderData>;
 pub type UserResponse = GenericResponse<UserData>;
+pub type UserCardResponse = GenericResponse<UserData>;
 pub type LoginResponse = GenericResponse<LoginData>;
 pub type CidResponse = GenericResponse<CidData>;
 pub type BannerResponse = GenericResponse<BannerData>;
@@ -125,6 +126,13 @@ pub struct UserData {
     pub sign: String,
     pub level: i64,
     pub coins: i64,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct UserInfo {
+    pub fans: i64,
+    pub attention: i64,
+    pub archive_count: i64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
