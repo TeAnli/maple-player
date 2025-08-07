@@ -5,8 +5,6 @@ import { useAccountStore } from "@/store/account.ts";
 import { PlaylistItem, useFolderStore } from "@/store/folder.ts";
 import { useNavigate } from "react-router";
 import { useShallow } from "zustand/react/shallow";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 
 import Skeleton from "../common/Skeleton";
 import Playlist from "./Playlist";
@@ -68,7 +66,7 @@ const Folderlist: React.FC = () => {
         </div>
         <div>
           <h1 className="text-2xl font-bold">你的收藏夹</h1>
-          <div className="w-full h-full grid grid-cols-5 gap-8">
+          <div className="w-full h-full grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {folderList.map((item, idx) => (
               <div
                 ref={el => (itemRefs.current[idx] = el)}

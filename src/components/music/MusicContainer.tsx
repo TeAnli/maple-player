@@ -40,12 +40,8 @@ const MusicContainer: React.FC = () => {
                 <p className="text-base text-[#999999]">这是默认收藏夹，没有任何的简介</p>
                 <div className="flex flex-row gap-4">
                   <div className="flex flex-row items-center gap-2">
-                    <p className="text-[#999999] text-base">loves: 114514</p>
-                  </div>
-                  -
-                  <div className="flex flex-row items-center gap-2">
                     <p className="text-[#999999] text-base">
-                      songs: {currentFolder?.medias.length}
+                      歌曲数: {currentFolder?.medias.length}
                     </p>
                   </div>
                 </div>

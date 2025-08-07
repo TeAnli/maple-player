@@ -11,10 +11,15 @@ pub const QRCODE_GENERATE_URL: &str =
  */
 pub const QRCODE_POLL_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/poll";
 /**
- * 获取用户信息 GET请求
+ * 获取用户登录后信息 GET请求
  * 1. `up_mid` 参数
  */
-pub const GET_USER_DATA_URL: &str = "https://api.bilibili.com/x/web-interface/nav";
+pub const GET_USER_NAV_URL: &str = "https://api.bilibili.com/x/web-interface/nav";
+/**
+ * 获取用户登录后信息 GET请求
+ * 1. `up_mid` 参数
+ */
+pub const GET_USER_DATA_URL: &str = "https://api.bilibili.com/x/space/wbi/acc/info";
 /**
  * 获取用户所有收藏夹信息 GET请求
  * 1. `up_mid` 参数

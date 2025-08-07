@@ -1,7 +1,8 @@
-use crate::api::data::{BannerData, BannerInfo};
+use crate::api::data::{BannerData, BannerInfo, UserResponse};
 use crate::api::urls::URL;
 use crate::error::AppError;
 use crate::util::http::{self, Task};
+use crate::util::wbi;
 use crate::{
     api::{data, urls},
     AppState,
@@ -153,9 +154,34 @@ pub async fn get_folder_info(
  */
 #[tauri::command]
 pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::UserData, AppError> {
-    let api_url = String::from(urls::GET_USER_DATA_URL);
-    let info: data::UserResponse =
+    let api_url = String::from(urls::GET_USER_NAV_URL);
+    let response: Value =
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+
+    let img_url = response["data"]["wbi_img"]["img_url"]
+        .as_str()
+        .unwrap()
+        .to_string();
+    let sub_url = response["data"]["wbi_img"]["sub_url"]
+        .as_str()
+        .unwrap()
+        .to_string();
+
+    let mid = response["data"]["mid"].as_i64().unwrap().to_string();
+
+    let params = vec![("mid", mid)];
+    let quary = wbi::encode_wbi(
+        params,
+        (
+            wbi::take_filename(img_url).unwrap(),
+            wbi::take_filename(sub_url).unwrap(),
+        ),
+    );
+    let api_url = format!("{}?{quary}", urls::GET_USER_DATA_URL);
+    println!("{api_url}");
+    let info: UserResponse =
+        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+
     Ok(info.data)
 }
 

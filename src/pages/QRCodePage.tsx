@@ -18,7 +18,9 @@ interface QRCodeResponse {
 interface UserData {
   mid: number;
   face: string;
-  uname: string;
+  name: string;
+  sex: string;
+  sign: string;
 }
 
 const QRCODE_CONFIG = {
@@ -45,9 +47,9 @@ const QRCodePage: React.FC = () => {
   const qrcodeKey = useRef("");
   useGSAP(() => {
     if (state.status === "success") {
-      gsap.from("#tick", { rotate: -180, opacity: 0, scale: 0.2 }).duration(0.5).delay(0.3);
+      gsap.from("#tick", { y: 20, opacity: 0, }).duration(0.5).delay(0.3);
       gsap.from("#content", { y: 20, opacity: 0 }).duration(1);
-      gsap.from("#success", { y: 40, opacity: 0, scale: 0.2 }).duration(1);
+      gsap.from("#success", { y: 40, opacity: 0 }).duration(1);
     }
   }, [state.status]);
 
@@ -68,8 +70,10 @@ const QRCodePage: React.FC = () => {
         updateData({
           isLogin: true,
           mid: userData.mid,
-          uname: userData.uname,
-          face: userData.face
+          name: userData.name,
+          face: userData.face,
+          sex: userData.sex,
+          sign: userData.sign
         });
         setState(prev => ({ ...prev, status: "success" }));
 

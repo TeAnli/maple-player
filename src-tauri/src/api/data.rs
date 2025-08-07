@@ -33,7 +33,7 @@ pub struct BannerInfo {
     pub image: String,
     pub title: String,
     pub url: String,
-    pub color: String
+    pub color: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
@@ -120,7 +120,17 @@ pub struct FolderInfo {
 pub struct UserData {
     pub mid: i64,
     pub face: String,
-    pub uname: String,
+    pub name: String,
+    pub sex: String,
+    pub sign: String,
+    pub level: i64,
+    pub coins: i64,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct WbiImage {
+    pub img_url: String,
+    pub sub_url: String,
 }
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct CidData {

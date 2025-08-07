@@ -4,19 +4,25 @@ import { persist, createJSONStorage } from "zustand/middleware";
 type AccountState = {
   isLogin: boolean;
   mid: number | null;
-  uname: string;
+  name: string;
   face: string;
+  sex: string;
+  sign: string;
 };
 type AccountAction = {
   updateLoginState: (isLogin: AccountState["isLogin"]) => void;
   updateUID: (uid: AccountState["mid"]) => void;
-  updateName: (name: AccountState["uname"]) => void;
+  updateName: (name: AccountState["name"]) => void;
   updateHeader: (url: AccountState["face"]) => void;
+  updateSex: (sex: AccountState["sex"]) => void;
+  updateSign: (sex: AccountState["sign"]) => void;
   updateData: (data: {
     isLogin: AccountState["isLogin"];
     mid: AccountState["mid"] | null;
-    uname: AccountState["uname"];
+    name: AccountState["name"];
     face: AccountState["face"];
+    sex: AccountState["sex"];
+    sign: AccountState["sign"];
   }) => void;
 };
 
@@ -25,19 +31,25 @@ export const useAccountStore = create<AccountState & AccountAction>()(
     set => ({
       isLogin: false,
       mid: null,
-      uname: "",
+      name: "",
       face: "",
+      sex: "",
+      sign: "",
       updateLoginState: isLogin => set(() => ({ isLogin: isLogin })),
       updateUID: uid => set(() => ({ mid: uid })),
-      updateName: name => set(() => ({ uname: name })),
+      updateName: name => set(() => ({ name: name })),
       updateHeader: url => set(() => ({ face: url })),
+      updateSex: sex => set(() => ({ name: sex })),
+      updateSign: sign => set(() => ({ face: sign })),
 
       updateData: data =>
         set(() => ({
           isLogin: data.isLogin,
           mid: data.mid,
-          uname: data.uname,
-          face: data.face
+          name: data.name,
+          face: data.face,
+          sex: data.sex,
+          sign: data.sign
         }))
     }),
     {
