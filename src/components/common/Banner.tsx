@@ -81,8 +81,12 @@ const Banner: React.FC = () => {
     return (
         <div
             className="h-64 w-1/2 rounded-2xl relative overflow-hidden transition-all duration-300"
+
             onMouseEnter={stopAutoPlay}
             onMouseLeave={startAutoPlay}
+            style={{
+                boxShadow: `0px 0px 15px ${banners[current] ? banners[current].color : "rgb(0, 0, 0, 0.5)"}`
+            }}
         >
             {banners.length > 0 ? (
                 <>
@@ -91,13 +95,15 @@ const Banner: React.FC = () => {
                             <div
                                 key={index}
                                 className={`absolute inset-0 transition-opacity duration-500 ${index === current ? "opacity-100" : "opacity-0"}`}
-                                style={{ zIndex: index === current ? 1 : 0 }}
+
+
                             >
                                 <a
                                     href={banner.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="block w-full h-full"
+
                                 >
                                     <img
                                         src={banner.image}

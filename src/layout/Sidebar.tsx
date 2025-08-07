@@ -12,21 +12,19 @@ const Sidebar: React.FC = () => {
   return (
     <div className={`h-full fade-in-enter transition-all`}>
       <div className="h-full flex flex-col items-center gap-4 px-6 py-2">
-        <div className="flex justify-center bg-neutral-800/50 items-center rounded-full flex-col gap-6 px-2 py-4">
+        <div className="flex justify-center bg-neutral-800/50 items-center rounded-full flex-col gap-6 p-4 shadow-md">
           {mainRoutes.map(item => {
             const isActive = location.pathname === item.path;
             return (
               <div
                 key={item.id}
-                className={`flex items-center justify-center rounded-full size-10 cursor-pointer transition-all duration-500 ${
-                  isActive ? "" : "hover:scale-110 "
-                }`}
+                className={`flex items-center justify-center rounded-full size-8 cursor-pointer transition-all duration-500 ${isActive ? "" : "hover:scale-110 "
+                  }`}
                 onClick={() => handleItemClick(item.path)}
               >
                 <img
-                  className={`transition-all duration-500 ${
-                    isActive ? "opacity-100" : "dark:opacity-30 size-6"
-                  }`}
+                  className={`transition-all duration-300 ${isActive ? "opacity-100 scale-125" : "dark:opacity-30 size-5"
+                    }`}
                   src={item.icon}
                   alt={item.label}
                 />
@@ -34,7 +32,7 @@ const Sidebar: React.FC = () => {
             );
           })}
         </div>
-        <div className="flex justify-center bg-neutral-800/50 items-center rounded-full flex-col gap-6 px-2 py-4">
+        <div className="flex justify-center bg-neutral-800/50 items-center rounded-full flex-col gap-6 p-4 shadow-md">
           {authRoutes.map(item => {
             const isActive = location.pathname === item.path;
 
@@ -43,9 +41,8 @@ const Sidebar: React.FC = () => {
             return (
               <div
                 key={item.id}
-                className={`flex items-center justify-center rounded-full size-10 cursor-pointer transition-all duration-500 ${
-                  isActive ? "" : "hover:scale-110 "
-                }`}
+                className={`flex items-center justify-center rounded-full size-8 cursor-pointer transition-all duration-500 ${isActive ? "" : "hover:scale-110 "
+                  }`}
                 onClick={() => {
                   if (item.id === "logout") {
                     getCurrentWindow().close();
@@ -54,9 +51,8 @@ const Sidebar: React.FC = () => {
                 }}
               >
                 <img
-                  className={`transition-all duration-500 ${
-                    isActive ? "opacity-100" : "dark:opacity-30"
-                  }`}
+                  className={`transition-all duration-500 ${isActive ? "opacity-100" : "dark:opacity-30"
+                    }`}
                   src={item.icon}
                   alt={item.label}
                 />
