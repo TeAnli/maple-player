@@ -15,7 +15,7 @@ const InfoCard: React.FC<InfomationProps> = ({ title, data = 0 }) => {
   )
 }
 
-const User: React.FC = () => {
+const UserPage: React.FC = () => {
   const account = useAccountStore();
   return (
     <div className="w-full h-full overflow-auto bg-gradient-to-br text-white p-2 flex flex-col">
@@ -60,4 +60,4 @@ const User: React.FC = () => {
   );
 };
 
-export default User;
+export default UserPage;

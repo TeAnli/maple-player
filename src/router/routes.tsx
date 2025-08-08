@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router";
 
-import Home from "../pages/Home";
-import Download from "../pages/Download";
-import Options from "../pages/Options";
-import User from "../pages/User";
+import HomePage from "../pages/HomePage";
+import DownloadPage from "../pages/DownloadPage";
+import LyricsPage from "../pages/LyricsPage";
+import UserPage from "../pages/UserPage";
 import Layout from "../layout/Layout";
 
 import HomeIcon from "../assets/icons/Home.svg";
@@ -23,19 +23,19 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />
+        element: <HomePage />
       },
       {
         path: "/download",
-        element: <Download />
+        element: <DownloadPage />
       },
       {
         path: "/options",
-        element: <Options />
+        element: <LyricsPage />
       },
       {
         path: "/user",
-        element: <User />
+        element: <UserPage />
       },
       {
         path: "/login",

@@ -24,7 +24,7 @@ const DownloadCard: React.FC<DownloadCardProps> = ({ value, name, total }) => {
   );
 };
 
-const Download: React.FC = () => {
+const DownloadPage: React.FC = () => {
   const queue = useProgressStore(state => state.queue);
 
   return (
@@ -44,4 +44,4 @@ const Download: React.FC = () => {
   );
 };
 
-export default Download;
+export default DownloadPage;
