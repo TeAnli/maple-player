@@ -54,10 +54,19 @@ pub const GET_VIDEO_DOWNLOAD_URL: &str = "https://api.bilibili.com/x/player/play
 pub const MUSIC_BANNER_URL: &str = "https://api.bilibili.com/x/web-show/region/banner";
 
 /**
- * 获取用户名片信息 
+ * 获取用户名片信息
  * 1. `mid`: 目标用户mid
  */
 pub const GET_USER_CARD_URL: &str = "https://api.bilibili.com/x/web-interface/card";
+
+/**
+ * 获取推荐歌曲
+ * 1. display_id 页数
+ * 2. request_cnt 每页的歌曲个数
+ * 3. from_region 分区的id
+ */
+pub const GET_RECOMMAND_VIDEO_URL: &str =
+    "https://api.bilibili.com/x/web-interface/region/feed/rcmd";
 
 pub struct URL {
     url: String,

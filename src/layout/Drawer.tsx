@@ -23,7 +23,7 @@ const Drawer: React.FC = () => {
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const [mouseDown, setMouseDown] = useState(false);
-  const [volume, setVolume] = useState(50);
+  const [volume, setVolume] = useState(100);
   useEffect(() => {
     console.log(audioRef);
     const init = async () => {
@@ -76,11 +76,12 @@ const Drawer: React.FC = () => {
                 <p className="text-xl font-bold truncate max-w-[200px]">{currentMusic?.name}</p>
                 <p className="text-md text-gray-500 truncate max-w-[200px]"></p>
               </div>
+
             </div>
-            <div className="w-[24rem] flex flex-col items-center justify-center">
-              <div className="left-0 right-0 flex justify-center items-center gap-4">
+            <div className="w-[24rem] flex flex-col gap-2 items-center">
+              <div className="left-0 right-0 flex justify-center items-center gap-8">
                 <div
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="flex items-center justify-center hover:bg-foreground rounded-lg size-10 transition-all duration-150 active:scale-90 cursor-pointer"
                 >
                   <img className="size-8" src={PreviousIcon}></img>
@@ -89,22 +90,23 @@ const Drawer: React.FC = () => {
                   onClick={() => {
                     toggle();
                   }}
-                  className="flex items-center justify-center hover:bg-foreground rounded-lg size-14 transition-all duration-150 active:scale-90 cursor-pointer"
+                  className="flex items-center justify-center hover:bg-foreground rounded-full size-12 transition-all duration-150 active:scale-90 cursor-pointer linear-theme"
+                  style={{ boxShadow: "0 0 10px rgb(244, 186, 24)" }}
                 >
                   {playing ? (
-                    <img className="size-12" src={PauseIcon}></img>
+                    <img className="size-8" src={PauseIcon}></img>
                   ) : (
-                    <img className="size-14" src={StartIcon}></img>
+                    <img className="size-10" src={StartIcon}></img>
                   )}
                 </div>
                 <div
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="flex items-center justify-center hover:bg-foreground rounded-lg size-10 transition-all duration-150 active:scale-90 cursor-pointer"
                 >
                   <img className="size-8" src={NextIcon}></img>
                 </div>
               </div>
-              <div className="h-4 w-[24rem]">
+              <div className="h-4 w-[28rem]">
                 <Slider.Root
                   onPointerUp={() => {
                     setMouseDown(false);
@@ -113,7 +115,7 @@ const Drawer: React.FC = () => {
                     setMouseDown(true);
                     updateProgress(progress);
                   }}
-                  className="group absolute flex items-center select-none touch-none h-6 cursor-pointer"
+                  className="group flex items-center select-none touch-none h-6 cursor-pointer"
                   value={[progress]}
                   max={currentMusic?.duration}
                   onValueChange={(value: number[]) => {
@@ -124,8 +126,8 @@ const Drawer: React.FC = () => {
                     audioRef.current!!.currentTime = progress;
                   }}
                 >
-                  <Slider.Track className="relative flex rounded-full w-[24rem] h-1 group-hover:h-2 bg-neutral-700 transition-all">
-                    <Slider.Range className="absolute rounded-full bg-primary h-full"></Slider.Range>
+                  <Slider.Track className="relative flex rounded-full w-[28rem] h-2 group-hover:h-3 bg-neutral-700 transition-all">
+                    <Slider.Range className="absolute rounded-full linear-theme h-full" style={{ boxShadow: "0 0 10px rgba(244, 186, 24, 0.3)" }}></Slider.Range>
                   </Slider.Track>
                   <Slider.Thumb className="outline-none bg-primary rounded-full size-20"></Slider.Thumb>
                 </Slider.Root>
@@ -135,7 +137,7 @@ const Drawer: React.FC = () => {
             <div className="right-0 flex flex-row items-center gap-4">
               <div
                 className="flex items-center justify-center hover:bg-foreground rounded-lg size-8 transition-all duration-150 active:scale-90 cursor-pointer"
-                onClick={() => {}}
+                onClick={() => { }}
               >
                 <img className="size-6" src={Repeat}></img>
               </div>
@@ -153,8 +155,8 @@ const Drawer: React.FC = () => {
                   audioRef.current!.volume = volume / 100;
                 }}
               >
-                <Slider.Track className="relative flex-1 rounded-full w-full h-4 bg-neutral-700 transition-all">
-                  <Slider.Range className="absolute rounded-full bg-primary h-full" />
+                <Slider.Track className="relative flex-1 rounded-full w-full h-4 bg-neutral-700 transition-all" >
+                  <Slider.Range className="absolute rounded-full linear-theme h-full" style={{ boxShadow: "0 0 10px rgba(244, 186, 24, 0.3)" }} />
                 </Slider.Track>
               </Slider.Root>
             </div>

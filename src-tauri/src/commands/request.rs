@@ -1,4 +1,4 @@
-use crate::api::data::{BannerData, BannerInfo, UserInfo, UserResponse};
+use crate::api::data::{BannerInfo, RecommandVideo, UserInfo, UserResponse};
 use crate::api::urls::URL;
 use crate::error::AppError;
 use crate::util::http::{self, Task};
@@ -10,9 +10,7 @@ use crate::{
 use futures_util::StreamExt;
 use reqwest::{header, Client};
 use serde_json::Value;
-use std::fmt::format;
 use std::io::Write;
-use tauri::http::response;
 use tauri::Emitter;
 use tauri::State;
 use tokio::sync::Mutex;
@@ -207,7 +205,28 @@ pub async fn get_user_card(
         archive_count,
     })
 }
-
+/**
+ * 获取推荐歌曲
+ */
+#[tauri::command]
+pub async fn get_recommand_video(
+    state: State<'_, Mutex<AppState>>,
+) -> Result<Vec<RecommandVideo>, AppError> {
+    let api_url = URL::new(urls::GET_RECOMMAND_VIDEO_URL)
+        .add_param("display_id", "1")
+        .add_param("request_cnt", "3")
+        .add_param("from_region", "1003")
+        .add_param("device", "web")
+        .build();
+    let response: Value =
+        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+    println!("{response}");
+    let archives = response["data"]["archives"].as_array().unwrap();
+    let archives_json = serde_json::Value::Array(archives.clone());
+    let archives: Vec<data::RecommandVideo> =
+        serde_json::from_value(archives_json).map_err(|e| AppError::from(e))?;
+    Ok(archives)
+}
 #[tauri::command]
 pub async fn get_audio_url(
     state: State<'_, Mutex<AppState>>,

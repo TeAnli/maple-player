@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 import { useAccountStore } from "@/store/account.ts";
@@ -9,6 +9,21 @@ import { useShallow } from "zustand/react/shallow";
 import Skeleton from "../common/Skeleton";
 import Playlist from "./Playlist";
 import Banner from "../common/Banner";
+import MultipleMusicCard from "./MultipleMusicCard";
+
+
+
+type RecommandVideo = {
+  bvid: string,
+  cid: number,
+  title: string,
+  cover: string,
+  duration: number,
+  author: {
+    mid: number,
+    name: string
+  },
+}
 
 const Folderlist: React.FC = () => {
   /* 获取当前用户信息和状态 */
@@ -25,8 +40,9 @@ const Folderlist: React.FC = () => {
       updateFolderList: state.updateFolderList
     }))
   );
+  const [active, setActive] = useState("")
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
-
+  const [recommands, setRecommands] = useState<Array<RecommandVideo>>([])
   const negative = useNavigate();
 
   const fetchFolderData = async () => {
@@ -35,8 +51,16 @@ const Folderlist: React.FC = () => {
       updateFolderList(data);
     }
   };
+  const fetchRecommandData = async () => {
+    if (uid != null) {
+      const data = await invoke("get_recommand_video") as Array<RecommandVideo>;
+      console.log(data);
+      setRecommands(data)
+    }
+  };
   useEffect(() => {
     fetchFolderData();
+    fetchRecommandData();
   }, []);
 
   const handleFolder = () => {
@@ -57,12 +81,20 @@ const Folderlist: React.FC = () => {
     }
 
     return (
-      <div className="flex flex-col gap-12">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-2xl font-bold">每日推荐</h1>
-          <div className="w-full h-full">
-            <Banner></Banner>
+      <div className="w-full flex flex-col gap-12 justify-center items-center">
+        <div className="flex flex-col w-full h-full gap-2 px-4 justify-center ">
+          <h1 className="w-full text-2xl font-bold">每日推荐</h1>
+          <div className=" h-full flex flex-row gap-12 justify-center">
+            <div className="w-[44rem] h-full relative ">
+              <Banner></Banner>
+            </div>
+            <div className="flex flex-col w-[32rem] gap-6">
+              {recommands.map(item => {
+                return <MultipleMusicCard onClick={() => { setActive(item.bvid) }} active={item.bvid === active} title={item.title} cover={item.cover} duration={0} name={item.author.name}></MultipleMusicCard>
+              })}
+            </div>
           </div>
+
         </div>
         <div>
           <h1 className="text-2xl font-bold">你的收藏夹</h1>
@@ -87,11 +119,11 @@ const Folderlist: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div >
     );
   };
 
-  return <div className="w-full h-full px-4 py-2">{handleFolder()}</div>;
+  return <div className="w-full h-full px-4 py-2 items-center justify-center">{handleFolder()}</div>;
 };
 
 export default Folderlist;

@@ -63,8 +63,8 @@ const MusicContainer: React.FC = () => {
           id="items"
           className={
             value
-              ? "grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-2"
-              : "flex flex-col w-full py-2 gap-1"
+              ? "grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-2"
+              : "flex flex-col w-full py-2 gap-2"
           }
           style={{ animationDelay: "0.1s" }}
         >

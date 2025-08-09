@@ -65,7 +65,8 @@ pub fn run() {
             commands::request::download,
             commands::request::push_download_queue,
             commands::request::get_audio_url,
-            commands::request::get_music_banners
+            commands::request::get_music_banners,
+            commands::request::get_recommand_video
         ])
         /* 状态管理 */
         .manage(Mutex::new(AppState {

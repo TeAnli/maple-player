@@ -80,12 +80,12 @@ const Banner: React.FC = () => {
 
     return (
         <div
-            className="h-64 w-1/2 rounded-2xl relative overflow-hidden transition-all duration-300"
+            className="h-[12rem] w-full rounded-2xl relative overflow-hidden transition-all duration-300"
 
             onMouseEnter={stopAutoPlay}
             onMouseLeave={startAutoPlay}
             style={{
-                boxShadow: `0px 0px 15px ${banners[current] ? banners[current].color : "rgb(0, 0, 0, 0.5)"}`
+                boxShadow: `0px 0px 20px ${banners[current] ? "rgb(0, 0, 0, 0.6)" : "rgb(0, 0, 0, 0.6)"}`
             }}
         >
             {banners.length > 0 ? (

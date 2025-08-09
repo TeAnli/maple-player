@@ -33,8 +33,11 @@ const Layout: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-content to-neutral-700/80"></div>
             </div>
-          )}
-          <header data-tauri-drag-region className="relative z-10">
+          )
+
+          }
+
+          <header className="relative z-10">
             <Header />
           </header>
           <div className="flex flex-1 overflow-hidden">

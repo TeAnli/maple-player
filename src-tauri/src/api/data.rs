@@ -144,3 +144,18 @@ pub struct WbiImage {
 pub struct CidData {
     pub cid: i64,
 }
+
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct RecommandVideo {
+    pub bvid: String,
+    pub cid: i64,
+    pub title: String,
+    pub cover: String,
+    pub duration: i64,
+    pub author: Author,
+}
+#[derive(Serialize, Deserialize, Debug, Default)]
+pub struct Author {
+    pub mid: i64,
+    pub name: String,
+}
