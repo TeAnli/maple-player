@@ -68,7 +68,7 @@ const Drawer: React.FC = () => {
             <div className="flex flex-row items-center justify-center gap-4">
               <div className="group relative flex-shrink-0">
                 <img
-                  className="object-cover w-16 h-16 rounded-xl shadow-md flex items-center justify-center"
+                  className="object-cover w-14 h-14 rounded-xl shadow-md flex items-center justify-center"
                   src={currentMusic?.cover}
                 />
               </div>
@@ -78,7 +78,7 @@ const Drawer: React.FC = () => {
               </div>
 
             </div>
-            <div className="w-[24rem] flex flex-col gap-2 items-center">
+            <div className="w-[24rem] flex flex-col items-center">
               <div className="left-0 right-0 flex justify-center items-center gap-8">
                 <div
                   onClick={() => { }}
@@ -90,7 +90,7 @@ const Drawer: React.FC = () => {
                   onClick={() => {
                     toggle();
                   }}
-                  className="flex items-center justify-center hover:bg-foreground rounded-full size-12 transition-all duration-150 active:scale-90 cursor-pointer linear-theme"
+                  className="flex items-center justify-center hover:bg-foreground rounded-full size-12 transition-all duration-150 cursor-pointer linear-theme"
                   style={{ boxShadow: "0 0 10px rgb(244, 186, 24)" }}
                 >
                   {playing ? (

@@ -82,7 +82,7 @@ const Folderlist: React.FC = () => {
 
     return (
       <div className="w-full flex flex-col gap-12 justify-center items-center">
-        <div className="flex flex-col w-full h-full gap-2 px-4 justify-center ">
+        <div className="flex flex-col w-full h-full gap-2 justify-center ">
           <h1 className="w-full text-2xl font-bold">每日推荐</h1>
           <div className=" h-full flex flex-row gap-12 justify-center">
             <div className="w-[44rem] h-full relative ">
@@ -123,7 +123,7 @@ const Folderlist: React.FC = () => {
     );
   };
 
-  return <div className="w-full h-full px-4 py-2 items-center justify-center">{handleFolder()}</div>;
+  return <div className="w-full h-full px-4 items-center justify-center">{handleFolder()}</div>;
 };
 
 export default Folderlist;
