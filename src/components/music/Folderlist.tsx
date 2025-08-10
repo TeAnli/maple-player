@@ -10,6 +10,7 @@ import Skeleton from "../common/Skeleton";
 import Playlist from "./Playlist";
 import Banner from "../common/Banner";
 import MultipleMusicCard from "./MultipleMusicCard";
+import StarUser from "./StarUser";
 
 
 
@@ -85,10 +86,14 @@ const Folderlist: React.FC = () => {
         <div className="flex flex-col w-full h-full gap-2 justify-center ">
           <h1 className="w-full text-2xl font-bold">每日推荐</h1>
           <div className=" h-full flex flex-row gap-12 justify-center">
-            <div className="w-[44rem] h-full relative ">
+            <div className="w-[44rem] h-full relative flex flex-col gap-8">
               <Banner></Banner>
+              <div className="w-full flex flex-row gap-4">
+                <StarUser cover="https://i2.hdslb.com/bfs/face/927600c9ac351375bc63fa6e0ce06e7ed7a8bbd3.jpg@128w_128h_1c_1s.webp" name="大家的音乐机"></StarUser>
+                <StarUser cover="https://i2.hdslb.com/bfs/face/91a6526445f61e2d491523242b532d5e76f0435a.jpg@128w_128h_1c_1s.webp" name="音乐私藏馆"></StarUser>
+              </div>
             </div>
-            <div className="flex flex-col w-[32rem] gap-6">
+            <div className="flex flex-col w-[32rem] gap-4">
               {recommands.map(item => {
                 return <MultipleMusicCard onClick={() => { setActive(item.bvid) }} active={item.bvid === active} title={item.title} cover={item.cover} duration={0} name={item.author.name}></MultipleMusicCard>
               })}

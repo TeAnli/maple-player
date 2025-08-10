@@ -1,10 +1,12 @@
 import Button from "@/components/common/Button";
+import { useMusicStore } from "@/store/music";
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 
 const LyricsPage: React.FC = () => {
     const pageRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
+    const musicStore = useMusicStore();
     useEffect(() => {
         if (pageRef.current) {
             pageRef.current.animate([
