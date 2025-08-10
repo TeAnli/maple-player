@@ -94,8 +94,8 @@ const Folderlist: React.FC = () => {
               </div>
             </div>
             <div className="flex flex-col w-[32rem] gap-4">
-              {recommands.map(item => {
-                return <MultipleMusicCard onClick={() => { setActive(item.bvid) }} active={item.bvid === active} title={item.title} cover={item.cover} duration={0} name={item.author.name}></MultipleMusicCard>
+              {recommands.map((item, index) => {
+                return <MultipleMusicCard key={index} onClick={() => { setActive(item.bvid) }} active={item.bvid === active} title={item.title} cover={item.cover} duration={0} name={item.author.name}></MultipleMusicCard>
               })}
             </div>
           </div>

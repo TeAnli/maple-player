@@ -10,17 +10,13 @@ import { useToggle } from "@/utils/hooks/useToggle";
 
 
 import StartIcon from "@/assets/icons/Start.svg"
+import { invoke } from "@tauri-apps/api/core";
 const MusicContainer: React.FC = () => {
   const currentFolder = useFolderStore(state => state.currentFolder);
 
   const [value, toggle] = useToggle(false);
   const [active, setActive] = useState("");
-  useGSAP(() => {
-    gsap.from("#title", {
-      opacity: 0,
-      duration: 1
-    });
-  }, []);
+  // const 
 
   return (
     <div id="title" className="flex flex-col w-full h-full rounded-lg p-2 gap-2 ">
@@ -59,7 +55,17 @@ const MusicContainer: React.FC = () => {
                 </section>
               </section>
               <div>
-                <Button>下载全部歌曲</Button>
+                <Button onClick={async () => {
+                  let bvid = currentFolder.medias[0].bvid;
+                  let cid = await invoke("get_cid_by_bvid", { bvid });
+                  console.log(cid)
+                  try {
+                    let result = await invoke("download", { bvid, cid })
+                  } catch (e) {
+                    console.error("error");
+                  }
+
+                }}>下载全部歌曲</Button>
               </div>
             </div>
 

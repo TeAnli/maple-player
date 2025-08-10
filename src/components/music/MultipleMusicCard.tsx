@@ -21,8 +21,8 @@ const MultipleMusicCard: React.FC<MultipleMusicCardProps> = (props) => {
                             src={props.cover}
                         />
                     </div>
-                    <div className="flex flex-col truncate w-48">
-                        <p>{props.title}</p>
+                    <div className="flex flex-col truncate w-64">
+                        <p className="truncate">{props.title}</p>
                         <p className="text-sm text-neutral-500 font-bold">{props.name}</p>
                     </div>
                     <div className="flex truncate">
