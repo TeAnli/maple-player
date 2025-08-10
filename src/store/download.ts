@@ -1,5 +1,12 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
+export enum Status {
+  PENDING = "pending",
+  DOWNLOADING = "downloading",
+  COMPLETED = "completed",
+  FAILED = "failed"
+}
 export interface Task {
   id: string;
   progress: {
@@ -7,29 +14,22 @@ export interface Task {
     current_size: number;
   };
 }
-type DownloadProgressState = {
-  total: number;
-  current: number;
+type DownloadState = {
   queue: Array<Task>;
 };
-type DownloadProgressAction = {
-  setTotal: (total: number) => void;
-  setCurrent: (current: number) => void;
-  getProgress: () => number;
-  setQueue: (queue: Array<Task>) => void;
+type DownloadAction = {
+  updateQueue: (queue: DownloadState["queue"]) => void;
 };
-export const useProgressStore = create<DownloadProgressState & DownloadProgressAction>()(
-  (set, get) => ({
-    total: 0,
-    current: 0,
-    queue: [],
 
-    setTotal: total => set(() => ({ total: total })),
-    setCurrent: current => set(() => ({ current: current })),
-    getProgress: () => {
-      const { total, current } = get();
-      return total === 0 ? 0 : (current / total) * 100;
-    },
-    setQueue: queue => set(() => ({ queue: queue }))
-  })
+export const useDownloadStore = create<DownloadState & DownloadAction>()(
+  persist(
+    (set, get) => ({
+      queue: [],
+      updateQueue: (newValue: DownloadState["queue"]) => set(() => ({ queue: newValue }))
+    }),
+    {
+      name: "download_storage",
+      storage: createJSONStorage(() => sessionStorage)
+    }
+  )
 );

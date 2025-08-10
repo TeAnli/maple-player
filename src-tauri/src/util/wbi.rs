@@ -9,8 +9,6 @@ w_rid 为签名
 
 需要先计算wts和请求参数的排列，之后利用排列后的值计算w_rid签名即可
 */
-use reqwest::header::USER_AGENT;
-use serde::Deserialize;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /**

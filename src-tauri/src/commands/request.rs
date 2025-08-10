@@ -1,18 +1,16 @@
 use crate::api::data::{BannerInfo, RecommandVideo, UserInfo, UserResponse};
 use crate::api::urls::URL;
 use crate::error::AppError;
-use crate::util::http::{self, Task};
+use crate::util::download::Task;
+use crate::util::http::{self};
 use crate::util::wbi;
 use crate::{
     api::{data, urls},
     AppState,
 };
-use futures_util::StreamExt;
-use reqwest::{header, Client};
+use reqwest::{Client};
 use serde_json::Value;
-use std::io::Write;
-use tauri::Emitter;
-use tauri::State;
+use tauri::{State, Window};
 use tokio::sync::Mutex;
 
 /**
@@ -256,11 +254,12 @@ pub async fn get_audio_url(
  * * `cid` 视频cid
  */
 #[tauri::command]
-pub async fn push_download_queue(
+pub async fn download(
+    window: Window,
     state: State<'_, Mutex<AppState>>,
     bvid: String,
     cid: i64,
-) -> Result<String, String> {
+) -> Result<String, AppError> {
     let api_url = URL::new(urls::GET_VIDEO_DOWNLOAD_URL)
         .add_param("fnval", "4048")
         .add_param("bvid", &bvid)
@@ -269,133 +268,18 @@ pub async fn push_download_queue(
         .add_param("fourk", "1")
         .build();
     //获取下载资源
-    let response = state.lock().await.http_client.client.get(api_url)
-        .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-        .header(header::REFERER, "https://www.bilibili.com/")
-        .send()
-        .await.map_err(|e| e.to_string())?;
-    let json: Value = response.json().await.map_err(|e| e.to_string())?;
+    let response: Value =
+        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+    println!("get resource");
     //获取文件下载路径
-    let audio_url = json["data"]["dash"]["audio"][0]["baseUrl"]
+    let audio_url = response["data"]["dash"]["audio"][0]["baseUrl"]
         .as_str()
         .unwrap()
         .to_string();
+    println!("get url");
     //创建任务
-    let task = Task::create(&bvid, &audio_url);
-    println!("正在添加至队列中: {:#?}", task);
-    //添加到下载队列中
-    state.lock().await.download_queue.enqueue(task);
-    Ok(String::from("成功添加至下载队列"))
-}
-/**
- * 下载视频
- */
-#[tauri::command]
-pub async fn download(
-    state: State<'_, Mutex<AppState>>,
-    window: tauri::Window,
-) -> Result<String, String> {
-    if state.lock().await.download_queue.is_empty() {
-        return Ok(String::from("下载队列为空"));
-    }
-
-    std::fs::create_dir_all("./").unwrap();
-    let mut is_empty = false;
-    while !is_empty {
-        println!("start loop");
-        state
-            .lock()
-            .await
-            .download_queue
-            .queue
-            .front_mut()
-            .unwrap()
-            .status = http::DownloadStatus::Downloading;
-        println!("设置成下载中...");
-        //下载文件
-        let url = state
-            .lock()
-            .await
-            .download_queue
-            .queue
-            .front_mut()
-            .unwrap()
-            .url
-            .clone();
-        let response = state.lock().await.http_client.client
-                .get(url)
-                .header(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
-                .header(header::REFERER, "https://www.bilibili.com/")
-                .send()
-                .await.map_err(|e| e.to_string())?;
-        println!("执行下载任务");
-        //如果文件存在 就执行下载任务
-        if response.status().is_success() {
-            // 生成唯一文件名
-            let file_name = format!(
-                "{}.mp3",
-                state
-                    .lock()
-                    .await
-                    .download_queue
-                    .queue
-                    .front_mut()
-                    .unwrap()
-                    .id
-            );
-            let file_path = format!("./{file_name}");
-            //获取文件大小
-            let total_size = response.content_length().unwrap_or(0);
-            let mut current_size = 0_u64;
-            //获取文件字节流
-            let mut stream = response.bytes_stream();
-            //创建文件
-            let mut file = std::fs::File::create(&file_path).unwrap();
-            //设置task的Progress的总大小
-            state
-                .lock()
-                .await
-                .download_queue
-                .queue
-                .front_mut()
-                .unwrap()
-                .progress
-                .total_size = total_size;
-
-            while let Some(chunk) = stream.next().await {
-                //依据chunk的大小逐个写入到文件中
-                let chunk = chunk.unwrap();
-                file.write_all(&chunk).unwrap();
-                current_size += chunk.len() as u64;
-                state
-                    .lock()
-                    .await
-                    .download_queue
-                    .queue
-                    .front_mut()
-                    .unwrap()
-                    .progress
-                    .current_size = current_size;
-                let queue = state.lock().await.download_queue.queue.clone();
-                let result = Vec::from(queue);
-                window
-                    .emit("download_progress", result)
-                    .map_err(|e: tauri::Error| e.to_string())?;
-            }
-            state.lock().await.download_queue.queue.pop_front();
-            if state.lock().await.download_queue.is_empty() {
-                is_empty = true;
-                println!("sb");
-            }
-        }
-    }
-
-    let queue = state.lock().await.download_queue.queue.clone();
-
-    let result = Vec::from(queue);
-    println!("下载完成, 队列是否为空: {}", result.is_empty());
-    window
-        .emit("download_progress", result)
-        .map_err(|e: tauri::Error| e.to_string())?;
-    Ok(String::from("success"))
+    let task = Task::create(bvid, audio_url);
+    task.download(&state.lock().await.http_client.client, &window).await.unwrap();
+    println!("start download");
+    Ok(String::from(""))
 }
