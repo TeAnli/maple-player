@@ -8,9 +8,8 @@ export function load() {
     const downloadStore = useDownloadStore.getState();
     let data = event.payload as Task;
 
-    // 检查是否下载完成（total_size 等于 current_size）
-    const isCompleted = data.progress.total_size > 0 && 
-      data.progress.total_size === data.progress.current_size;
+    const isCompleted =
+      data.progress.total_size > 0 && data.progress.total_size === data.progress.current_size;
 
     let newQueue;
     if (isCompleted) {

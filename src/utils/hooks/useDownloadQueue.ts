@@ -1,44 +1,47 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useDownloadStore, Status, Task } from "../../store/download";
+import { data } from "react-router";
+import { useToggle } from "./useToggle";
 
 export function useDownloadQueue() {
-  const { addTaskToStore, queue } = useDownloadStore(
-    useShallow(state => ({
-      addTaskToStore: state.addTask,
-      queue: state.queue
-    }))
-  );
+  const addTaskToStore = useDownloadStore(state => state.addTask);
+  const queue = useDownloadStore(state => state.queue);
+  const [status, toggle] = useToggle(false);
   // 添加新任务到队列
-  const addTask = (taskId: string) => {
+  const addTask = (taskId: string, name: string, cover: string) => {
     const newTask: Task = {
       id: taskId,
       status: Status.PENDING,
+      name,
+      cover,
       progress: {
         total_size: 0,
         current_size: 0
       }
     };
     addTaskToStore(newTask);
-
-    return newTask;
   };
-
-  const download = async () => {
-    console.log(queue);
-    for (const task of queue) {
-      let cid = await invoke("get_cid_by_bvid", { bvid: task.id });
-      console.log(cid);
-      await invoke("download", {
-        bvid: task.id,
-        cid
-      });
+  useEffect(() => {
+    if (status) {
+      const fetch = async () => {
+        for (const task of queue) {
+          let cid = await invoke("get_cid_by_bvid", { bvid: task.id });
+          await invoke("download", {
+            bvid: task.id,
+            cid
+          });
+        }
+      };
+      fetch();
     }
+  }, [status]);
+  const download = () => {
+    toggle();
   };
   return {
     addTask,
-    queue,
     download
   };
 }

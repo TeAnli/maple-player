@@ -10,6 +10,8 @@ export enum Status {
 export interface Task {
   id: string;
   status: Status;
+  name: string;
+  cover: string;
   progress: {
     total_size: number;
     current_size: number;

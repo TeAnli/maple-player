@@ -3,13 +3,6 @@ import Search from "../components/common/Search.tsx";
 const Header: React.FC = () => {
   return (
     <div data-tauri-drag-region className="flex items-center justify-center w-full fade-in-down px-7 py-4 gap-2">
-      <svg width="60" height="60" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M14.5833 30.625C12.9792 30.625 11.6059 30.0538 10.4635 28.9115C9.32118 27.7691 8.75 26.3958 8.75 24.7917C8.75 23.1875 9.32118 21.8142 10.4635 20.6719C11.6059 19.5295 12.9792 18.9583 14.5833 18.9583C15.1424 18.9583 15.6528 19.0313 16.1146 19.1771C16.6007 19.2986 17.0625 19.4931 17.5 19.7604V4.375H26.25V10.2083H20.4167V24.7917C20.4167 26.3958 19.8455 27.7691 18.7031 28.9115C17.5608 30.0538 16.1875 30.625 14.5833 30.625Z"
-          fill="rgb(244, 186, 24)"
-        />
-      </svg>
-
       <div className="w-full flex items-center h-16 py-8 px-4" data-tauri-drag-region>
         <svg
           xmlns="http://www.w3.org/2000/svg"

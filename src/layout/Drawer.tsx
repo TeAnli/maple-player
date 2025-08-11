@@ -78,7 +78,7 @@ const Drawer: React.FC = () => {
               </div>
 
             </div>
-            <div className="w-[24rem] flex flex-col items-center">
+            <div className="w-[24rem] flex flex-col items-center gap-1">
               <div className="left-0 right-0 flex justify-center items-center gap-8">
                 <div
                   onClick={() => { }}
@@ -126,7 +126,7 @@ const Drawer: React.FC = () => {
                     audioRef.current!!.currentTime = progress;
                   }}
                 >
-                  <Slider.Track className="relative flex rounded-full w-[28rem] h-2 group-hover:h-3 bg-neutral-700 transition-all">
+                  <Slider.Track className="relative flex rounded-full w-[28rem] h-1 group-hover:h-2 bg-neutral-700 transition-all">
                     <Slider.Range className="absolute rounded-full linear-theme h-full" style={{ boxShadow: "0 0 10px rgba(244, 186, 24, 0.3)" }}></Slider.Range>
                   </Slider.Track>
                   <Slider.Thumb className="outline-none bg-primary rounded-full size-20"></Slider.Thumb>

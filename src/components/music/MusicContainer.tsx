@@ -17,7 +17,9 @@ const MusicContainer: React.FC = () => {
 
   const [value, toggle] = useToggle(false);
   const [active, setActive] = useState("");
-  const { queue, addTask, download } = useDownloadQueue();
+  const { addTask, download } = useDownloadQueue();
+
+
   return (
     <div id="title" className="flex flex-col w-full h-full rounded-lg p-2 gap-2 ">
       {currentFolder && (
@@ -55,11 +57,11 @@ const MusicContainer: React.FC = () => {
                 </section>
               </section>
               <div>
-                <Button onClick={async () => {
+                <Button onClick={() => {
                   currentFolder.medias.forEach(media => {
-                    addTask(media.bvid);
+                    addTask(media.bvid, media.title, media.cover);
                   })
-                  await download();
+                  download()
                 }}>下载全部歌曲</Button>
               </div>
             </div>
