@@ -7,7 +7,6 @@ use tauri::{Emitter, Window};
 
 use crate::{error::AppError, util::http};
 
-
 #[derive(Debug, Default, Serialize, Deserialize, Clone)]
 
 pub struct Data {
@@ -33,9 +32,8 @@ impl Task {
             .unwrap();
 
         if response.status().is_success() {
-            std::fs::create_dir_all("./").unwrap();
             let file_name = format!("{}.mp3", self.id.clone());
-            let file_path = format!("./{file_name}");
+            let file_path = format!("D:/Users/10559/test-music/{file_name}");
             //获取文件大小
             let total_size = response.content_length().unwrap_or(0);
             let mut current_size = 0_u64;

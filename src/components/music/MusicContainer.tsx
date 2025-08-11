@@ -11,13 +11,13 @@ import { useToggle } from "@/utils/hooks/useToggle";
 
 import StartIcon from "@/assets/icons/Start.svg"
 import { invoke } from "@tauri-apps/api/core";
+import { useDownloadQueue } from "@/utils/hooks/useDownloadQueue";
 const MusicContainer: React.FC = () => {
   const currentFolder = useFolderStore(state => state.currentFolder);
 
   const [value, toggle] = useToggle(false);
   const [active, setActive] = useState("");
-  // const 
-
+  const { queue, addTask, download } = useDownloadQueue();
   return (
     <div id="title" className="flex flex-col w-full h-full rounded-lg p-2 gap-2 ">
       {currentFolder && (
@@ -56,15 +56,10 @@ const MusicContainer: React.FC = () => {
               </section>
               <div>
                 <Button onClick={async () => {
-                  let bvid = currentFolder.medias[0].bvid;
-                  let cid = await invoke("get_cid_by_bvid", { bvid });
-                  console.log(cid)
-                  try {
-                    let result = await invoke("download", { bvid, cid })
-                  } catch (e) {
-                    console.error("error");
-                  }
-
+                  currentFolder.medias.forEach(media => {
+                    addTask(media.bvid);
+                  })
+                  await download();
                 }}>下载全部歌曲</Button>
               </div>
             </div>

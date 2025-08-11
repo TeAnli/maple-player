@@ -9,6 +9,7 @@ export enum Status {
 }
 export interface Task {
   id: string;
+  status: Status;
   progress: {
     total_size: number;
     current_size: number;
@@ -19,13 +20,15 @@ type DownloadState = {
 };
 type DownloadAction = {
   updateQueue: (queue: DownloadState["queue"]) => void;
+  addTask: (task: Task) => void;
 };
 
 export const useDownloadStore = create<DownloadState & DownloadAction>()(
   persist(
     (set, get) => ({
       queue: [],
-      updateQueue: (newValue: DownloadState["queue"]) => set(() => ({ queue: newValue }))
+      updateQueue: (newValue: DownloadState["queue"]) => set(() => ({ queue: newValue })),
+      addTask: (newValue: Task) => set(() => ({ queue: [...get().queue, newValue] }))
     }),
     {
       name: "download_storage",
