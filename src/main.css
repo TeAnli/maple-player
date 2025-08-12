@@ -72,7 +72,7 @@
     @apply bg-clip-text linear-theme text-transparent;
   }
   .maple-button {
-    @apply rounded-2xl text-sm px-2 py-2 transition-all duration-300;
+    @apply rounded-md text-sm px-2 py-2 transition-all duration-300;
   }
   /* 带有主题按钮样式 */
   .theme-button {

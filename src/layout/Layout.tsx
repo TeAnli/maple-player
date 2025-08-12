@@ -22,7 +22,7 @@ const Layout: React.FC = () => {
   return (
     <div className="font-mukta bg-content text-primary w-full h-[100vh] overflow-hidden flex flex-col">
       <div className="flex flex-1 overflow-hidden">
-        <div className="w-full flex-1 flex flex-col overflow-hidden relative">
+        <div className="w-full h-full flex-1 flex flex-col overflow-hidden relative">
           {currentFolder?.info.cover && location.pathname === "/folder" && (
             <div className="absolute inset-0 z-0 blur-3xl fade-in">
               <img
@@ -40,8 +40,8 @@ const Layout: React.FC = () => {
           <header className="relative z-10">
             <Header />
           </header>
-          <div className="flex flex-1 overflow-hidden">
-            <aside className="h-full">
+          <div className="h-full flex flex-1 overflow-hidden">
+            <aside className="h-full flex flex-col justify-center items-center">
               <Sidebar />
             </aside>
             <main ref={menuRef} className={`flex-1 relative h-full overflow-hidden`}>

@@ -41,15 +41,19 @@ const LyricsPage: React.FC = () => {
     return (
         <div
             ref={pageRef}
-            className="fixed top-0 left-0 w-[100vw] h-[100vh] z-50 bg-content flex flex-col items-center justify-center"
+            className="fixed top-0 left-0 w-[100vw] h-[100vh] z-50 bg-content"
             data-tauri-drag-region
         >
-            <div className="w-full h-24" ></div>
-            <h1 className="text-3xl font-bold mb-6">歌词页面</h1>
-            <div className="w-4/5 max-w-xl text-lg text-center">
-                <p>这里是歌词内容展示区。</p>
-                <Button onClick={handleBack}>返回</Button>
+            <img src={musicStore.currentMusic?.cover} className="w-full h-full blur-3xl fixed" data-tauri-drag-region></img>
+            {/* {/* <div className="w-full h-24 relative" ></div> */}
+            <div className="absolute flex w-full h-full justify-center items-center" data-tauri-drag-region>
+                <img className="object-cover size-96 rounded-md shadow-xl" src={musicStore.currentMusic?.cover}></img>
+                <div>
+                    
+                </div>
+
             </div>
+
         </div>
     );
 }

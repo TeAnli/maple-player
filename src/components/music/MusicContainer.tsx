@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { useFolderStore } from "@/store/folder.ts";
 
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-
 import MusicCard from "../music/MusicCard";
 import Button from "../common/Button";
 import { useToggle } from "@/utils/hooks/useToggle";
 
 
 import StartIcon from "@/assets/icons/Start.svg"
-import { invoke } from "@tauri-apps/api/core";
 import { useDownloadQueue } from "@/utils/hooks/useDownloadQueue";
 const MusicContainer: React.FC = () => {
   const currentFolder = useFolderStore(state => state.currentFolder);
@@ -21,17 +17,17 @@ const MusicContainer: React.FC = () => {
 
 
   return (
-    <div id="title" className="flex flex-col w-full h-full rounded-lg p-2 gap-2 ">
+    <div id="title" className="flex flex-col w-full h-full rounded-lg px-2 gap-2 ">
       {currentFolder && (
 
         <div className="gap-6 flex flex-row relative">
-          <div className=" absolute bottom-0 w-full h-20 rounded-b-2xl bg-neutral-700/40" style={{ boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)" }}></div>
+          <div className=" absolute bottom-0 w-full h-20 rounded-b-xl bg-neutral-700/40" style={{ boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)" }}></div>
 
           <div className="w-full gap-6 flex flex-row px-6 py-4 relative">
-            <div className="relative aspect-square rounded-[2rem] size-72 transition-all ">
+            <div className="relative aspect-square rounded-xl size-72 transition-all mb-4 ml-4">
 
               <img
-                className="object-cover rounded-[2rem] w-full h-full"
+                className="object-cover rounded-xl w-full h-full"
                 style={{ boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.3)" }}
                 src={currentFolder?.info.cover}
               ></img>

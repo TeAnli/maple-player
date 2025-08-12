@@ -6,12 +6,11 @@ import { PlaylistItem, useFolderStore } from "@/store/folder.ts";
 import { useNavigate } from "react-router";
 import { useShallow } from "zustand/react/shallow";
 
-import Skeleton from "../common/Skeleton";
 import Playlist from "./Playlist";
 import Banner from "../common/Banner";
 import MultipleMusicCard from "./MultipleMusicCard";
 import StarUser from "./StarUser";
-
+import NullIcon from "@/assets/icons/Null.svg"
 
 
 type RecommandVideo = {
@@ -53,11 +52,9 @@ const Folderlist: React.FC = () => {
     }
   };
   const fetchRecommandData = async () => {
-    if (uid != null) {
-      const data = await invoke("get_recommand_video") as Array<RecommandVideo>;
-      console.log(data);
-      setRecommands(data)
-    }
+    const data = await invoke("get_recommand_video") as Array<RecommandVideo>;
+    console.log(data);
+    setRecommands(data)
   };
   useEffect(() => {
     fetchFolderData();
@@ -65,64 +62,61 @@ const Folderlist: React.FC = () => {
   }, []);
 
   const handleFolder = () => {
-    if (!isLogin) {
-      return (
-        <div className="w-full h-full flex justify-center items-center flex-col gap-2">
-          <div className="text-center text-xl font-bold">当前未登录至bilibili账号，请登陆</div>
-        </div>
-      );
-    }
-
-    if (folderList.length <= 0) {
-      return (
-        <div className="w-full grid grid-cols-5 gap-8 py-12">
-          <Skeleton count={5}></Skeleton>
-        </div>
-      );
-    }
-
     return (
-      <div className="w-full flex flex-col gap-12 justify-center items-center">
-        <div className="flex flex-col w-full h-full gap-2 justify-center ">
+      <div className="w-full flex flex-col gap-12">
+        <div className="flex flex-col gap-2 ">
           <h1 className="w-full text-2xl font-bold">每日推荐</h1>
-          <div className=" h-full flex flex-row gap-12 justify-center">
-            <div className="w-[44rem] h-full relative flex flex-col gap-8">
+          <div className=" h-full flex flex-row gap-12">
+            <div className="w-[36rem] h-full relative flex flex-col gap-8">
               <Banner></Banner>
               <div className="w-full flex flex-row gap-4">
                 <StarUser cover="https://i2.hdslb.com/bfs/face/927600c9ac351375bc63fa6e0ce06e7ed7a8bbd3.jpg@128w_128h_1c_1s.webp" name="大家的音乐机"></StarUser>
                 <StarUser cover="https://i2.hdslb.com/bfs/face/91a6526445f61e2d491523242b532d5e76f0435a.jpg@128w_128h_1c_1s.webp" name="音乐私藏馆"></StarUser>
               </div>
             </div>
-            <div className="flex flex-col w-[32rem] gap-4">
-              {recommands.map((item, index) => {
-                return <MultipleMusicCard key={index} onClick={() => { setActive(item.bvid) }} active={item.bvid === active} title={item.title} cover={item.cover} duration={0} name={item.author.name}></MultipleMusicCard>
-              })}
+            <div className="w-full flex flex-col bg-neutral-600/30 p-8 rounded-2xl gap-4 overflow-hidden justify-center">
+              <p className="text-xl font-bold">最近火热的歌曲和事件</p>
+              <div className="h-full flex flex-row gap-12 overflow-hidden">
+
+                {recommands.map((item, index) => {
+                  return <MultipleMusicCard key={index} onClick={() => { setActive(item.bvid) }} active={item.bvid === active} title={item.title} cover={item.cover} duration={0} name={item.author.name}></MultipleMusicCard>
+                })}
+              </div>
             </div>
+
           </div>
 
         </div>
-        <div>
+        <div className="flex flex-col">
           <h1 className="text-2xl font-bold">你的收藏夹</h1>
-          <div className="w-full h-full grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
-            {folderList.map((item, idx) => (
-              <div
-                ref={el => (itemRefs.current[idx] = el)}
-                className="w-full"
-                style={{ animationDelay: `${idx * 0.2}s` }}
-                key={item.info.id}
-              >
-                <Playlist
-                  data={item}
-                  onClick={() => {
-                    updateCurrentFolder(item);
-                    negative("folder");
-                  }}
-                  name={item.info.title}
-                  cover={item.info.cover}
-                />
+          {
+            folderList.length === 0 ? <div className="w-full h-full flex justify-center items-center flex-col">
+              <img className="size-64" src={NullIcon}></img>
+              <p className="text-xl font-bold text-neutral-600">你的收藏夹为空</p>
+            </div>
+              :
+              <div className="w-full h-full gap-8 grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
+                {folderList.map((item, idx) => (
+                  <div
+                    ref={el => (itemRefs.current[idx] = el)}
+                    className="w-full"
+                    style={{ animationDelay: `${idx * 0.2}s` }}
+                    key={item.info.id}
+                  >
+                    <Playlist
+                      data={item}
+                      onClick={() => {
+                        updateCurrentFolder(item);
+                        negative("folder");
+                      }}
+                      name={item.info.title}
+                      cover={item.info.cover}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+          }
+
         </div>
       </div >
     );
