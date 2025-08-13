@@ -8,25 +8,34 @@ import { useToggle } from "@/utils/hooks/useToggle";
 
 import StartIcon from "@/assets/icons/Start.svg"
 import { useDownloadQueue } from "@/utils/hooks/useDownloadQueue";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
 const MusicContainer: React.FC = () => {
   const currentFolder = useFolderStore(state => state.currentFolder);
 
-  const [value, toggle] = useToggle(false);
   const [active, setActive] = useState("");
   const { addTask, download } = useDownloadQueue();
-
+  useGSAP(() => {
+    gsap.from("#cover", {
+      opacity: 0,
+      duration: 0.3,
+      ease: "power1.inOut"
+    })
+  }, []);
 
   return (
     <div id="title" className="flex flex-col w-full h-full rounded-lg px-2 gap-2 ">
       {currentFolder && (
 
         <div className="gap-6 flex flex-row relative">
-          <div className=" absolute bottom-0 w-full h-20 rounded-b-xl bg-neutral-700/40" style={{ boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)" }}></div>
+          <div className=" absolute bottom-0 w-full h-20 rounded-b-xl bg-neutral-600/50" style={{ boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)" }}></div>
 
           <div className="w-full gap-6 flex flex-row px-6 py-4 relative">
             <div className="relative aspect-square rounded-xl size-72 transition-all mb-4 ml-4">
 
               <img
+                id="cover"
                 className="object-cover rounded-xl w-full h-full"
                 style={{ boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.3)" }}
                 src={currentFolder?.info.cover}
@@ -68,14 +77,10 @@ const MusicContainer: React.FC = () => {
       {
         <div
           id="items"
-          className={
-            value
-              ? "grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-2"
-              : "flex flex-col w-full py-2 gap-2"
-          }
+          className={"flex flex-col w-full py-2 gap-2"}
           style={{ animationDelay: "0.1s" }}
         >
-          {currentFolder?.medias.map(item => {
+          {currentFolder?.medias.map((item, index) => {
             return (
               <div
                 key={item.bvid}
@@ -84,8 +89,9 @@ const MusicContainer: React.FC = () => {
                 }}
               >
                 <MusicCard
+                  id={index + 1}
                   active={active}
-                  type={value ? "card" : "list"}
+                  type={"list"}
                   duration={item.duration}
                   name={item.title}
                   cover={item.cover}

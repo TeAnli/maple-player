@@ -6,9 +6,9 @@ type StarUserProps = {
 
 const StarUser: React.FC<StarUserProps> = (props) => {
     return (
-        <div id="parent" className={`rounded-2xl  hover:bg-hovered/40 transition-all duration-500 relative w-full`}>
+        <div id="parent" className={`rounded-2xl transition-all duration-300 relative w-full hover:scale-[1.03]`}>
             <img
-                className="absolute object-cover w-full h-full flex items-center  rounded-2xl justify-center"
+                className="absolute object-cover w-full h-full flex items-center rounded-2xl justify-center"
                 src={props.cover}
             />
             <section className={`group flex flex-row items-center p-3 justify-between w-full backdrop-blur-2xl rounded-2xl relative cursor-pointer`}>
@@ -21,11 +21,11 @@ const StarUser: React.FC<StarUserProps> = (props) => {
                         />
                     </div>
                     <div className="flex flex-col truncate w-48">
-                        <p>{props.name}</p>
+                        <p className="text-white">{props.name}</p>
                     </div>
                     <div className="flex truncate">
                         <section className="mb-1">
-                            <h3 className="text-base font-bold truncate transition-colors duration-300 max-w-80">
+                            <h3 className="text-base  font-bold truncate transition-colors duration-300 max-w-80">
                             </h3>
                         </section>
                     </div>

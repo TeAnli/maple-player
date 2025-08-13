@@ -64,8 +64,12 @@ const Folderlist: React.FC = () => {
   const handleFolder = () => {
     return (
       <div className="w-full flex flex-col gap-12">
-        <div className="flex flex-col gap-2 ">
-          <h1 className="w-full text-2xl font-bold">每日推荐</h1>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-row h-full gap-4 items-center justify-center">
+            <div className="relative rounded-2xl h-8 w-[0.4rem] bg-primary"></div>
+            <h1 className="w-full text-2xl font-bold">每日推荐</h1>
+          </div>
+
           <div className=" h-full flex flex-row gap-12">
             <div className="w-[36rem] h-full relative flex flex-col gap-8">
               <Banner></Banner>
@@ -74,9 +78,9 @@ const Folderlist: React.FC = () => {
                 <StarUser cover="https://i2.hdslb.com/bfs/face/91a6526445f61e2d491523242b532d5e76f0435a.jpg@128w_128h_1c_1s.webp" name="音乐私藏馆"></StarUser>
               </div>
             </div>
-            <div className="w-full flex flex-col bg-neutral-600/30 p-8 rounded-2xl gap-4 overflow-hidden justify-center">
-              <p className="text-xl font-bold">最近火热的歌曲和事件</p>
-              <div className="h-full flex flex-row gap-12 overflow-hidden">
+            <div className="w-full flex flex-col bg-foreground p-8 rounded-2xl gap-4 overflow-hidden justify-center">
+              <p className="text-xl font-bold ">最近火热的歌曲和事件</p>
+              <div className="h-full flex flex-row gap-12">
 
                 {recommands.map((item, index) => {
                   return <MultipleMusicCard key={index} onClick={() => { setActive(item.bvid) }} active={item.bvid === active} title={item.title} cover={item.cover} duration={0} name={item.author.name}></MultipleMusicCard>
@@ -87,8 +91,11 @@ const Folderlist: React.FC = () => {
           </div>
 
         </div>
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold">你的收藏夹</h1>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row h-full gap-4 items-center justify-center">
+            <div className="relative rounded-2xl h-8 w-[0.4rem] bg-primary"></div>
+            <h1 className="w-full text-2xl font-bold">你的收藏夹</h1>
+          </div>
           {
             folderList.length === 0 ? <div className="w-full h-full flex justify-center items-center flex-col">
               <img className="size-64" src={NullIcon}></img>

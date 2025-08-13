@@ -40,6 +40,9 @@
   animation: pulse 2s infinite ease-in-out;
 }
 
+.spin-element {
+  animation: spin 90s linear infinite;
+}
 @keyframes pulse {
   0%,
   100% {
@@ -79,14 +82,21 @@
     opacity: 100;
   }
 }
-
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .fade-enter {
   opacity: 0;
 }
 
 .fade-enter-active {
   opacity: 1;
-  transition: opacity 100ms ease;
+  transition: opacity 300ms ease;
 }
 
 .fade-exit {
@@ -95,5 +105,5 @@
 
 .fade-exit-active {
   opacity: 0;
-  transition: opacity 100ms ease;
+  transition: opacity 300ms ease;
 }

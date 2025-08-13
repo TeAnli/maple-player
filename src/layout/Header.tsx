@@ -1,8 +1,14 @@
+import { useState } from "react";
 import Search from "../components/common/Search.tsx";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Header: React.FC = () => {
+  const [focus, setFocus] = useState(false);
+  useGSAP(() => {
+  }, [])
   return (
-    <div data-tauri-drag-region className="flex items-center justify-center w-full fade-in-down px-7 py-4 gap-2">
+    <div id="header" data-tauri-drag-region className="flex items-center justify-center w-full fade-in-down px-7 py-4 gap-2">
       <div className="w-full flex items-center h-16 py-8 px-4" data-tauri-drag-region>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +24,11 @@ const Header: React.FC = () => {
           ></path>
         </svg>
 
-        <Search placeholder="搜索视频"></Search>
+        <Search onFocus={() => {
+          setFocus(true)
+        }} onBlur={() => {
+          setFocus(false)
+        }} placeholder="搜索视频"></Search>
       </div>
     </div>
   );

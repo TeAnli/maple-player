@@ -58,8 +58,13 @@ const Layout: React.FC = () => {
               </SwitchTransition>
             </main>
           </div>
+
           <div className="w-full bg-transparent">
             <Drawer />
+            {/* <div className="w-full bg-transparent  absolute bottom-0">
+              
+            </div> */}
+
           </div>
         </div>
       </div>

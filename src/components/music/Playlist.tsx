@@ -39,10 +39,9 @@ const Playlist: React.FC<PlaylistProps> = ({ name, cover, onClick, data }) => {
     >
       <section className="flex flex-col p-2 gap-2 items-center ">
         <div
-          className={`flex flex-col gap-4 rounded-2xl overflow-hidden transition-all duration-300`}
-          style={{ boxShadow: "0 0 20px rgba(0,0,0,0.5)" }}
+          className={`flex flex-col gap-4 rounded-2xl overflow-hidden transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-xl`}
         >
-          <div className="aspect-square w-full h-full scale-100 rounded-2xl transition-all duration-500 group-hover:scale-150">
+          <div className="aspect-square w-full h-full rounded-2xl ">
             <img className=" rounded-2xl object-cover w-full h-full" src={cover} />
           </div>
         </div>

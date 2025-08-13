@@ -6,6 +6,8 @@ export interface InputFieldProps {
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 const Search: React.FC<InputFieldProps> = ({
@@ -13,7 +15,9 @@ const Search: React.FC<InputFieldProps> = ({
   placeholder,
   value,
   defaultValue,
-  onChange
+  onChange,
+  onFocus,
+  onBlur
 }) => {
   const [internalValue, setInternalValue] = useState(defaultValue || "");
 
@@ -33,6 +37,7 @@ const Search: React.FC<InputFieldProps> = ({
       type={type}
       value={currentValue}
       onChange={handleChange}
+      onFocus={onFocus}
       placeholder={placeholder}
       className={`
           w-1/3 h-full rounded-md bg-transparent p-6 text-lg

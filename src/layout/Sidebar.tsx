@@ -12,7 +12,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className={`h-full flex flex-col fade-in-enter transition-all`}>
       <div className="h-full flex flex-col items-center gap-4 px-6 py-2 jus">
-        <div className="flex justify-center bg-neutral-800/50 bg-netural-800/50 items-center rounded-2xl flex-col gap-4 p-2 ">
+        <div className="flex justify-center bg-foreground bg-netural-800/50 items-center rounded-2xl flex-col gap-4 p-2 ">
           {mainRoutes.map(item => {
             const isActive = location.pathname === item.path;
             return (
@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
             );
           })}
         </div>
-        <div className="flex justify-center bg-neutral-800/50 items-center rounded-2xl flex-col gap-6 p-2">
+        <div className="flex justify-center bg-foreground items-center rounded-2xl flex-col gap-6 p-2">
           {authRoutes.map(item => {
             const isActive = location.pathname === item.path;
 
@@ -61,7 +61,7 @@ const Sidebar: React.FC = () => {
         </div>
       </div>
       <div className="mb-12 flex justify-center">
-        
+
       </div>
     </div>
   );

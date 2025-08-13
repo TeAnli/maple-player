@@ -80,7 +80,7 @@ const Banner: React.FC = () => {
 
     return (
         <div
-            className="h-[10rem] w-full rounded-2xl relative overflow-hidden transition-all duration-300"
+            className="h-[10rem] w-full rounded-2xl relative overflow-hidden transition-all duration-300 hover:scale-[1.03]"
             onMouseEnter={stopAutoPlay}
             onMouseLeave={startAutoPlay}
         >

@@ -21,14 +21,16 @@ const DownloadCard: React.FC<DownloadCardProps> = ({ value, bvid, total, name, c
         </div>
         <h3 className="text-lg truncate max-w-[70%] w-96">{name}</h3>
       </div>
-      <div>
+
+      <div className="flex flex-row gap-12 items-center">
+        <p className="">下载进度: {Math.round((value / total) * 100)}%</p>
         <Progress.Root
           className="w-80 h-5 rounded-md bg-neutral-700 overflow-hidden"
           value={value || 0}
           max={total || 100}
         >
           <Progress.Indicator
-            className="h-full rounded-md bg-slate-500 transition-all duration-75"
+            className="h-full rounded-md bg-primary transition-all duration-[30ms]"
             style={{ transform: `translateX(-${total - (value || 0)}%)` }}
           />
         </Progress.Root>
