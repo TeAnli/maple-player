@@ -68,12 +68,23 @@ pub const GET_USER_CARD_URL: &str = "https://api.bilibili.com/x/web-interface/ca
 pub const GET_RECOMMAND_VIDEO_URL: &str =
     "https://api.bilibili.com/x/web-interface/region/feed/rcmd";
 
+/**
+ * URL构建器
+ * 
+ * 用于构建带有查询参数的URL
+ */
 pub struct URL {
     url: String,
     params: HashMap<String, String>,
 }
 
 impl URL {
+    /**
+     * 创建新的URL构建器实例
+     * 
+     * @param url 基础URL
+     * @return Self 新的URL构建器实例
+     */
     pub fn new(url: &str) -> Self {
         Self {
             url: url.to_string(),

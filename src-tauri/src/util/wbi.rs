@@ -1,13 +1,13 @@
 /*
-代码逻辑取自Bilibili-API-Collect 仓库 的 WBI鉴权
-并修改部分代码以适配于本程序
-根据Bilibili-API-Collect仓库描述
-
-wbi鉴权通常需要两个参数wts和w_rid
-wts 为当前以秒为单位的 Unix 时间戳
-w_rid 为签名
-
-需要先计算wts和请求参数的排列，之后利用排列后的值计算w_rid签名即可
+ * 代码逻辑取自Bilibili-API-Collect 仓库 的 WBI鉴权
+ * 并修改部分代码以适配于本程序
+ * 根据Bilibili-API-Collect仓库描述
+ * 
+ * wbi鉴权通常需要两个参数wts和w_rid
+ * wts 为当前以秒为单位的 Unix 时间戳
+ * w_rid 为签名
+ * 
+ * 需要先计算wts和请求参数的排列，之后利用排列后的值计算w_rid签名即可
 */
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -61,6 +61,30 @@ pub fn encode_wbi(params: Vec<(&str, String)>, (img_key, sub_key): (String, Stri
     _encode_wbi(params, (img_key, sub_key), cur_time)
 }
 
+/**
+ * 从URL中提取文件名
+ * 
+ * 从给定的URL中提取文件名部分（不包含扩展名）
+ * 
+ * @param url 需要处理的URL字符串
+ * @return Option<String> 提取的文件名，如果无法提取则返回None
+ */
+pub fn take_filename(url: String) -> Option<String> {
+    url.rsplit_once('/')
+        .and_then(|(_, s)| s.rsplit_once('.'))
+        .map(|(s, _)| s.to_string())
+}
+
+/**
+ * 编码WBI参数
+ * 
+ * 使用img_key和sub_key对参数进行WBI编码，用于API请求
+ * 
+ * @param params 需要编码的参数列表
+ * @param keys 包含img_key和sub_key的元组
+ * @param timestamp 当前时间戳
+ * @return String 编码后的查询字符串
+ */
 fn _encode_wbi(
     mut params: Vec<(&str, String)>,
     (img_key, sub_key): (String, String),
@@ -81,9 +105,4 @@ fn _encode_wbi(
     let web_sign = format!("{:?}", md5::compute(query.clone() + &mixin_key));
     // 返回最终的 query
     query + &format!("&w_rid={}", web_sign)
-}
-pub fn take_filename(url: String) -> Option<String> {
-    url.rsplit_once('/')
-        .and_then(|(_, s)| s.rsplit_once('.'))
-        .map(|(s, _)| s.to_string())
 }

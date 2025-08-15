@@ -26,7 +26,7 @@ pub async fn search_bvid_info(
         .add_param("bvid", &bvid)
         .build();
     let video_info: data::VideoResponse =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     Ok(video_info.data)
 }
 /**
@@ -42,7 +42,7 @@ pub async fn get_cid_by_bvid(
         .add_param("bvid", &bvid)
         .build();
     let video: data::CidResponse =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     Ok(video.data.cid)
 }
 
@@ -53,7 +53,7 @@ pub async fn get_cid_by_bvid(
 pub async fn login(state: State<'_, Mutex<AppState>>) -> Result<data::LoginResponse, AppError> {
     let api_url = String::from(urls::QRCODE_GENERATE_URL);
     let login_info: data::LoginResponse =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     Ok(login_info)
 }
 /**
@@ -69,7 +69,7 @@ pub async fn scan_check(
         .add_param("qrcode_key", &qrcode_key)
         .build();
     let scan_info: data::ScanResponse =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     Ok(scan_info.data.code)
 }
 /**
@@ -84,12 +84,12 @@ pub async fn get_music_banners(
         .build();
 
     let banner_response: Value =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
 
     let mut banner_list = Vec::new();
     if let Some(banners) = banner_response["data"]["region_banner_list"].as_array() {
         for banner in banners {
-            let response: Value = http::send_get_request(
+            let response: Value = http::get_data(
                 &state.lock().await.http_client.client,
                 format!(
                     "{}@.avg_color",
@@ -121,7 +121,7 @@ pub async fn get_all_folder(
         .add_param("up_mid", &uid.to_string())
         .build();
     let folder_info: data::FolderResponse =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     let mut folder_list: Vec<data::PlaylistData> = Vec::new();
     for folder in folder_info.data.list {
         let playlist = get_folder_info(&state.lock().await.http_client.client, folder.id).await?;
@@ -142,7 +142,7 @@ pub async fn get_folder_info(
         .add_param("media_id", &folder_id.to_string())
         .add_param("ps", "20")
         .build();
-    let playlist_info: data::PlaylistResponse = http::send_get_request(client, api_url).await?;
+    let playlist_info: data::PlaylistResponse = http::get_data(client, api_url).await?;
 
     Ok(playlist_info.data)
 }
@@ -153,7 +153,7 @@ pub async fn get_folder_info(
 pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::UserData, AppError> {
     let api_url = String::from(urls::GET_USER_NAV_URL);
     let response: Value =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     println!("【infomation: {response}");
     let img_url = response["data"]["wbi_img"]["img_url"]
         .as_str()
@@ -177,7 +177,7 @@ pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::Us
     let api_url = format!("{}?{quary}", urls::GET_USER_DATA_URL);
     println!("{api_url}");
     let info: UserResponse =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     println!("【infomation】: {:#?}", info);
     Ok(info.data)
 }
@@ -193,7 +193,7 @@ pub async fn get_user_card(
         .add_param("mid", &mid.to_string())
         .build();
     let response: Value =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     let archive_count = response["data"]["archive_count"].as_i64().unwrap();
     let fans = response["data"]["card"]["fans"].as_i64().unwrap();
     let attention = response["data"]["card"]["attention"].as_i64().unwrap();
@@ -217,7 +217,7 @@ pub async fn get_recommand_video(
         .add_param("device", "web")
         .build();
     let response: Value =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     println!("{response}");
     let archives = response["data"]["archives"].as_array().unwrap();
     let archives_json = serde_json::Value::Array(archives.clone());
@@ -225,6 +225,16 @@ pub async fn get_recommand_video(
         serde_json::from_value(archives_json).map_err(|e| AppError::from(e))?;
     Ok(archives)
 }
+/**
+ * 获取音频URL
+ * 
+ * 根据视频的bvid和cid获取对应的音频文件URL，用于前端播放音频。
+ * 
+ * @param state 应用状态
+ * @param cid 视频的cid标识
+ * @param bvid 视频的bvid标识
+ * @return Result<String, AppError> 音频URL或错误
+ */
 #[tauri::command]
 pub async fn get_audio_url(
     state: State<'_, Mutex<AppState>>,
@@ -239,7 +249,7 @@ pub async fn get_audio_url(
         .add_param("fourk", "1")
         .build();
     let response: Value =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     //获取文件下载路径
     let audio_url = response["data"]["dash"]["audio"][0]["baseUrl"]
         .as_str()
@@ -250,8 +260,15 @@ pub async fn get_audio_url(
 
 /**
  * 下载视频
- * * `bvid` 视频bvid
- * * `cid` 视频cid
+ * 
+ * 根据视频的bvid和cid下载对应的音频文件，保存到配置的下载路径中。
+ * 下载过程中会通过window发送进度事件。
+ * 
+ * @param window Tauri窗口实例，用于发送下载进度事件
+ * @param state 应用状态
+ * @param bvid 视频bvid
+ * @param cid 视频cid
+ * @return Result<String, AppError> 下载结果
  */
 #[tauri::command]
 pub async fn download(
@@ -269,7 +286,7 @@ pub async fn download(
         .build();
     //获取下载资源
     let response: Value =
-        http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
+        http::get_data(&state.lock().await.http_client.client, api_url).await?;
     println!("get resource");
     //获取文件下载路径
     let audio_url = response["data"]["dash"]["audio"][0]["baseUrl"]
@@ -279,7 +296,7 @@ pub async fn download(
     println!("get url");
     //创建任务
     let task = Task::create(bvid, audio_url);
-    task.download(&state.lock().await.http_client.client, &window)
+    task.download(&state.lock().await.http_client.client, &window, &state.lock().await.config_manager.app_config.download_path)
         .await
         .unwrap();
     println!("start download");

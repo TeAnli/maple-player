@@ -10,7 +10,7 @@ use tauri_plugin_log::TargetKind;
 use tokio::sync::Mutex;
 use util::config;
 use util::http;
-
+use std::env;
 /**
  * 应用状态管理
  * 用于管理应用的全局状态，包括网络请求、配置信息。
@@ -59,11 +59,12 @@ pub fn run() {
             commands::request::get_music_banners,
             commands::request::get_recommand_video,
             commands::request::download,
+            commands::config::save_app_config,
         ))
         /* 状态管理 */
         .manage(Mutex::new(AppState {
             http_client: http::HttpClient::new(),
-            config_manager: config::ConfigManager::init(),
+            config_manager: config::ConfigManager::init().expect("Failed to initialize config manager"),
         }))
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
