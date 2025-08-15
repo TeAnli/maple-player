@@ -122,7 +122,7 @@ const Banner: React.FC = () => {
 
                     <button
                         onClick={prevSlide}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 text-white p-2 rounded-full transition-colors z-20 h-full"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 text-white p-2 rounded-full transition-colors h-full"
                         aria-label="上一张"
                     >
                         <svg
@@ -142,7 +142,7 @@ const Banner: React.FC = () => {
                     </button>
                     <button
                         onClick={nextSlide}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 text-white p-2 rounded-full transition-colors z-20 h-full"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 text-white p-2 rounded-full transition-colors h-full"
                         aria-label="下一张"
                     >
                         <svg
@@ -157,7 +157,7 @@ const Banner: React.FC = () => {
                     </button>
 
                     {/* 指示器 */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                         {banners.map((_, index) => (
                             <button
                                 key={index}

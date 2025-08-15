@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router";
 import { router } from "./router/routes";
 import { useEffect } from "react";
-import { EventSystem } from "./events/system";
+import { EventSystem } from "./utils/events/system";
 import { loadTaskLog } from "./utils/logger";
 
 function App() {

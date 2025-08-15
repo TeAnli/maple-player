@@ -2,8 +2,6 @@ import React, { Suspense } from "react";
 import { useMusicStore } from "@/store/music.ts";
 import { invoke } from "@tauri-apps/api/core";
 
-import PlayIcon from "@/assets/icons/Start.svg";
-import PauseIcon from "@/assets/icons/Pause.svg";
 import LoveIcon from "@/assets/icons/Love.svg";
 import { ContextMenu } from "radix-ui";
 import { convertToProxy, formatTime } from "@/utils/utils.ts";

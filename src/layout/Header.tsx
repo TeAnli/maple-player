@@ -2,14 +2,14 @@ import { useState } from "react";
 import Search from "../components/common/Search.tsx";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useNavigate } from "react-router";
 
 const Header: React.FC = () => {
   const [focus, setFocus] = useState(false);
-  useGSAP(() => {
-  }, [])
+  const navigate = useNavigate();
   return (
-    <div id="header" data-tauri-drag-region className="flex items-center justify-center w-full fade-in-down px-7 py-4 gap-2">
-      <div className="w-full flex items-center h-16 py-8 px-4" data-tauri-drag-region>
+    <div data-tauri-drag-region className="flex items-center justify-center w-full px-7 py-4 gap-2 transition-all duration-300">
+      <div id="header" className="w-full flex items-center h-16 py-8 px-4 transition-all duration-300" data-tauri-drag-region>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -25,6 +25,7 @@ const Header: React.FC = () => {
         </svg>
 
         <Search onFocus={() => {
+
           setFocus(true)
         }} onBlur={() => {
           setFocus(false)

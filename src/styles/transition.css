@@ -43,6 +43,9 @@
 .spin-element {
   animation: spin 90s linear infinite;
 }
+.dialog-overlay {
+  animation: overlayShow 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
 @keyframes pulse {
   0%,
   100% {
@@ -106,4 +109,12 @@
 .fade-exit-active {
   opacity: 0;
   transition: opacity 300ms ease;
+}
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

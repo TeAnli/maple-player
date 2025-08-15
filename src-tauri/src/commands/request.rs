@@ -8,7 +8,7 @@ use crate::{
     api::{data, urls},
     AppState,
 };
-use reqwest::{Client};
+use reqwest::Client;
 use serde_json::Value;
 use tauri::{State, Window};
 use tokio::sync::Mutex;
@@ -154,7 +154,7 @@ pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::Us
     let api_url = String::from(urls::GET_USER_NAV_URL);
     let response: Value =
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
-
+    println!("【infomation: {response}");
     let img_url = response["data"]["wbi_img"]["img_url"]
         .as_str()
         .unwrap()
@@ -178,7 +178,7 @@ pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::Us
     println!("{api_url}");
     let info: UserResponse =
         http::send_get_request(&state.lock().await.http_client.client, api_url).await?;
-
+    println!("【infomation】: {:#?}", info);
     Ok(info.data)
 }
 /**
@@ -279,7 +279,9 @@ pub async fn download(
     println!("get url");
     //创建任务
     let task = Task::create(bvid, audio_url);
-    task.download(&state.lock().await.http_client.client, &window).await.unwrap();
+    task.download(&state.lock().await.http_client.client, &window)
+        .await
+        .unwrap();
     println!("start download");
     Ok(String::from(""))
 }

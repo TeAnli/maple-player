@@ -10,7 +10,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className={`h-full flex flex-col fade-in-enter transition-all`}>
+    <div className={`h-full flex flex-col transition-all duration-300`}>
       <div className="h-full flex flex-col items-center gap-4 px-6 py-2 jus">
         <div className="flex justify-center bg-foreground bg-netural-800/50 items-center rounded-2xl flex-col gap-4 p-2 ">
           {mainRoutes.map(item => {

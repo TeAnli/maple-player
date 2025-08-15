@@ -37,14 +37,14 @@ const Layout: React.FC = () => {
 
           }
 
-          <header className="relative z-10">
+          <header className="relative z-10 transition-all duration-300">
             <Header />
           </header>
           <div className="h-full flex flex-1 overflow-hidden">
             <aside className="h-full flex flex-col justify-center items-center">
               <Sidebar />
             </aside>
-            <main ref={menuRef} className={`flex-1 relative h-full overflow-hidden`}>
+            <main ref={menuRef} className={`flex-1 relative h-full overflow-hidden transition-all duration-300`}>
               <SwitchTransition mode="out-in">
                 <CSSTransition
                   key={location.pathname}

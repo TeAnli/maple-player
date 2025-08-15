@@ -8,9 +8,10 @@ import NextIcon from "../assets/icons/Next.svg";
 import Repeat from "../assets/icons/Repeat.svg";
 
 import { Slider } from "radix-ui";
-import { formatVolume } from "../utils/utils.ts";
+import { formatTime, formatVolume } from "../utils/utils.ts";
 import { useShallow } from "zustand/react/shallow";
 import { useNavigate } from "react-router";
+import { useToggle } from "@/utils/hooks/useToggle.ts";
 
 /* 抽屉，用于提供用户与音乐播放的交互界面 */
 const Drawer: React.FC = () => {
@@ -26,6 +27,7 @@ const Drawer: React.FC = () => {
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const [mouseDown, setMouseDown] = useState(false);
   const [volume, setVolume] = useState(100);
+  const [repeat, toggleMode] = useToggle(false);
   useEffect(() => {
     console.log(audioRef);
     const init = async () => {
@@ -43,7 +45,15 @@ const Drawer: React.FC = () => {
     };
     init();
   }, [currentMusic]);
-  const toggle = async () => {
+  useEffect(() => {
+    if (repeat) {
+      audioRef.current!.loop = true
+    } else {
+      audioRef.current!.loop = false
+    }
+    console.log(audioRef.current!.loop)
+  }, [repeat])
+  const togglePlay = async () => {
     setPlaying(!playing);
     if (playing) {
       audioRef.current!.pause();
@@ -53,19 +63,21 @@ const Drawer: React.FC = () => {
   };
 
   return (
-    <div className="bg-transparent relative">
+    <div className="bg-transparent relative fade-in-up">
       <audio
         onTimeUpdate={() => {
           if (playing && !mouseDown) updateProgress(Math.round(audioRef.current?.currentTime || 0));
         }}
         onEnded={() => {
           updateProgress(currentMusic?.duration || 0);
-          setPlaying(false);
+          if (!repeat) {
+            setPlaying(false)
+          }
         }}
         ref={audioRef}
       ></audio>
       {currentMusic && (
-        <div className="w-full fade-in-up flex flex-col bg-foreground backdrop-blur-xl">
+        <div className="w-full flex flex-col bg-foreground backdrop-blur-xl">
           <div className="w-full absolute -translate-y-3">
             <Slider.Root
               onPointerUp={() => {
@@ -113,19 +125,19 @@ const Drawer: React.FC = () => {
                   onClick={() => { }}
                   className="flex items-center justify-center hover:bg-foreground rounded-lg size-10 transition-all duration-150 active:scale-90 cursor-pointer"
                 >
-                  <img className="size-8" src={PreviousIcon}></img>
+                  <img className="size-7" src={PreviousIcon}></img>
                 </div>
                 <div
                   onClick={() => {
-                    toggle();
+                    togglePlay();
                   }}
                   className="flex items-center justify-center hover:bg-foreground rounded-xl size-11 transition-all duration-150 cursor-pointer linear-theme"
                   style={{ boxShadow: "0 0 10px rgb(244, 186, 24)" }}
                 >
                   {playing ? (
-                    <img className="size-8" src={PauseIcon}></img>
+                    <img className="size-7" src={PauseIcon}></img>
                   ) : (
-                    <img className="size-10" src={StartIcon}></img>
+                    <img className="size-9" src={StartIcon}></img>
                   )}
                 </div>
                 <div
@@ -138,13 +150,23 @@ const Drawer: React.FC = () => {
 
             </div>
 
-            <div className="right-0 flex flex-row items-center gap-4">
+            <div className="right-0 flex flex-row items-center gap-6">
+              <div className="mr-12 w-24">
+                <p>{`${formatTime(progress || 0)}  /  ${formatTime(currentMusic.duration)}`}</p>
+              </div>
               <div
-                className="flex items-center justify-center hover:bg-foreground rounded-lg size-8 transition-all duration-150 active:scale-90 cursor-pointer"
-                onClick={() => { }}
+                className="flex items-center justify-center hover:bg-foreground rounded-lg transition-all duration-150 active:scale-90 cursor-pointer"
+                onClick={() => { toggleMode() }}
+              >
+                <p className="text-2xl">词</p>
+              </div>
+              <div
+                className="flex items-center justify-center hover:bg-foreground rounded-lg transition-all duration-150 active:scale-90 cursor-pointer"
+                onClick={() => { toggleMode() }}
               >
                 <img className="size-6" src={Repeat}></img>
               </div>
+
 
               {audioRef.current && (
                 <img className="size-6" src={formatVolume(audioRef.current.volume)} />
@@ -170,8 +192,9 @@ const Drawer: React.FC = () => {
           </div>
 
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

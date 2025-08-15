@@ -1,5 +1,7 @@
 import Button from "@/components/common/Button";
 import { useMusicStore } from "@/store/music";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 
@@ -37,7 +39,12 @@ const LyricsPage: React.FC = () => {
             navigate(-1);
         }
     };
+    useGSAP(() => {
+        gsap.to("#box", { duration: 0.3, scale: 1.1 }).delay(0.4)
+        gsap.to("#cover", { duration: 0.3, boxShadow: "0 0 20px rgb(0, 0, 0, 0.6)" })
 
+
+    }, [])
     return (
         <div
             ref={pageRef}
@@ -45,15 +52,18 @@ const LyricsPage: React.FC = () => {
             data-tauri-drag-region
         >
             <img src={musicStore.currentMusic?.cover} className="fixed blur-3xl scale-150" data-tauri-drag-region></img>
-            {/* {/* <div className="w-full h-24 relative" ></div> */}
             <div className="absolute flex w-full h-full flex-col justify-center items-center gap-4" data-tauri-drag-region>
-                <img className="object-cover size-96 rounded-lg" src={musicStore.currentMusic?.cover}></img>
-                <div>
+                <div className="fixed top-4 left-4">
+                    <button onClick={handleBack} className="hover:bg-white/20 size-12 text-xl rounded-lg transition-all duration-500">^</button>
+                </div>
+                <div id="box" className="flex flex-col justify-center items-center">
+                    <img id="cover" className="object-cover size-96 rounded-lg" src={musicStore.currentMusic?.cover}></img>
                     <p className="text-xl font-bold">{musicStore.currentMusic?.name}</p>
                 </div>
-                <Button onClick={handleBack}>返回</Button>
+                <div className="mt-12 text-xl">
+                    暂无歌词
+                </div>
             </div>
-
         </div>
     );
 }

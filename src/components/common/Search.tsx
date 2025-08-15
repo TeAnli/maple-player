@@ -38,10 +38,12 @@ const Search: React.FC<InputFieldProps> = ({
       value={currentValue}
       onChange={handleChange}
       onFocus={onFocus}
+      onBlur={onBlur}
       placeholder={placeholder}
       className={`
-          w-1/3 h-full rounded-md bg-transparent p-6 text-lg
-          transition-all duration-300 outline-none justify-center`}
+          h-full rounded-md bg-transparent p-6 text-lg
+          transition-all duration-300 outline-none justify-center
+          `}
     />
   );
 };

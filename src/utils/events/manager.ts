@@ -1,5 +1,5 @@
 import { EventSystem, EventType } from "./system";
-import { Task, useDownloadStore } from "../store/download";
+import { Task, useDownloadStore } from "../../store/download";
 
 export function load() {
   const eventSystem = EventSystem.getInstance();

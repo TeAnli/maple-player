@@ -15,6 +15,7 @@ import LogoutIcon from "../assets/icons/Logout.svg";
 
 import QRCodePage from "../pages/QRCodePage";
 import FolderPage from "../pages/FolderPage";
+import SearchPage from "@/pages/SearchPage";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "/folder",
         element: <FolderPage />
+      },
+      {
+        path: "/search",
+        element: <SearchPage />
       }
     ]
   }
@@ -72,7 +77,8 @@ export const mainRoutes = [
     path: "/options",
     label: "Options",
     icon: OptionsIcon
-  }
+  },
+
 ];
 export const authRoutes = [
   {

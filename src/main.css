@@ -16,14 +16,6 @@
   src: url(./assets/fonts/WenYue-Regular.otf);
 }
 
-@font-face {
-  font-family: "MrsSheppards";
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  src: url(./assets/fonts/MrsSheppards-Regular.ttf) format("truetype");
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -42,8 +34,8 @@
 .dark {
   --color-primary: 244, 186, 24;
   --color-secondary: 248, 110, 19;
-  --color-content: 35, 35, 35;
-  --color-foreground: 27, 27, 27;
+  --color-content: 40, 40, 40;
+  --color-foreground: 32, 32, 32;
   --color-text-primary: 255, 255, 255;
   --color-card-hovered: 103, 103, 103;
   --color-card-active: 103, 103, 103, 0.4;
