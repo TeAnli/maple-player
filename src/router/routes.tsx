@@ -16,6 +16,7 @@ import LogoutIcon from "../assets/icons/Logout.svg";
 import QRCodePage from "../pages/QRCodePage";
 import FolderPage from "../pages/FolderPage";
 import SearchPage from "@/pages/SearchPage";
+import OptionsPage from "@/pages/OptionsPage";
 
 export const router = createBrowserRouter([
   {
@@ -27,12 +28,28 @@ export const router = createBrowserRouter([
         element: <HomePage />
       },
       {
+        path: "/home",
+        element: <HomePage />,
+      },
+      {
+        path: "/folder",
+        element: <FolderPage />
+      },
+      {
+        path: "/search",
+        element: <SearchPage />
+      },
+      {
         path: "/download",
         element: <DownloadPage />
       },
       {
-        path: "/options",
+        path: "/lyric",
         element: <LyricsPage />
+      },
+      {
+        path: "/options",
+        element: <OptionsPage />
       },
       {
         path: "/user",
@@ -42,14 +59,7 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <QRCodePage />
       },
-      {
-        path: "/folder",
-        element: <FolderPage />
-      },
-      {
-        path: "/search",
-        element: <SearchPage />
-      }
+
     ]
   }
 ]);

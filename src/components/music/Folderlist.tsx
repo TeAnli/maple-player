@@ -72,7 +72,7 @@ const Folderlist: React.FC = () => {
                       data={item}
                       onClick={() => {
                         updateCurrentFolder(item);
-                        negative("folder");
+                        negative("/folder");
                       }}
                       name={item.info.title}
                       cover={item.info.cover}

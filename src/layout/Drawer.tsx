@@ -6,7 +6,7 @@ import PauseIcon from "../assets/icons/Pause.svg";
 import PreviousIcon from "../assets/icons/Previous.svg";
 import NextIcon from "../assets/icons/Next.svg";
 import Repeat from "../assets/icons/Repeat.svg";
-
+import Loop from "@/assets/icons/Loop.svg"
 import { Slider } from "radix-ui";
 import { formatTime, formatVolume } from "../utils/utils.ts";
 import { useShallow } from "zustand/react/shallow";
@@ -61,7 +61,6 @@ const Drawer: React.FC = () => {
       await audioRef.current!.play();
     }
   };
-
   return (
     <div className="bg-transparent relative fade-in-up">
       <audio
@@ -108,7 +107,7 @@ const Drawer: React.FC = () => {
             <div className="flex flex-row items-center justify-center gap-4">
               <div className="group relative flex-shrink-0">
                 <img
-                  onClick={() => { navigate("/options") }}
+                  onClick={() => { navigate("/lyric") }}
                   className="object-cover w-14 h-14 rounded-xl shadow-md flex items-center justify-center hover:scale-[1.03] cursor-pointer transition-all duration-300"
                   src={currentMusic?.cover}
                 />
@@ -156,15 +155,17 @@ const Drawer: React.FC = () => {
               </div>
               <div
                 className="flex items-center justify-center hover:bg-foreground rounded-lg transition-all duration-150 active:scale-90 cursor-pointer"
-                onClick={() => { toggleMode() }}
+                onClick={() => { }}
               >
                 <p className="text-2xl">词</p>
               </div>
               <div
                 className="flex items-center justify-center hover:bg-foreground rounded-lg transition-all duration-150 active:scale-90 cursor-pointer"
-                onClick={() => { toggleMode() }}
+                onClick={() => {
+                  toggleMode()
+                }}
               >
-                <img className="size-6" src={Repeat}></img>
+                <img className="size-6" src={repeat ? Loop : Repeat}></img>
               </div>
 
 

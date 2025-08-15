@@ -43,12 +43,11 @@ const DownloadPage: React.FC = () => {
   const queue = useDownloadStore(state => state.queue);
 
   return (
-    <div className="min-h-screen w-full p-6 md:p-8 gap-6 overflow-auto">
-      <h1
-        className="text-2xl font-bold mb-8"
-      >
-        下载
-      </h1>
+    <div className="flex flex-col h-full p-2 gap-6 overflow-y-auto">
+      <div>
+        <h1 className="text-2xl font-bold">下载</h1>
+        <div className='bg-primary w-14 h-1 rounded-md'></div>
+      </div>
 
       {queue.length === 0 ? (
 
