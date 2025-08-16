@@ -1,17 +1,15 @@
-use crate::api::data::{BannerInfo, RecommandVideo, UserInfo, UserResponse};
-use crate::api::urls::URL;
 use crate::error::AppError;
-use crate::util::download::Task;
 use crate::util::http::{self};
 use crate::util::wbi;
 use crate::{
-    api::{data, urls},
     AppState,
 };
 use reqwest::Client;
 use serde_json::Value;
-use tauri::{State, Window};
+use tauri::State;
 use tokio::sync::Mutex;
+use crate::modules::api::{data, urls};
+use crate::modules::api::urls::URL;
 
 /**
  * 通过bvid获取视频信息
@@ -78,7 +76,7 @@ pub async fn scan_check(
 #[tauri::command]
 pub async fn get_music_banners(
     state: State<'_, Mutex<AppState>>,
-) -> Result<Vec<BannerInfo>, AppError> {
+) -> Result<Vec<data::BannerInfo>, AppError> {
     let api_url = URL::new(urls::MUSIC_BANNER_URL)
         .add_param("region_id", "1003")
         .build();
@@ -97,7 +95,7 @@ pub async fn get_music_banners(
                 ),
             )
             .await?;
-            let info = BannerInfo {
+            let info = data::BannerInfo {
                 image: String::from(banner["image"].as_str().unwrap()),
                 url: String::from(banner["url"].as_str().unwrap()),
                 title: String::from(banner["title"].as_str().unwrap()),
@@ -176,7 +174,7 @@ pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::Us
     );
     let api_url = format!("{}?{quary}", urls::GET_USER_DATA_URL);
     println!("{api_url}");
-    let info: UserResponse =
+    let info: data::UserResponse =
         http::get_data(&state.lock().await.http_client.client, api_url).await?;
     println!("【infomation】: {:#?}", info);
     Ok(info.data)
@@ -188,7 +186,7 @@ pub async fn get_user_data(state: State<'_, Mutex<AppState>>) -> Result<data::Us
 pub async fn get_user_card(
     state: State<'_, Mutex<AppState>>,
     mid: i64,
-) -> Result<UserInfo, AppError> {
+) -> Result<data::UserInfo, AppError> {
     let api_url = URL::new(urls::GET_USER_CARD_URL)
         .add_param("mid", &mid.to_string())
         .build();
@@ -197,7 +195,7 @@ pub async fn get_user_card(
     let archive_count = response["data"]["archive_count"].as_i64().unwrap();
     let fans = response["data"]["card"]["fans"].as_i64().unwrap();
     let attention = response["data"]["card"]["attention"].as_i64().unwrap();
-    Ok(UserInfo {
+    Ok(data::UserInfo {
         fans,
         attention,
         archive_count,
@@ -209,7 +207,7 @@ pub async fn get_user_card(
 #[tauri::command]
 pub async fn get_recommand_video(
     state: State<'_, Mutex<AppState>>,
-) -> Result<Vec<RecommandVideo>, AppError> {
+) -> Result<Vec<data::RecommandVideo>, AppError> {
     let api_url = URL::new(urls::GET_RECOMMAND_VIDEO_URL)
         .add_param("display_id", "1")
         .add_param("request_cnt", "3")
@@ -229,11 +227,6 @@ pub async fn get_recommand_video(
  * 获取音频URL
  * 
  * 根据视频的bvid和cid获取对应的音频文件URL，用于前端播放音频。
- * 
- * @param state 应用状态
- * @param cid 视频的cid标识
- * @param bvid 视频的bvid标识
- * @return Result<String, AppError> 音频URL或错误
  */
 #[tauri::command]
 pub async fn get_audio_url(
@@ -256,49 +249,4 @@ pub async fn get_audio_url(
         .unwrap()
         .to_string();
     Ok(audio_url)
-}
-
-/**
- * 下载视频
- * 
- * 根据视频的bvid和cid下载对应的音频文件，保存到配置的下载路径中。
- * 下载过程中会通过window发送进度事件。
- * 
- * @param window Tauri窗口实例，用于发送下载进度事件
- * @param state 应用状态
- * @param bvid 视频bvid
- * @param cid 视频cid
- * @return Result<String, AppError> 下载结果
- */
-#[tauri::command]
-pub async fn download(
-    window: Window,
-    state: State<'_, Mutex<AppState>>,
-    bvid: String,
-    cid: i64,
-) -> Result<String, AppError> {
-    let api_url = URL::new(urls::GET_VIDEO_DOWNLOAD_URL)
-        .add_param("fnval", "4048")
-        .add_param("bvid", &bvid)
-        .add_param("cid", &cid.to_string())
-        .add_param("fnver", "0")
-        .add_param("fourk", "1")
-        .build();
-    //获取下载资源
-    let response: Value =
-        http::get_data(&state.lock().await.http_client.client, api_url).await?;
-    println!("get resource");
-    //获取文件下载路径
-    let audio_url = response["data"]["dash"]["audio"][0]["baseUrl"]
-        .as_str()
-        .unwrap()
-        .to_string();
-    println!("get url");
-    //创建任务
-    let task = Task::create(bvid, audio_url);
-    task.download(&state.lock().await.http_client.client, &window, &state.lock().await.config_manager.app_config.download_path)
-        .await
-        .unwrap();
-    println!("start download");
-    Ok(String::from(""))
 }

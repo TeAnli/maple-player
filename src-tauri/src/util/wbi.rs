@@ -1,5 +1,5 @@
 /*
- * 代码逻辑取自Bilibili-API-Collect 仓库 的 WBI鉴权
+ * 代码逻辑和内容取自Bilibili-API-Collect 仓库 的 WBI鉴权
  * 并修改部分代码以适配于本程序
  * 根据Bilibili-API-Collect仓库描述
  * 
@@ -11,18 +11,13 @@
 */
 use std::time::{SystemTime, UNIX_EPOCH};
 
-/**
- * 重排映射表
- */
+/* 重排映射表 */
 const MIXIN_TAB: [usize; 64] = [
     46, 47, 18, 2, 53, 8, 23, 32, 15, 50, 10, 31, 58, 3, 45, 35, 27, 43, 5, 49, 33, 9, 42, 19, 29,
     28, 14, 39, 12, 38, 41, 13, 37, 48, 7, 16, 24, 55, 40, 61, 26, 17, 0, 1, 60, 51, 30, 4, 22, 25,
     54, 21, 56, 59, 6, 63, 57, 62, 11, 36, 20, 34, 44, 52,
 ];
 
-/**
- * 通过重排映射表，重新排列img_url和sub_url并合并
- */
 pub fn get_mixin_key(orig: &[u8]) -> String {
     MIXIN_TAB
         .iter()
@@ -52,7 +47,7 @@ pub fn get_url_encoded(url: &str) -> String {
         .collect::<String>()
 }
 
-// 为请求参数进行 wbi 签名
+
 pub fn encode_wbi(params: Vec<(&str, String)>, (img_key, sub_key): (String, String)) -> String {
     let cur_time = match SystemTime::now().duration_since(UNIX_EPOCH) {
         Ok(t) => t.as_secs(),
@@ -62,12 +57,12 @@ pub fn encode_wbi(params: Vec<(&str, String)>, (img_key, sub_key): (String, Stri
 }
 
 /**
- * 从URL中提取文件名
- * 
+ * 从URL中提取文件
  * 从给定的URL中提取文件名部分（不包含扩展名）
- * 
- * @param url 需要处理的URL字符串
- * @return Option<String> 提取的文件名，如果无法提取则返回None
+ * # 参数
+ * * `url` 需要处理的URL字符串
+ * #返回
+ * * `Option<String>` 提取的文件名，如果无法提取则返回None
  */
 pub fn take_filename(url: String) -> Option<String> {
     url.rsplit_once('/')
@@ -77,13 +72,13 @@ pub fn take_filename(url: String) -> Option<String> {
 
 /**
  * 编码WBI参数
- * 
  * 使用img_key和sub_key对参数进行WBI编码，用于API请求
- * 
- * @param params 需要编码的参数列表
- * @param keys 包含img_key和sub_key的元组
- * @param timestamp 当前时间戳
- * @return String 编码后的查询字符串
+ * # 参数
+ * * `params` 需要编码的参数列表
+ * * `keys` 包含img_key和sub_key的元组
+ * * `timestamp` 当前时间戳
+ * # 返回
+ * * `String` 编码后的查询字符串
  */
 fn _encode_wbi(
     mut params: Vec<(&str, String)>,

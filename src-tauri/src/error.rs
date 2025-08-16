@@ -4,9 +4,7 @@ use std::io::Error as IOError;
 use hyper::Error as HyperError;
 use serde_json::Error as JSONError;
 use tauri::Error as TauriError;
-/**
- * 异常处理
- */
+
 #[derive(Error, Debug)]
 pub enum AppError {
     #[error("HTTP request failed")]

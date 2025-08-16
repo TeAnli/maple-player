@@ -22,27 +22,18 @@ pub struct ConfigManager{
 }
 
 impl ConfigManager {
-    /**
-     * 初始化配置管理器
-     * 
-     * @param custom_config_dir 可选的自定义配置目录路径
-     * @return Result<Self, AppError> 配置管理器实例或错误
-     */
     pub fn init() -> Result<Self, AppError> {
 
-        // 确保应用配置目录存在
         let app_config_dir = ensure_app_config_dir("maple-player")?;
         let config_dir = app_config_dir.to_string_lossy().to_string();
     
-        
-        // 创建配置管理器实例
+
         let mut config_manager = Self { 
             app_config: AppConfig::default(), 
             user_config: UserConfig::default(),
             config_dir,
         };
-        
-        // 尝试加载现有配置
+
         let app_config_path = config_manager.get_config_path("app.json");
         if let Ok(app_config) = config_manager.load::<AppConfig>(&app_config_path) {
             config_manager.app_config = app_config;
@@ -68,9 +59,10 @@ impl ConfigManager {
     
     /**
      * 获取配置文件的完整路径
-     * 
-     * @param filename 配置文件名
-     * @return String 完整的配置文件路径
+     * # 参数
+     * * `filename` 配置文件名
+     * # 返回
+     * * `String` 完整的配置文件路径
      */
     pub fn get_config_path(&self, filename: &str) -> String {
         let config_dir = &self.config_dir;
@@ -79,9 +71,10 @@ impl ConfigManager {
     
     /**
      * 从指定路径加载配置
-     * 
-     * @param path 配置文件路径
-     * @return Result<T, AppError> 加载结果
+     * # 参数
+     * * `path` 配置文件路径
+     * # 返回
+     * * `Result<T, AppError>` 加载结果
      */
     pub fn load<T: DeserializeOwned>(&self, path: &str) -> Result<T, AppError> {
         println!("加载配置文件: {}", path);
@@ -92,10 +85,11 @@ impl ConfigManager {
 
     /**
      * 保存配置到指定文件
-     * 
-     * @param config 要保存的配置对象
-     * @param filename 配置文件名，默认为"app.json"
-     * @return Result<(), AppError> 保存结果
+     * # 参数
+     * * `config` 要保存的配置对象
+     * * `filename` 配置文件名，默认为"app.json"
+     * # 返回
+     * * `Result<(), AppError>` 保存结果
      */
     pub fn save<T: Serialize>(&self, config: &T, filename: Option<&str>) -> Result<(), AppError> {
         let file_path = self.get_config_path(filename.unwrap_or("app.json"));

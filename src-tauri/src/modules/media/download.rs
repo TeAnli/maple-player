@@ -13,9 +13,7 @@ pub struct Data {
     pub id: String,
     pub progress: Progress,
 }
-/**
- * 下载任务
- */
+
 #[derive(Debug)]
 pub struct Task {
     pub id: String,
@@ -27,11 +25,6 @@ impl Task {
     }
     /**
      * 下载文件
-     * 
-     * @param client HTTP客户端
-     * @param window Tauri窗口实例，用于发送进度事件
-     * @param download_path 下载路径，从配置中获取
-     * @return Result<(), AppError> 下载结果
      */
     pub async fn download(&self, client: &Client, window: &Window, download_path: &str) -> Result<(), AppError> {
         println!("开始下载: {}", self.url);

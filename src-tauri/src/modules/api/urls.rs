@@ -1,13 +1,15 @@
 use std::collections::HashMap;
 
-/**
- * 生成登陆二维码 GET请求
+/** 
+ * 生成登录二维码的API地址
+ * GET请求，无需参数
  */
 pub const QRCODE_GENERATE_URL: &str =
     "https://passport.bilibili.com/x/passport-login/web/qrcode/generate";
-/**
- * 实时的获取登陆状态 GET请求
- * 1. `qrcode_key` 参数
+
+/** 
+ * 获取登录状态的API地址 GET请求:
+ * 1. `qrcode_key`: 二维码唯一标识
  */
 pub const QRCODE_POLL_URL: &str = "https://passport.bilibili.com/x/passport-login/web/qrcode/poll";
 /**
@@ -68,39 +70,24 @@ pub const GET_USER_CARD_URL: &str = "https://api.bilibili.com/x/web-interface/ca
 pub const GET_RECOMMAND_VIDEO_URL: &str =
     "https://api.bilibili.com/x/web-interface/region/feed/rcmd";
 
-/**
- * URL构建器
- * 
- * 用于构建带有查询参数的URL
- */
 pub struct URL {
     url: String,
     params: HashMap<String, String>,
 }
 
 impl URL {
-    /**
-     * 创建新的URL构建器实例
-     * 
-     * @param url 基础URL
-     * @return Self 新的URL构建器实例
-     */
     pub fn new(url: &str) -> Self {
         Self {
             url: url.to_string(),
             params: HashMap::new(),
         }
     }
-    /**
-     * 添加url参数
-     */
+
     pub fn add_param(mut self, key: &str, value: &str) -> Self {
         self.params.insert(key.to_string(), value.to_string());
         self
     }
-    /**
-     * 构建http url链接
-     */
+
     pub fn build(&self) -> String {
         let mut url = self.url.clone();
         if !self.params.is_empty() {
