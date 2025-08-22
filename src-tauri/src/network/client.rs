@@ -1,6 +1,6 @@
-use std::sync::Arc;
-use reqwest::Client;
 use reqwest::cookie::Jar;
+use reqwest::Client;
+use std::sync::Arc;
 
 pub struct HttpClient {
     pub client: Client,
@@ -18,22 +18,20 @@ impl HttpClient {
             .expect("Failed to create http client");
         HttpClient { client, cookie_jar }
     }
-    
+
     /**
      * 保存cookie到本地存储
-     * 
+     *
      * TODO: 实现cookie的持久化存储功能
      */
-    pub fn save_cookie() {
-
+    pub fn save_cookie(&self) {
+        
     }
-    
+
     /**
      * 从本地存储加载cookie
-     * 
+     *
      * TODO: 实现从持久化存储加载cookie的功能
      */
-    pub fn load_cookie() {
-
-    }
+    pub fn load_cookie() {}
 }

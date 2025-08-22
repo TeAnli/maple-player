@@ -23,20 +23,6 @@ const Layout: React.FC = () => {
     <div className="font-mukta bg-content text-primary w-full h-[100vh] overflow-hidden flex flex-col">
       <div className="flex flex-1 overflow-hidden">
         <div className="w-full h-full flex-1 flex flex-col overflow-hidden relative">
-          {currentFolder?.info.cover && location.pathname === "/folder" && (
-            <div className="absolute inset-0 z-0 blur-3xl fade-in">
-              <img
-                ref={imgRef}
-                className="h-full w-full object-cover"
-                src={currentFolder?.info.cover}
-                alt="Folder cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-content to-neutral-700/80"></div>
-            </div>
-          )
-
-          }
-
           <header className="relative z-10 transition-all duration-300">
             <Header />
           </header>
@@ -45,17 +31,7 @@ const Layout: React.FC = () => {
               <Sidebar />
             </aside>
             <main ref={menuRef} className={`flex-1 relative h-full overflow-hidden transition-all duration-300`}>
-              <SwitchTransition mode="out-in">
-                <CSSTransition
-                  key={location.pathname}
-                  appear={true}
-                  timeout={300}
-                  classNames="fade"
-                  unmountOnExit
-                >
-                  {currentOutlet}
-                </CSSTransition>
-              </SwitchTransition>
+              {currentOutlet}
             </main>
           </div>
 

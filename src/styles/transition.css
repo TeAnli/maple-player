@@ -93,7 +93,7 @@
     transform: rotate(360deg);
   }
 }
-.fade-enter {
+/* .fade-enter {
   opacity: 0;
 }
 
@@ -109,7 +109,7 @@
 .fade-exit-active {
   opacity: 0;
   transition: opacity 300ms ease;
-}
+} */
 @keyframes overlayShow {
   from {
     opacity: 0;

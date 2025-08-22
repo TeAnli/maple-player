@@ -28,10 +28,14 @@ export function useDownloadQueue() {
       const fetch = async () => {
         for (const task of queue) {
           let cid = await invoke("get_cid_by_bvid", { bvid: task.id });
-          await invoke("download", {
-            bvid: task.id,
-            cid
-          });
+          try {
+            await invoke("download", {
+              bvid: task.id,
+              cid
+            });
+          } catch (error) {
+            console.error(error);
+          }
         }
       };
       fetch();

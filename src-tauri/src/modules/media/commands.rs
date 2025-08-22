@@ -37,9 +37,11 @@ pub async fn download(
     println!("get url");
     //创建任务
     let task = Task::create(bvid, audio_url);
-    task.download(&state.lock().await.http_client.client, &window, &state.lock().await.config_manager.app_config.download_path)
-        .await
-        .unwrap();
+    let client = &state.lock().await.http_client.client.clone();
+    println!("hello world");
+    let download_path = &state.lock().await.config_manager.get_config().download_path.clone();
+    println!("hello sb");
+    task.download(client, &window, download_path).await?;
     println!("start download");
     Ok(String::from(""))
 }

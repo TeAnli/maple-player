@@ -61,6 +61,7 @@ pub fn run() {
             api::commands::get_recommand_video,
             media::commands::download,
             config::commands::save_app_config,
+            config::commands::get_app_config
         ))
         /* 状态管理 */
         .manage(Mutex::new(AppState {

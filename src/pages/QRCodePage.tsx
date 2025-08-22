@@ -2,13 +2,11 @@ import { invoke } from "@tauri-apps/api/core";
 import { QRCodeSVG } from "qrcode.react";
 import React, { useEffect, useRef, useState } from "react";
 
-import { fetch } from "@tauri-apps/plugin-http";
 import { useNavigate } from "react-router";
 import { useAccountStore } from "../store/account";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import Button from "../components/common/Button";
-// 类型定义
 interface QRCodeResponse {
   data: {
     url: string;
@@ -23,10 +21,10 @@ interface UserData {
   sign: string;
 }
 type UserCardData = {
-  fans: number,
-  attention: number,
-  archive_count: number,
-}
+  fans: number;
+  attention: number;
+  archive_count: number;
+};
 const QRCODE_CONFIG = {
   MAX_RETRIES: 90,
   CHECK_INTERVAL: 2000
@@ -51,7 +49,7 @@ const QRCodePage: React.FC = () => {
   const qrcodeKey = useRef("");
   useGSAP(() => {
     if (state.status === "success") {
-      gsap.from("#tick", { y: 20, opacity: 0, }).duration(0.5).delay(0.3);
+      gsap.from("#tick", { y: 20, opacity: 0 }).duration(0.5).delay(0.3);
       gsap.from("#content", { y: 20, opacity: 0 }).duration(1);
       gsap.from("#success", { y: 40, opacity: 0 }).duration(1);
     }
@@ -72,7 +70,7 @@ const QRCodePage: React.FC = () => {
         // 登录成功
         const userData = await invoke<UserData>("get_user_data");
         const userCardData = await invoke<UserCardData>("get_user_card", { mid: userData.mid });
-        console.log(userCardData)
+        console.log(userCardData);
         updateData({
           isLogin: true,
           mid: userData.mid,

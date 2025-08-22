@@ -12,6 +12,7 @@ import { formatTime, formatVolume } from "../utils/utils.ts";
 import { useShallow } from "zustand/react/shallow";
 import { useNavigate } from "react-router";
 import { useToggle } from "@/utils/hooks/useToggle.ts";
+import { useConfigStore } from "@/store/config.ts";
 
 /* 抽屉，用于提供用户与音乐播放的交互界面 */
 const Drawer: React.FC = () => {
@@ -25,7 +26,7 @@ const Drawer: React.FC = () => {
   );
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<null | HTMLAudioElement>(null);
-  const [mouseDown, setMouseDown] = useState(false);
+  const [mouseDown, setMouseDown] = useState(false); 
   const [volume, setVolume] = useState(100);
   const [repeat, toggleMode] = useToggle(false);
   useEffect(() => {

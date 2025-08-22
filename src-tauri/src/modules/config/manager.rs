@@ -3,13 +3,18 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use crate::{error::AppError, util::ensure_app_config_dir};
 use std::{fs};
 
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default,Clone)]
 pub struct UserConfig {
     pub id: String,
+    pub repeat: bool,
+    pub lyric_visible: bool,
+    pub volume: i64,
 }
-#[derive(Deserialize, Serialize, Debug, Default)]
+#[derive(Deserialize, Serialize, Debug, Default,Clone)]
 pub struct AppConfig {
     pub download_path: String,
+    pub auto_play: bool,
+    pub header_visible: bool
 }
 /**
  * 配置管理器
@@ -27,7 +32,6 @@ impl ConfigManager {
         let app_config_dir = ensure_app_config_dir("maple-player")?;
         let config_dir = app_config_dir.to_string_lossy().to_string();
     
-
         let mut config_manager = Self { 
             app_config: AppConfig::default(), 
             user_config: UserConfig::default(),
@@ -56,7 +60,9 @@ impl ConfigManager {
         
         Ok(config_manager)
     }
-    
+    pub fn get_config(&self)-> AppConfig {
+        self.app_config.clone()
+    }
     /**
      * 获取配置文件的完整路径
      * # 参数
@@ -92,6 +98,7 @@ impl ConfigManager {
      * * `Result<(), AppError>` 保存结果
      */
     pub fn save<T: Serialize>(&self, config: &T, filename: Option<&str>) -> Result<(), AppError> {
+
         let file_path = self.get_config_path(filename.unwrap_or("app.json"));
         println!("保存配置到: {}", file_path);
         

@@ -37,7 +37,6 @@ export function formatTime(time: number): string {
   if (second == 60) {
     minute += 1;
   }
-
   if (minute > 0 && minute < 10) {
     minutesText = `0${minute}`;
   } else if (minute >= 10 && minute < 60) {
