@@ -12,11 +12,13 @@ pub async fn save_app_config(
     state: State<'_, Mutex<AppState>>,
     download_path: String,
     auto_play: bool,
-    header_visible: bool
+    header_visible: bool,
 ) -> Result<String, AppError> {
-    let config = AppConfig { 
-        download_path,auto_play,header_visible
-     };
+    let config = AppConfig {
+        download_path,
+        auto_play,
+        header_visible,
+    };
     state.lock().await.config_manager.app_config = config.clone();
     state
         .lock()

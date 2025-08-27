@@ -1,6 +1,6 @@
 import React from "react";
 import { useAccountStore } from "../store/account";
-import AuthIcon from "@/assets/icons/Auth.svg"
+import UserIcon from "@/assets/icons/Send.svg"
 interface InfomationProps {
   title: string,
   data: number,
@@ -32,7 +32,7 @@ const UserPage: React.FC = () => {
                     className="rounded-2xl size-48 object-cover"
                   /> :
                   <img
-                    src={AuthIcon}
+                    src={UserIcon}
                     alt="用户头像"
                     className="rounded-2xl object-cover size-48 bg-neutral-700"
                   />

@@ -37,10 +37,6 @@ const Layout: React.FC = () => {
 
           <div className="w-full bg-transparent">
             <Drawer />
-            {/* <div className="w-full bg-transparent  absolute bottom-0">
-              
-            </div> */}
-
           </div>
         </div>
       </div>

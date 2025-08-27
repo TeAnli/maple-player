@@ -12,11 +12,13 @@ type Music = {
 type MusicState = {
   currentMusic: Music | null;
   progress: number;
+  analyser: AnalyserNode | null;
 };
 
 type MusicAction = {
   updateCurrentMusic: (newValue: MusicState["currentMusic"]) => void;
   updateProgress: (newValue: MusicState["progress"]) => void;
+  updateAnalyser: (newValue: MusicState["analyser"]) => void;
 };
 
 export const useMusicStore = create<MusicState & MusicAction>()(
@@ -24,8 +26,11 @@ export const useMusicStore = create<MusicState & MusicAction>()(
     set => ({
       currentMusic: null,
       progress: 0,
+      audioData: null,
+      analyser: null,
       updateCurrentMusic: newValue => set(() => ({ currentMusic: newValue })),
-      updateProgress: newValue => set(() => ({ progress: newValue }))
+      updateProgress: newValue => set(() => ({ progress: newValue })),
+      updateAnalyser: newValue => set(() => ({ analyser: newValue }))
     }),
     {
       name: "music_storage",

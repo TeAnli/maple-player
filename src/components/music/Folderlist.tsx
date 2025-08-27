@@ -51,8 +51,7 @@ const Folderlist: React.FC = () => {
 
         <div className="flex flex-col gap-2">
           <div className="flex flex-row h-full gap-4 items-center justify-center">
-            <div className="relative rounded-2xl h-8 w-[0.4rem] bg-primary"></div>
-            <h1 className="w-full text-2xl font-bold">你的收藏夹</h1>
+            <h1 className="w-full text-3xl font-bold">你的收藏夹</h1>
           </div>
           {
             folderList.length === 0 ? <div className="w-full h-full flex justify-center items-center flex-col">

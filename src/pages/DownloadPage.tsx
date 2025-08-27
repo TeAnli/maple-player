@@ -54,19 +54,20 @@ const DownloadPage: React.FC = () => {
         <div className="flex flex-col items-center justify-center h-64">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-36 w-366 text-neutral-500"
-            fill="none"
+            className="h-36 w-36 text-neutral-500"
             viewBox="0 0 24 24"
+            fill="none"
             stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-            />
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+            <path d="M7 10l5 5 5-5" />
+            <path d="M12 15V3" />
           </svg>
-          <p className="text-neutral-500 text-lg">暂无下载任务</p>
+          <p className="text-neutral-500 text-lg mt-4">暂无下载任务</p>
+          <p className="text-neutral-400 text-sm mt-1">您可以从视频页面添加下载任务</p>
         </div>
       ) : (
         <div className="flex flex-col gap-4 w-full">

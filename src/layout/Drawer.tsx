@@ -12,16 +12,17 @@ import { formatTime, formatVolume } from "../utils/utils.ts";
 import { useShallow } from "zustand/react/shallow";
 import { useNavigate } from "react-router";
 import { useToggle } from "@/utils/hooks/useToggle.ts";
-import { useConfigStore } from "@/store/config.ts";
 
 /* 抽屉，用于提供用户与音乐播放的交互界面 */
 const Drawer: React.FC = () => {
   const navigate = useNavigate();
-  const { currentMusic, progress, updateProgress } = useMusicStore(
+  const [audioInit, setAudioInit] = useState(false);
+  const { currentMusic, progress, updateProgress, updateAnalyser } = useMusicStore(
     useShallow(state => ({
       currentMusic: state.currentMusic,
       progress: state.progress,
-      updateProgress: state.updateProgress
+      updateProgress: state.updateProgress,
+      updateAnalyser: state.updateAnalyser,
     }))
   );
   const [playing, setPlaying] = useState(false);
@@ -60,11 +61,12 @@ const Drawer: React.FC = () => {
       audioRef.current!.pause();
     } else {
       await audioRef.current!.play();
-    }
+    }  
   };
   return (
     <div className="bg-transparent relative fade-in-up">
       <audio
+        
         onTimeUpdate={() => {
           if (playing && !mouseDown) updateProgress(Math.round(audioRef.current?.currentTime || 0));
         }}
@@ -104,12 +106,12 @@ const Drawer: React.FC = () => {
               <Slider.Thumb className="outline-none bg-primary rounded-full size-20"></Slider.Thumb>
             </Slider.Root>
           </div>
-          <div className="w-full flex flex-row justify-between items-center px-12 py-4 ">
+          <div className="w-full flex flex-row justify-between items-center px-8 py-4 ">
             <div className="flex flex-row items-center justify-center gap-4">
               <div className="group relative flex-shrink-0">
                 <img
                   onClick={() => { navigate("/lyric") }}
-                  className="object-cover w-14 h-14 rounded-xl shadow-md flex items-center justify-center hover:scale-[1.03] cursor-pointer transition-all duration-300"
+                  className="object-cover w-16 h-16 rounded-xl shadow-md flex items-center justify-center hover:scale-110 cursor-pointer transition-all duration-300"
                   src={currentMusic?.cover}
                 />
               </div>
@@ -119,7 +121,7 @@ const Drawer: React.FC = () => {
               </div>
 
             </div>
-            <div className="w-[24rem] flex flex-col items-center gap-1">
+            <div className=" flex flex-col items-center gap-1">
               <div className="left-0 right-0 flex justify-center items-center gap-8">
                 <div
                   onClick={() => { }}
@@ -131,7 +133,7 @@ const Drawer: React.FC = () => {
                   onClick={() => {
                     togglePlay();
                   }}
-                  className="flex items-center justify-center hover:bg-foreground rounded-xl size-11 transition-all duration-150 cursor-pointer linear-theme"
+                  className="flex items-center justify-center hover:bg-foreground rounded-xl size-11 transition-all hover:scale-110 active:scale-90 duration-300 cursor-pointer linear-theme"
                   style={{ boxShadow: "0 0 10px rgb(244, 186, 24)" }}
                 >
                   {playing ? (

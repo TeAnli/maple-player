@@ -1,13 +1,16 @@
 import { useMusicStore } from "@/store/music";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 const LyricsPage: React.FC = () => {
     const pageRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const musicStore = useMusicStore();
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const animationRef = useRef<number>();
+    // 页面进入动画
     useEffect(() => {
         if (pageRef.current) {
             pageRef.current.animate([
@@ -19,8 +22,18 @@ const LyricsPage: React.FC = () => {
                 fill: "forwards"
             });
         }
+
+        // 设置Canvas固定尺寸
+        if (canvasRef.current) {
+            const canvas = canvasRef.current;
+            // 设置固定尺寸
+            canvas.width = 800;
+            canvas.height = 200;
+        }
+
     }, []);
 
+    
     const handleBack = () => {
         if (pageRef.current) {
             const animation = pageRef.current.animate([
@@ -38,12 +51,12 @@ const LyricsPage: React.FC = () => {
             navigate(-1);
         }
     };
+    
     useGSAP(() => {
         gsap.to("#box", { duration: 0.3, scale: 1.1 }).delay(0.4)
         gsap.to("#cover", { duration: 0.3, boxShadow: "0 0 20px rgb(0, 0, 0, 0.6)" })
-
-
     }, [])
+    
     return (
         <div
             ref={pageRef}
@@ -63,7 +76,11 @@ const LyricsPage: React.FC = () => {
                     暂无歌词
                 </div>
             </div>
+            <div className="absolute bottom-0 left-0 w-full flex justify-center items-center h-40 z-50">
+                <canvas ref={canvasRef} className="h-full z-50"></canvas>
+            </div>
         </div>
     );
 }
+
 export default LyricsPage;

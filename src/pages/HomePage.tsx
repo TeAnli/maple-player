@@ -31,8 +31,7 @@ const HomePage: React.FC = () => {
     <div className="flex flex-col overflow-y-auto w-full h-full transition-all duration-300 gap-4 p-4">
       <div className="flex flex-col gap-4">
         <div className="flex flex-row h-full gap-4 items-center justify-center">
-          <div className="relative rounded-2xl h-8 w-[0.4rem] bg-primary"></div>
-          <h1 className="w-full text-2xl font-bold">每日推荐</h1>
+          <h1 className="w-full text-3xl font-bold">每日推荐</h1>
         </div>
 
         <div className=" h-full flex flex-row gap-12">
