@@ -1,6 +1,7 @@
 import React from "react";
 import { useAccountStore } from "../store/account";
 import UserIcon from "@/assets/icons/Send.svg"
+import Folderlist from "@/components/music/Folderlist";
 interface InfomationProps {
   title: string,
   data: number,
@@ -56,6 +57,7 @@ const UserPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <Folderlist></Folderlist>
     </div >
   );
 };

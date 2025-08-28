@@ -21,7 +21,7 @@ const StarUser: React.FC<StarUserProps> = (props) => {
                         />
                     </div>
                     <div className="flex flex-col truncate w-48">
-                        <p className="text-white">{props.name}</p>
+                        <p className="text-white font-bold">{props.name}</p>
                     </div>
                     <div className="flex truncate">
                         <section className="mb-1">

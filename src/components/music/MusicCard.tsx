@@ -5,6 +5,7 @@ import { invoke } from "@tauri-apps/api/core";
 import LoveIcon from "@/assets/icons/Love.svg";
 import { ContextMenu } from "radix-ui";
 import { convertToProxy, formatTime } from "@/utils/utils.ts";
+import MusicCover from "./MusicCover";
 
 export interface MusicProps {
   id: number;
@@ -18,11 +19,19 @@ export interface MusicProps {
 
 const MusicCard: React.FC<MusicProps> = ({ id, name, cover, bvid, duration, type, active }) => {
   const setCurrentMusic = useMusicStore(state => state.updateCurrentMusic);
+  const addToPlaylist = useMusicStore(state => state.addToPlaylist);
   const playMusic = async () => {
     let cid = await invoke("get_cid_by_bvid", { bvid });
     let url = await invoke<string>("get_audio_url", { cid, bvid });
     console.log("播放链接:", url);
     setCurrentMusic({
+      name,
+      cover,
+      duration,
+      current: 0,
+      audioUrl: convertToProxy(url)
+    });
+    addToPlaylist({
       name,
       cover,
       duration,
@@ -39,6 +48,7 @@ const MusicCard: React.FC<MusicProps> = ({ id, name, cover, bvid, duration, type
             onClick={() => {
               if (active === bvid) return;
               playMusic();
+
             }}
             className={`rounded-md hover:bg-hovered/40 transition-all duration-500 overflow-hidden ${active === bvid ? "bg-hovered/60 animate-pulse" : "cursor-pointer"} `}
           >
@@ -50,10 +60,7 @@ const MusicCard: React.FC<MusicProps> = ({ id, name, cover, bvid, duration, type
                   <div>
                     <p className="text-lg font-bold">{id}</p>
                   </div>
-                  <img
-                    className="object-cover w-16 h-16 rounded-2xl flex items-center justify-center"
-                    src={cover}
-                  />
+                  <MusicCover cover={cover} alt={name} size="medium" />
                 </div>
                 <div className="opacity-20">
                   <img className="size-6" src={LoveIcon}></img>

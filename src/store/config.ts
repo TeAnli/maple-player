@@ -8,6 +8,7 @@ export interface AppConfig {
   volume: number;
   auto_play: boolean;
   header_visible: boolean;
+  font: string;
 }
 
 type ConfigAction = {
@@ -17,6 +18,7 @@ type ConfigAction = {
 export const useConfigStore = create<AppConfig & ConfigAction>()(
   persist(
     (set) => ({
+      font: "Mukta",
       download_path: "",
       lyric_visible: false,
       mode: false,
